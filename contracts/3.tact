@@ -52,11 +52,90 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
+    let sender: Address = sender();
+
+    if (sender == self.jAddressA) {
+      let price: Int = 0;
+      if (self.a > 0) {
+        price = self.b / self.a;
+      }
+
+      let amountB: Int = price * msg.amount / self.decimal * self.decimal;
+
+      if (amountB > 0 && amountB <= self.a) {
+        transfer(self.jAddressB, amountB, context().value, msg);
+      } else {
+        transfer(self.jAddressA, msg.amount, context().value, msg);
+      }
+
+      return;
+    }
+
+    if (sender == self.jAddressB) {
+      let price: Int = 0;
+      if (self.b > 0) {
+        price = self.a / self.b;
+      }
+
+      let amountA: Int = price * msg.amount / self.decimal * self.decimal;
+
+      if (amountA > 0 && amountA <= self.b) {
+        transfer(self.jAddressA, amountA, context().value, msg);
+      } else {
+        transfer(self.jAddressB, msg.amount, context().value, msg);
+      }
+
+      return;
+    }
+
+    throw(0xFFFFFF);
   } 
   
   get fun price(token: Address): Int { 
+    if (token == self.jAddressA) {
+      if (self.a == 0) {
+        return 0;
+      }
+      return self.b / self.a;
+    }
+
+    if (token == self.jAddressB) {
+      if (self.b == 0) {
+        return 0;
+      }
+      return self.a / self.b;
+    }
+
+    return 0;
   }
   
   get fun balance(token: Address): Int { 
+    if (token == self.jAddressA) {
+      return self.a;
+    }
+
+    if (token == self.jAddressB) {
+      return self.b;
+    }
+
+    return 0;
   }
+
+}
+
+fun transfer(to: Address, amount: Int, value: Int, msg: TokenNotification) {
+  send(SendParameters{
+    to: to,
+    value: 0,
+    mode: SendRemainingValue,
+    body: TokenTransfer {
+      queryId: msg.queryId,
+      amount: amount,
+      destination: msg.from,
+      responseDestination: msg.from,
+      customPayload: null,
+      forwardTonAmount: value,
+      forwardPayload: msg.forwardPayload
+    }.toCell()
+  });
 }
