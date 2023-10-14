@@ -27,20 +27,18 @@ contract Task2 with Deployable {
     send(SendParameters{
       to: msg.sender,
       value: 0, 
-      mode: SendRemainingValue, 
+      mode: SendRemainingValue + SendIgnoreErrors, 
       bounce: true 
     });
   }
 
   receive(msg: Slice) {
-    let ctx: Context = context();
-
     send(SendParameters{
             to: self.admin,
             value: 0,
             mode: SendRemainingValue,
             body: beginCell()
-              .storeAddress(ctx.sender)
+              .storeAddress(sender())
               .storeRef(
                 beginCell()
                   .storeSlice(msg)
