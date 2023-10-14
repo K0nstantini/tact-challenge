@@ -62,8 +62,10 @@ contract Task3 with Deployable {
 
       let amountB: Int = price * msg.amount / self.decimal * self.decimal;
 
-      if (amountB > 0 && amountB <= self.a) {
+      if (amountB > 0 && amountB <= self.b) {
         transfer(self.jAddressB, amountB, context().value, msg);
+        self.a = self.a + msg.amount;
+        self.b = self.b - amountB;
       } else {
         transfer(self.jAddressA, msg.amount, context().value, msg);
       }
@@ -79,8 +81,10 @@ contract Task3 with Deployable {
 
       let amountA: Int = price * msg.amount / self.decimal * self.decimal;
 
-      if (amountA > 0 && amountA <= self.b) {
+      if (amountA > 0 && amountA <= self.a) {
         transfer(self.jAddressA, amountA, context().value, msg);
+        self.b = self.b + msg.amount;
+        self.a = self.a - amountA;
       } else {
         transfer(self.jAddressB, msg.amount, context().value, msg);
       }
