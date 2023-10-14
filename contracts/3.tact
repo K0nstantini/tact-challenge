@@ -67,53 +67,53 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
-    // let sender: Address = sender();
+    let sender: Address = sender();
 
 
-    // if (sender == self.jettonAddressA) {
-    //   if (msg.from == self.owner) {
-    //     self.aAmount = self.aAmount + msg.amount;
-    //     return;
-    //   }
+    if (sender == self.jettonAddressA) {
+      if (msg.from == self.owner) {
+        self.aAmount = self.aAmount + msg.amount;
+        return;
+      }
 
-    //   let price: Int = 0;
-    //   if (self.aAmount > 0) {
-    //     price = self.bAmount * self.decimal / self.aAmount;
-    //   }
+      // let price: Int = 0;
+      // if (self.aAmount > 0) {
+      //   price = self.bAmount * self.decimal / self.aAmount;
+      // }
 
-    //   let amountB: Int = price * msg.amount / self.decimal;
+      // let amountB: Int = price * msg.amount / self.decimal;
 
-    //   if (amountB > 0 && amountB <= self.bAmount) {
-    //     self.transfer(self.jettonAddressB, amountB, context().value, msg);
-    //     self.aAmount = self.aAmount + msg.amount;
-    //     self.bAmount = self.bAmount - amountB;
-    //   } else {
-    //     self.transfer(self.jettonAddressA, msg.amount, context().value, msg);
-    //   }
+      // if (amountB > 0 && amountB <= self.bAmount) {
+      //   self.transfer(self.jettonAddressB, amountB, context().value, msg);
+      //   self.aAmount = self.aAmount + msg.amount;
+      //   self.bAmount = self.bAmount - amountB;
+      // } else {
+      //   self.transfer(self.jettonAddressA, msg.amount, context().value, msg);
+      // }
 
-    //   return;
-    // }
+      return;
+    }
 
-    // if (sender == self.jettonAddressB) {
-    //   if (msg.from == self.owner) {
-    //     self.bAmount = self.bAmount + msg.amount;
-    //     return;
-    //   }
+    if (sender == self.jettonAddressB) {
+      if (msg.from == self.owner) {
+        self.bAmount = self.bAmount + msg.amount;
+        return;
+      }
 
-    //   let price: Int = 0;
-    //   if (self.bAmount > 0) {
-    //     price = self.aAmount * self.decimal / self.bAmount;
-    //   }
+      // let price: Int = 0;
+      // if (self.bAmount > 0) {
+      //   price = self.aAmount * self.decimal / self.bAmount;
+      // }
 
-    //   let amountA: Int = price * msg.amount / self.decimal;
+      // let amountA: Int = price * msg.amount / self.decimal;
 
-    //   if (amountA > 0 && amountA <= self.aAmount) {
-    //     self.transfer(self.jettonAddressA, amountA, context().value, msg);
-    //     self.bAmount = self.bAmount + msg.amount;
-    //     self.aAmount = self.aAmount - amountA;
-    //   } else {
-    //     self.transfer(self.jettonAddressB, msg.amount, context().value, msg);
-    //   }
+      // if (amountA > 0 && amountA <= self.aAmount) {
+      //   self.transfer(self.jettonAddressA, amountA, context().value, msg);
+      //   self.bAmount = self.bAmount + msg.amount;
+      //   self.aAmount = self.aAmount - amountA;
+      // } else {
+      //   self.transfer(self.jettonAddressB, msg.amount, context().value, msg);
+      // }
 
       return;
     }
