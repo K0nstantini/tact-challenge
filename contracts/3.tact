@@ -150,7 +150,7 @@ contract Task3 with Deployable {
         destination: msg.from,
         responseDestination: msg.from,
         customPayload: null,
-        forwardTonAmount: value,
+        forwardTonAmount: 0,
         forwardPayload: msg.forwardPayload
       }.toCell()
     });
