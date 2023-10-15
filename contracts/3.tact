@@ -76,20 +76,20 @@ contract Task3 with Deployable {
         return;
       }
 
-      // let price: Int = 0;
-      // if (self.aAmount > 0) {
-      //   price = self.bAmount * self.decimal / self.aAmount;
-      // }
+      let price: Int = 0;
+      if (self.aAmount > 0) {
+        price = self.bAmount * self.decimal / self.aAmount;
+      }
 
-      // let amountB: Int = price * msg.amount / self.decimal;
+      let amountB: Int = price * msg.amount / self.decimal;
 
-      // if (amountB > 0 && amountB <= self.bAmount) {
-      //   self.transfer(self.jettonAddressB, amountB, context().value, msg);
-      //   self.aAmount = self.aAmount + msg.amount;
-      //   self.bAmount = self.bAmount - amountB;
-      // } else {
-      //   self.transfer(self.jettonAddressA, msg.amount, context().value, msg);
-      // }
+      if (amountB > 0 && amountB <= self.bAmount) {
+        self.transfer(self.jettonAddressB, amountB, msg);
+        self.aAmount = self.aAmount + msg.amount;
+        self.bAmount = self.bAmount - amountB;
+      } else {
+        self.transfer(self.jettonAddressA, msg.amount, msg);
+      }
 
       return;
     }
@@ -100,20 +100,20 @@ contract Task3 with Deployable {
         return;
       }
 
-      // let price: Int = 0;
-      // if (self.bAmount > 0) {
-      //   price = self.aAmount * self.decimal / self.bAmount;
-      // }
+      let price: Int = 0;
+      if (self.bAmount > 0) {
+        price = self.aAmount * self.decimal / self.bAmount;
+      }
 
-      // let amountA: Int = price * msg.amount / self.decimal;
+      let amountA: Int = price * msg.amount / self.decimal;
 
-      // if (amountA > 0 && amountA <= self.aAmount) {
-      //   self.transfer(self.jettonAddressA, amountA, context().value, msg);
-      //   self.bAmount = self.bAmount + msg.amount;
-      //   self.aAmount = self.aAmount - amountA;
-      // } else {
-      //   self.transfer(self.jettonAddressB, msg.amount, context().value, msg);
-      // }
+      if (amountA > 0 && amountA <= self.aAmount) {
+        self.transfer(self.jettonAddressA, amountA, msg);
+        self.bAmount = self.bAmount + msg.amount;
+        self.aAmount = self.aAmount - amountA;
+      } else {
+        self.transfer(self.jettonAddressB, msg.amount, msg);
+      }
 
       return;
     }
@@ -145,17 +145,17 @@ contract Task3 with Deployable {
     return 0;
   }
 
-  fun transfer(to: Address, amount: Int, value: Int, msg: TokenNotification) {
+  fun transfer(to: Address, amount: Int, msg: TokenNotification) {
     send(SendParameters{
       to: to,
       value: 0,
-      mode: SendIgnoreErrors,
+      mode: SendRemainingValue + SendIgnoreErrors,
       body: TokenTransfer {
         queryId: msg.queryId,
         amount: amount,
         destination: msg.from,
-        responseDestination: msg.from,
-        customPayload: null,
+        responseDestination: myAddress(),
+        customPayload: emptyCell(),
         forwardTonAmount: 0,
         forwardPayload: msg.forwardPayload
       }.toCell()
