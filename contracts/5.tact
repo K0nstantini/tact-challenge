@@ -77,7 +77,7 @@ contract Task5 with Deployable {
 
   receive(msg: OwnershipAssigned) {
     if (context().value >= ton("2.1")) {
-      nativeReserve(myBalance() - value + ton("2"), 0);
+      nativeReserve(myBalance() - context().value + ton("2"), 0);
     }
     // nativeReserve(myBalance() - max(context().value - ton("2"), 0), 0);
     // nativeReserve(myBalance() - context().value, 0);
