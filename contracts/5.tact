@@ -100,6 +100,8 @@ contract Task5 with Deployable {
       return;
     }
 
+    nativeReserve(myBalance() - value + ton("2"), 0);
+
     self.nfts.set(self.countNfts, sender());
     let key: Int = random(0, self.countNfts);
     // let key: Int = now() % self.countNfts;
@@ -109,10 +111,12 @@ contract Task5 with Deployable {
     let nft: Address = self.nfts.get(key)!!;
     send(SendParameters{
         to: nft,
-        value: context().value - ton("2") - context().readForwardFee(),
+        value: 0,
+        // value: context().value - ton("2") - context().readForwardFee(),
         // value: context().value - 2015457000,
         // mode: SendRemainingValue + SendIgnoreErrors,
-        mode: SendIgnoreErrors,
+        // mode: SendIgnoreErrors,
+        mode: SendRemainingBalance,
         body: Transfer {
           queryId: msg.queryId,
           newOwner: msg.prevOwner,
@@ -126,6 +130,7 @@ contract Task5 with Deployable {
     self.nfts.set(key, sender());
     self.nfts.set(self.countNfts, null);
     // self.profit = self.profit + ton("2");
+    nativeReserve(0, 0);
 
   }
 
@@ -140,6 +145,7 @@ contract Task5 with Deployable {
         mode: SendRemainingBalance,
         body: AdminFetchProfit { queryId: msg.queryId }.toCell()
       });
+    nativeReserve(0, 0);
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
