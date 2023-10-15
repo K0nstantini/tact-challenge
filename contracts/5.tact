@@ -84,8 +84,7 @@ contract Task5 with Deployable {
 
     let value: Int = context().value;
     if (value < ton("2.1")) {
-      if (value >= ton("0.1")) {
-        send(SendParameters{
+      send(SendParameters{
           to: sender(),
           value: 0,
           mode: SendRemainingValue + SendIgnoreErrors,
@@ -96,9 +95,8 @@ contract Task5 with Deployable {
             customPayload: emptyCell(),
             forwardAmount: 0,
             forwardPayload: msg.forwardPayload
-        }.toCell()
-    });
-      }
+          }.toCell()
+      });
       return;
     }
 
@@ -108,14 +106,14 @@ contract Task5 with Deployable {
     send(SendParameters{
         to: nft,
         // value: context().value - ton("2.1"),
-        value: context().value - 2014846000,
+        value: context().value - 2015354000,
         // mode: SendRemainingValue + SendIgnoreErrors,
         mode: SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
           newOwner: msg.prevOwner,
           responseDestination: msg.prevOwner,
-          customPayload: null,
+          customPayload: emptyCell(),
           forwardAmount: 0,
           forwardPayload: msg.forwardPayload
         }.toCell()

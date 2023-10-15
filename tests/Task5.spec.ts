@@ -10,6 +10,7 @@ describe('Task5', () => {
     let random: SandboxContract<TreasuryContract>;
     let nft1: SandboxContract<TreasuryContract>;
     let nft2: SandboxContract<TreasuryContract>;
+    let nft3: SandboxContract<TreasuryContract>;
 
     beforeEach(async () => {
         blockchain = await Blockchain.create();
@@ -17,6 +18,7 @@ describe('Task5', () => {
         random = await blockchain.treasury('random');
         nft1 = await blockchain.treasury('nft1');
         nft2 = await blockchain.treasury('nft2');
+        nft3 = await blockchain.treasury('nft3');
 
         task5 = blockchain.openContract(await Task5.fromInit(
             1n, owner.address
@@ -51,9 +53,23 @@ describe('Task5', () => {
         let balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
-        res = await sendOwnershipAssigned(nft2, random.address, toNano("2.2"));
+        res = await sendOwnershipAssigned(nft2, random.address, toNano("5"));
         expect(res.transactions).toHaveTransaction({
             from: nft2.address,
+            to: task5.address,
+            success: true,
+        });
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            success: true,
+        });
+
+        balance = await task5.getBalance();
+        console.log(`balance: ${balance}`);
+
+        res = await sendOwnershipAssigned(nft3, random.address, toNano("5"));
+        expect(res.transactions).toHaveTransaction({
+            from: nft3.address,
             to: task5.address,
             success: true,
         });
