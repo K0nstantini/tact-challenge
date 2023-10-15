@@ -108,7 +108,7 @@ contract Task5 with Deployable {
     // transfer(nft, 0, msg.queryId, msg.prevOwner, msg.forwardPayload);
     send(SendParameters{
         to: nft,
-        value: context().value - ton("2"),
+        value: context().value - ton("2.1"),
         mode: SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
@@ -165,11 +165,11 @@ contract Task5 with Deployable {
 
   get fun profit(): Int { 
     return myBalance() - ton("0.1");
+    // return myBalance();
   }
   
   get fun nfts(): map<Int as uint16, Address> { 
-    // return self.nfts;
-    return emptyMap();
+    return self.nfts;
   }
 }
 

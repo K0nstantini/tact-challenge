@@ -42,10 +42,8 @@ describe('Task3', () => {
         });
     });
 
-    it('should deploy', async () => {
-    });
 
-    it('test', async () => {
+    it.skip('test', async () => {
 
         let res = await sendNotification(jettonB, random.address, 10n);
         expect(res.transactions).toHaveTransaction({

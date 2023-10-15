@@ -11,6 +11,7 @@ describe('Task4', () => {
         blockchain = await Blockchain.create();
         task4 = blockchain.openContract(await Task4.fromInit(1n));
         const deployer = await blockchain.treasury('deployer');
+
         const deployResult = await task4.send(
             deployer.getSender(),
             {
@@ -29,7 +30,8 @@ describe('Task4', () => {
         });
     });
 
-    it('test', async () => {
+    it.skip('test', async () => {
+        
     });
 });
 

@@ -32,7 +32,7 @@ describe('Task2', () => {
         });
     });
 
-    it('test', async () => {
+    it.skip('test', async () => {
     });
 });
 

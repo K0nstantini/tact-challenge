@@ -29,6 +29,6 @@ describe('Task1', () => {
         });
     });
 
-    it('test', async () => {
+    it.skip('test', async () => {
     });
 });
