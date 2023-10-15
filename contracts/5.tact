@@ -78,6 +78,8 @@ contract Task5 with Deployable {
   receive(msg: OwnershipAssigned) {
     if (context().value >= ton("2.1")) {
       nativeReserve(myBalance() - context().value + ton("2"), 0);
+    } else {
+      nativeReserve(myBalance() - context().value, 0);
     }
 
     if (msg.prevOwner == self.owner) {
@@ -87,8 +89,7 @@ contract Task5 with Deployable {
     }
 
     let value: Int = context().value;
-    if (value < ton("2.1")) {
-      nativeReserve(myBalance() - context().value, 0);
+    if (value < ton("2.1") || self.countNfts == 0) {
       send(SendParameters{
           to: sender(),
           value: 0,
