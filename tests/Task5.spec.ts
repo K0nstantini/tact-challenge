@@ -41,17 +41,17 @@ describe('Task5', () => {
     });
 
     it('test', async () => {
-        let res = await sendOwnershipAssigned(nft1, owner.address);
+        let res = await sendOwnershipAssigned(nft1, owner.address, toNano("0.1"));
         expect(res.transactions).toHaveTransaction({
             from: nft1.address,
             to: task5.address,
             success: true,
         });
 
-        let balance = await task5.getProfit();
+        let balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
-        res = await sendOwnershipAssigned(nft2, random.address);
+        res = await sendOwnershipAssigned(nft2, random.address, toNano("2.2"));
         expect(res.transactions).toHaveTransaction({
             from: nft2.address,
             to: task5.address,
@@ -62,15 +62,15 @@ describe('Task5', () => {
             success: true,
         });
 
-        balance = await task5.getProfit();
+        balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
 
     });
 
-    async function sendOwnershipAssigned(sender: SandboxContract<TreasuryContract>, owner: Address) {
+    async function sendOwnershipAssigned(sender: SandboxContract<TreasuryContract>, owner: Address, value: bigint) {
         return await task5.send(sender.getSender(), {
-            value: toNano('2.2')
+            value
         }, {
             $$type: 'OwnershipAssigned',
             queryId: 0n,

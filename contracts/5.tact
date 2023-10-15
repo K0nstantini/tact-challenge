@@ -68,6 +68,7 @@ contract Task5 with Deployable {
   owner: Address;
   nfts: map<Int as uint16, Address>;
   countNfts: Int as uint16 = 0;
+  // profit: Int as coins = 0;
   
   init(seed: Int, owner: Address) {
     self.owner = owner;
@@ -84,7 +85,6 @@ contract Task5 with Deployable {
     let value: Int = context().value;
     if (value < ton("2.1")) {
       if (value >= ton("0.1")) {
-        // transfer(sender(), 0, msg.queryId, msg.prevOwner, msg.forwardPayload);
         send(SendParameters{
           to: sender(),
           value: 0,
@@ -105,10 +105,11 @@ contract Task5 with Deployable {
     self.nfts.set(self.countNfts, sender());
     let key: Int = random(0, self.countNfts);
     let nft: Address = self.nfts.get(key)!!;
-    // transfer(nft, 0, msg.queryId, msg.prevOwner, msg.forwardPayload);
     send(SendParameters{
         to: nft,
-        value: context().value - ton("2.1"),
+        // value: context().value - ton("2.1"),
+        value: context().value - 2014846000,
+        // mode: SendRemainingValue + SendIgnoreErrors,
         mode: SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
@@ -122,6 +123,7 @@ contract Task5 with Deployable {
 
     self.nfts.set(key, sender());
     self.nfts.set(self.countNfts, null);
+    // self.profit = self.profit + ton("2");
 
   }
 
@@ -165,27 +167,13 @@ contract Task5 with Deployable {
 
   get fun profit(): Int { 
     return myBalance() - ton("0.1");
-    // return myBalance();
+  }
+
+  get fun balance(): Int { 
+    return myBalance();
   }
   
   get fun nfts(): map<Int as uint16, Address> { 
     return self.nfts;
   }
 }
-
-// fun transfer(to: Address, value: Int, queryId: Int, owner: Address, payload: Slice) {
-//     send(SendParameters{
-//         to: to,
-//         value: value,
-//         mode: SendRemainingValue,
-//         body: Transfer {
-//           queryId: queryId,
-//           newOwner: owner,
-//           responseDestination: owner,
-//           customPayload: null,
-//           forwardAmount: 0,
-//           forwardPayload: payload
-//         }.toCell()
-//     });
-    
-//   }
