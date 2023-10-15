@@ -154,7 +154,7 @@ contract Task3 with Deployable {
         queryId: msg.queryId,
         amount: amount,
         destination: msg.from,
-        responseDestination: myAddress(),
+        responseDestination: msg.from,
         customPayload: emptyCell(),
         forwardTonAmount: 0,
         forwardPayload: msg.forwardPayload
