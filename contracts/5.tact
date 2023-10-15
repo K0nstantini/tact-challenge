@@ -91,7 +91,7 @@ contract Task5 with Deployable {
 
     let value: Int = context().value;
 
-    if (value < ton("0.8")) {
+    if (value < ton("0.08")) {
       self.nfts.set(self.countNfts, sender());
       self.countNfts = self.countNfts + 1;
       return;
