@@ -88,6 +88,7 @@ contract Task5 with Deployable {
 
     let value: Int = context().value;
     if (value < ton("2.1")) {
+      nativeReserve(myBalance() - context().value, 0);
       send(SendParameters{
           to: sender(),
           value: 0,
@@ -98,7 +99,6 @@ contract Task5 with Deployable {
             responseDestination: msg.prevOwner,
             customPayload: null,
             forwardAmount: 0,
-            // forwardPayload: msg.forwardPayload
             forwardPayload: emptyCell().asSlice()
           }.toCell()
       });
@@ -112,10 +112,6 @@ contract Task5 with Deployable {
     send(SendParameters{
         to: nft,
         value: 0,
-        // value: context().value - ton("2") - context().readForwardFee(),
-        // value: context().value - 2015457000,
-        // mode: SendRemainingValue + SendIgnoreErrors,
-        // mode: SendIgnoreErrors,
         mode: SendRemainingBalance + SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
@@ -123,7 +119,6 @@ contract Task5 with Deployable {
           responseDestination: msg.prevOwner,
           customPayload: null,
           forwardAmount: 0,
-          // forwardPayload: msg.forwardPayload
           forwardPayload: emptyCell().asSlice()
         }.toCell()
     });
