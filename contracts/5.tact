@@ -152,36 +152,35 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
-    require(context().value >= tonRequired, "Insufficent funds");
-    require(sender() == self.owner, "Invalid sender");
-    let id: Int = 0;
-    repeat(self.countNfts) {
-      let nft: Address = self.nfts.get(id)!!;
-      id = id + 1;
+    // let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
+    // require(context().value >= tonRequired, "Insufficent funds");
+    // require(sender() == self.owner, "Invalid sender");
+    // let id: Int = 0;
+    // repeat(self.countNfts) {
+    //   let nft: Address = self.nfts.get(id)!!;
+    //   id = id + 1;
 
-      send(SendParameters{
-        to: nft,
-        value: ton("0.08"),
-        mode: SendIgnoreErrors,
-        body: Transfer {
-          queryId: msg.queryId,
-          newOwner: self.owner,
-          responseDestination: self.owner,
-          customPayload: emptyCell(),
-          forwardAmount: 0,
-          forwardPayload: emptyCell().asSlice()
-        }.toCell()
-      }); 
-    }
+    //   send(SendParameters{
+    //     to: nft,
+    //     value: ton("0.08"),
+    //     mode: SendIgnoreErrors,
+    //     body: Transfer {
+    //       queryId: msg.queryId,
+    //       newOwner: self.owner,
+    //       responseDestination: self.owner,
+    //       customPayload: emptyCell(),
+    //       forwardAmount: 0,
+    //       forwardPayload: emptyCell().asSlice()
+    //     }.toCell()
+    //   }); 
+    // }
 
-    self.nfts = emptyMap();
-    self.countNfts = 0;
+    // self.nfts = emptyMap();
+    // self.countNfts = 0;
   }
 
   get fun profit(): Int { 
-    // return myBalance() - ton("0.1");
-    return 0;
+    return myBalance() - ton("0.1");
   }
 
   get fun balance(): Int { 
