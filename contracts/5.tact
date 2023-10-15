@@ -83,7 +83,7 @@ contract Task5 with Deployable {
     }
 
     let value: Int = context().value;
-    if (value < ton("2.1")) {
+    if (value < ton("2.1") || self.countNfts == 0) {
       send(SendParameters{
           to: sender(),
           value: 0,
@@ -139,20 +139,20 @@ contract Task5 with Deployable {
     let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
     require(context().value >= tonRequired, "Insufficent funds");
     require(sender() == self.owner, "Invalid sender");
-    let id: Int = self.countNfts - 1;
+    let id: Int = 0;
     repeat(self.countNfts) {
       let nft: Address = self.nfts.get(id)!!;
-      id = id - 1;
+      id = id + 1;
 
       send(SendParameters{
         to: nft,
-        value: 0,
+        value: ton("0.08"),
         mode: SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
-          newOwner: sender(),
-          responseDestination: sender(),
-          customPayload: null,
+          newOwner: self.owner,
+          responseDestination: self.owner,
+          customPayload: emptyCell(),
           forwardAmount: 0,
           forwardPayload: emptyCell().asSlice()
         }.toCell()

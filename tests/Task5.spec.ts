@@ -81,6 +81,31 @@ describe('Task5', () => {
         balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
+        res = await sendOwnershipAssigned(nft3, random.address, toNano("1"));
+        expect(res.transactions).toHaveTransaction({
+            from: nft3.address,
+            to: task5.address,
+            success: true,
+        });
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            to: nft3.address,
+            success: true,
+        });
+
+        balance = await task5.getBalance();
+        console.log(`balance: ${balance}`);
+
+        res = await sendOwnershipAssigned(nft3, random.address, toNano("0.01"));
+        expect(res.transactions).toHaveTransaction({
+            from: nft3.address,
+            to: task5.address,
+            success: false,
+        });
+
+        balance = await task5.getBalance();
+        console.log(`balance: ${balance}`);
+
 
     });
 
