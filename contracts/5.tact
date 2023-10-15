@@ -145,13 +145,10 @@ contract Task5 with Deployable {
     nativeReserve(ton("0.1"), 0);
     send(SendParameters{
         to: sender(),
-        // value: myBalance() - ton("0.1"), 
         value: 0,
-        // mode: SendIgnoreErrors, 
         mode: SendRemainingBalance,
         body: AdminFetchProfit { queryId: msg.queryId }.toCell()
       });
-    // nativeReserve(0, 0);
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
@@ -183,7 +180,8 @@ contract Task5 with Deployable {
   }
 
   get fun profit(): Int { 
-    return myBalance() - ton("0.1");
+    // return myBalance() - ton("0.1");
+    return 0;
   }
 
   get fun balance(): Int { 
