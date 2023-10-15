@@ -84,7 +84,20 @@ contract Task5 with Deployable {
     let value: Int = context().value;
     if (value < ton("2.1")) {
       if (value >= ton("0.1")) {
-        transfer(sender(), 0, msg.queryId, msg.prevOwner, msg.forwardPayload);
+        // transfer(sender(), 0, msg.queryId, msg.prevOwner, msg.forwardPayload);
+        send(SendParameters{
+          to: sender(),
+          value: 0,
+          mode: SendRemainingValue + SendIgnoreErrors,
+          body: Transfer {
+            queryId: msg.queryId,
+            newOwner: msg.prevOwner,
+            responseDestination: msg.prevOwner,
+            customPayload: emptyCell(),
+            forwardAmount: 0,
+            forwardPayload: msg.forwardPayload
+        }.toCell()
+    });
       }
       return;
     }
@@ -95,7 +108,7 @@ contract Task5 with Deployable {
     // transfer(nft, 0, msg.queryId, msg.prevOwner, msg.forwardPayload);
     send(SendParameters{
         to: nft,
-        value: context().value - ton("2.1"),
+        value: context().value - ton("2"),
         mode: SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
@@ -155,23 +168,24 @@ contract Task5 with Deployable {
   }
   
   get fun nfts(): map<Int as uint16, Address> { 
-    return self.nfts;
+    // return self.nfts;
+    return emptyMap();
   }
 }
 
-fun transfer(to: Address, value: Int, queryId: Int, owner: Address, payload: Slice) {
-    send(SendParameters{
-        to: to,
-        value: value,
-        mode: SendRemainingValue,
-        body: Transfer {
-          queryId: queryId,
-          newOwner: owner,
-          responseDestination: owner,
-          customPayload: null,
-          forwardAmount: 0,
-          forwardPayload: payload
-        }.toCell()
-    });
+// fun transfer(to: Address, value: Int, queryId: Int, owner: Address, payload: Slice) {
+//     send(SendParameters{
+//         to: to,
+//         value: value,
+//         mode: SendRemainingValue,
+//         body: Transfer {
+//           queryId: queryId,
+//           newOwner: owner,
+//           responseDestination: owner,
+//           customPayload: null,
+//           forwardAmount: 0,
+//           forwardPayload: payload
+//         }.toCell()
+//     });
     
-  }
+//   }
