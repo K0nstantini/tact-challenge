@@ -47,7 +47,12 @@ describe('Task5', () => {
     });
 
     it('test', async () => {
-        await sendOwnershipAssigned(nft1, owner.address, toNano("0.1"));
+        let res = await sendOwnershipAssigned(nft1, owner.address, toNano("0.1"));
+        expect(res.transactions).toHaveTransaction({
+            from: nft1.address,
+            to: task5.address,
+            success: true,
+        });
         await sendOwnershipAssigned(nft2, owner.address, toNano("0.1"));
         await sendOwnershipAssigned(nft3, owner.address, toNano("0.1"));
 
@@ -63,7 +68,7 @@ describe('Task5', () => {
         let balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
-        let res = await sendOwnershipAssigned(nft4, random.address, toNano("2.1"));
+        res = await sendOwnershipAssigned(nft4, random.address, toNano("2.1"));
         // console.log(res.transactions);
 
         balance = await task5.getBalance();
@@ -92,7 +97,12 @@ describe('Task5', () => {
         balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
-        await sendAdminWithdrawalAllNFTs();
+        res = await sendAdminWithdrawalAllNFTs();
+        expect(res.transactions).toHaveTransaction({
+            from: owner.address,
+            to: task5.address,
+            success: true,
+        });
         // nfts = await task5.getNfts();
         // console.log(nfts);
 
