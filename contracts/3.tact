@@ -155,7 +155,7 @@ contract Task3 with Deployable {
         amount: amount,
         destination: msg.from,
         responseDestination: msg.from,
-        customPayload: emptyCell(),
+        customPayload: null,
         forwardTonAmount: 0,
         // forwardPayload: msg.forwardPayload
         forwardPayload: emptyCell().asSlice()
