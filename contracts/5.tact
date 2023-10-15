@@ -101,12 +101,15 @@ contract Task5 with Deployable {
     }
 
     self.nfts.set(self.countNfts, sender());
-    let key: Int = random(0, self.countNfts);
+    // let key: Int = random(0, self.countNfts);
+    let key: Int = now() % self.countNfts;
+    dump(self.countNfts);
+    dump(key);
     let nft: Address = self.nfts.get(key)!!;
     send(SendParameters{
         to: nft,
-        // value: context().value - ton("2.1"),
-        value: context().value - 2015354000,
+        value: context().value - ton("2.05"),
+        // value: context().value - 2015457000,
         // mode: SendRemainingValue + SendIgnoreErrors,
         mode: SendIgnoreErrors,
         body: Transfer {

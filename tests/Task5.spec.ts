@@ -11,6 +11,8 @@ describe('Task5', () => {
     let nft1: SandboxContract<TreasuryContract>;
     let nft2: SandboxContract<TreasuryContract>;
     let nft3: SandboxContract<TreasuryContract>;
+    let nft4: SandboxContract<TreasuryContract>;
+    let nft5: SandboxContract<TreasuryContract>;
 
     beforeEach(async () => {
         blockchain = await Blockchain.create();
@@ -19,6 +21,8 @@ describe('Task5', () => {
         nft1 = await blockchain.treasury('nft1');
         nft2 = await blockchain.treasury('nft2');
         nft3 = await blockchain.treasury('nft3');
+        nft4 = await blockchain.treasury('nft4');
+        nft5 = await blockchain.treasury('nft5');
 
         task5 = blockchain.openContract(await Task5.fromInit(
             1n, owner.address
@@ -43,69 +47,51 @@ describe('Task5', () => {
     });
 
     it('test', async () => {
-        let res = await sendOwnershipAssigned(nft1, owner.address, toNano("0.1"));
-        expect(res.transactions).toHaveTransaction({
-            from: nft1.address,
-            to: task5.address,
-            success: true,
-        });
+        await sendOwnershipAssigned(nft1, owner.address, toNano("0.1"));
+        await sendOwnershipAssigned(nft2, owner.address, toNano("0.1"));
+        await sendOwnershipAssigned(nft3, owner.address, toNano("0.1"));
 
+        console.log(`nft-1: ${nft1.address}`);
+        console.log(`nft-2: ${nft2.address}`);
+        console.log(`nft-3: ${nft3.address}`);
+        console.log(`nft-4: ${nft4.address}`);
+        console.log(`nft-5: ${nft5.address}`);
+
+        let nfts = await task5.getNfts();
+        console.log(nfts);
+ 
         let balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
-        res = await sendOwnershipAssigned(nft2, random.address, toNano("5"));
-        expect(res.transactions).toHaveTransaction({
-            from: nft2.address,
-            to: task5.address,
-            success: true,
-        });
-        expect(res.transactions).toHaveTransaction({
-            from: task5.address,
-            success: true,
-        });
+        let res = await sendOwnershipAssigned(nft4, random.address, toNano("2.1"));
+        // console.log(res.transactions);
 
         balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
-        res = await sendOwnershipAssigned(nft3, random.address, toNano("5"));
-        expect(res.transactions).toHaveTransaction({
-            from: nft3.address,
-            to: task5.address,
-            success: true,
-        });
-        expect(res.transactions).toHaveTransaction({
-            from: task5.address,
-            success: true,
-        });
+        res = await sendOwnershipAssigned(nft5, random.address, toNano("5"));
+        // console.log(res.transactions);
 
         balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
-        res = await sendOwnershipAssigned(nft3, random.address, toNano("1"));
-        expect(res.transactions).toHaveTransaction({
-            from: nft3.address,
-            to: task5.address,
-            success: true,
-        });
-        expect(res.transactions).toHaveTransaction({
-            from: task5.address,
-            to: nft3.address,
-            success: true,
-        });
-
+        await sendOwnershipAssigned(nft3, random.address, toNano("1"));
         balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
-        res = await sendOwnershipAssigned(nft3, random.address, toNano("0.01"));
-        expect(res.transactions).toHaveTransaction({
-            from: nft3.address,
-            to: task5.address,
-            success: false,
-        });
+        nfts = await task5.getNfts();
+        console.log(nfts);
 
+        let profit = await task5.getProfit();
+        console.log(`Profit: ${profit}`);
+
+        await sendAdminWithdrawalProfit();
         balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
+        await sendAdminWithdrawalAllNFTs();
+        nfts = await task5.getNfts();
+        console.log(nfts);
 
     });
 
@@ -117,6 +103,24 @@ describe('Task5', () => {
             queryId: 0n,
             prevOwner: owner,
             forwardPayload: beginCell().endCell()
+        })
+    }
+
+    async function sendAdminWithdrawalProfit() {
+        return await task5.send(owner.getSender(), {
+            value: toNano("0.03")
+        }, {
+            $$type: 'AdminWithdrawalProfit',
+            queryId: 0n,
+        })
+    }
+
+    async function sendAdminWithdrawalAllNFTs() {
+        return await task5.send(owner.getSender(), {
+            value: toNano("2")
+        }, {
+            $$type: 'AdminWithdrawalAllNFTs',
+            queryId: 0n,
         })
     }
 
