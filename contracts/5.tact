@@ -83,7 +83,7 @@ contract Task5 with Deployable {
     }
 
     let value: Int = context().value;
-    if (value < ton("2.1") || self.countNfts == 0) {
+    if (value < ton("2.1")) {
       send(SendParameters{
           to: sender(),
           value: 0,
@@ -101,14 +101,15 @@ contract Task5 with Deployable {
     }
 
     self.nfts.set(self.countNfts, sender());
-    // let key: Int = random(0, self.countNfts);
-    let key: Int = now() % self.countNfts;
-    dump(self.countNfts);
-    dump(key);
+    let key: Int = random(0, self.countNfts);
+    // let key: Int = now() % self.countNfts;
+    // dump(self.countNfts);
+    // dump(key);
+    // dump(context().readForwardFee());
     let nft: Address = self.nfts.get(key)!!;
     send(SendParameters{
         to: nft,
-        value: context().value - ton("2.05"),
+        value: context().value - ton("2") - context().readForwardFee(),
         // value: context().value - 2015457000,
         // mode: SendRemainingValue + SendIgnoreErrors,
         mode: SendIgnoreErrors,
@@ -130,10 +131,13 @@ contract Task5 with Deployable {
 
   receive(msg: AdminWithdrawalProfit) {
     require(sender() == self.owner, "Insufficient privelegies");
+    nativeReserve(ton("0.1"), 0);
     send(SendParameters{
         to: sender(),
-        value: myBalance() - ton("0.1"), 
-        mode: SendIgnoreErrors, 
+        // value: myBalance() - ton("0.1"), 
+        value: 0,
+        // mode: SendIgnoreErrors, 
+        mode: SendRemainingBalance,
         body: AdminFetchProfit { queryId: msg.queryId }.toCell()
       });
   }

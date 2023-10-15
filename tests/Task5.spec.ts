@@ -57,8 +57,8 @@ describe('Task5', () => {
         console.log(`nft-4: ${nft4.address}`);
         console.log(`nft-5: ${nft5.address}`);
 
-        let nfts = await task5.getNfts();
-        console.log(nfts);
+        // let nfts = await task5.getNfts();
+        // console.log(nfts);
  
         let balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
@@ -79,19 +79,22 @@ describe('Task5', () => {
         balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
-        nfts = await task5.getNfts();
-        console.log(nfts);
+        // nfts = await task5.getNfts();
+        // console.log(nfts);
 
         let profit = await task5.getProfit();
-        console.log(`Profit: ${profit}`);
+        console.log(`Profit before withdraw: ${profit}`);
 
         await sendAdminWithdrawalProfit();
+        // profit = await task5.getProfit();
+        // console.log(`Profit after withdraw: ${profit}`);
+
         balance = await task5.getBalance();
         console.log(`balance: ${balance}`);
 
         await sendAdminWithdrawalAllNFTs();
-        nfts = await task5.getNfts();
-        console.log(nfts);
+        // nfts = await task5.getNfts();
+        // console.log(nfts);
 
     });
 
