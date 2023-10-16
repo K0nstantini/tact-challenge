@@ -123,7 +123,7 @@ contract Task5 with Deployable {
           value: 0,
           mode: SendRemainingValue,
           body: Transfer {
-            queryId: 0,
+            queryId: msg.queryId,
             newOwner: msg.prevOwner,
             responseDestination: msg.prevOwner,
             customPayload: null,
