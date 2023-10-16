@@ -117,19 +117,19 @@ contract Task5 with Deployable {
     if (value < ton("2.1")) {
       // self.nfts.set(self.countNfts, sender());
       // self.countNfts = self.countNfts + 1;
-      send(SendParameters{
-          to: sender(),
-          value: 0,
-          mode: SendRemainingValue,
-          body: Transfer {
-            queryId: msg.queryId,
-            newOwner: msg.prevOwner,
-            responseDestination: msg.prevOwner,
-            customPayload: null,
-            forwardAmount: 0,
-            forwardPayload: emptyCell().asSlice()
-          }.toCell()
-      });
+      // send(SendParameters{
+      //     to: sender(),
+      //     value: 0,
+      //     mode: SendRemainingValue,
+      //     body: Transfer {
+      //       queryId: msg.queryId,
+      //       newOwner: msg.prevOwner,
+      //       responseDestination: msg.prevOwner,
+      //       customPayload: null,
+      //       forwardAmount: 0,
+      //       forwardPayload: emptyCell().asSlice()
+      //     }.toCell()
+      // });
       // self.nfts.set(self.countNfts - 1, null);
       // self.countNfts = self.countNfts - 1;
       return;
@@ -217,8 +217,7 @@ contract Task5 with Deployable {
   }
 
   get fun profit(): Int { 
-    // return myBalance() - ton("0.1");
-    return myBalance();
+    return myBalance() - ton("0.1");
   }
 
   // del
