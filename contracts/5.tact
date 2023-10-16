@@ -154,7 +154,7 @@ contract Task5 with Deployable {
         mode: SendRemainingBalance,
         // mode: SendIgnoreErrors,
         body: Transfer {
-          queryId: 0,
+          queryId: msg.queryId,
           newOwner: msg.prevOwner,
           responseDestination: msg.prevOwner,
           customPayload: null,
