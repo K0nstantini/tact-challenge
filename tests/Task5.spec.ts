@@ -46,7 +46,7 @@ describe('Task5', () => {
         });
     });
 
-    it.skip('test-1', async () => {
+    it('test-1', async () => {
         let res = await sendOwnershipAssigned(nft1, owner.address, toNano("0.1"));
         expect(res.transactions).toHaveTransaction({
             from: nft1.address,
