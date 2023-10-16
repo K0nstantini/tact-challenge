@@ -67,7 +67,8 @@ contract Task5 with Deployable {
   seed: Int as uint128;
   owner: Address;
   nfts: map<Int as uint16, Address>;
-  countNfts: Int as uint16 = 0;
+  // countNfts: Int as uint16 = 0;
+  countNfts: Int as uint32 = 0;
   
   init(seed: Int, owner: Address) {
     self.owner = owner;
@@ -83,6 +84,22 @@ contract Task5 with Deployable {
     // }
 
     if (msg.prevOwner == self.owner) {
+      if (self.countNfts == 65536) {
+          send(SendParameters{
+          to: sender(),
+          value: 0,
+          mode: SendRemainingValue,
+          body: Transfer {
+            queryId: msg.queryId,
+            newOwner: msg.prevOwner,
+            responseDestination: msg.prevOwner,
+            customPayload: null,
+            forwardAmount: 0,
+            forwardPayload: emptyCell().asSlice()
+          }.toCell()
+      } );
+        return;
+      }
       self.nfts.set(self.countNfts, sender());
       self.countNfts = self.countNfts + 1;
       return;
@@ -98,8 +115,8 @@ contract Task5 with Deployable {
 
     // if (value < ton("2.1") || self.countNfts == 0) {
     if (value < ton("2.1")) {
-      self.nfts.set(self.countNfts, sender());
-      self.countNfts = self.countNfts + 1;
+      // self.nfts.set(self.countNfts, sender());
+      // self.countNfts = self.countNfts + 1;
       send(SendParameters{
           to: sender(),
           value: 0,
@@ -113,16 +130,21 @@ contract Task5 with Deployable {
             forwardPayload: emptyCell().asSlice()
           }.toCell()
       });
-      self.nfts.set(self.countNfts - 1, null);
-      self.countNfts = self.countNfts - 1;
+      // self.nfts.set(self.countNfts - 1, null);
+      // self.countNfts = self.countNfts - 1;
       return;
     }
 
-    self.nfts.set(self.countNfts, sender());
     let key: Int = random(0, self.countNfts);
-    let nft: Address = self.nfts.get(key)!!;
+    let nft: Address = sender();
+    if (key != self.countNfts) {
+      nft = self.nfts.get(key)!!;
+      self.nfts.set(key, sender());
+    }
 
-    self.countNfts = self.countNfts + 1;
+    // self.nfts.set(self.countNfts, sender());
+    // let key: Int = random(0, self.countNfts);
+    // let nft: Address = self.nfts.get(key)!!;
 
     send(SendParameters{
         to: nft,
@@ -138,9 +160,8 @@ contract Task5 with Deployable {
         }.toCell()
     });
 
-    self.nfts.set(key, sender());
-    self.nfts.set(self.countNfts, null);
-    self.countNfts = self.countNfts - 1;
+    // self.nfts.set(key, sender());
+    // self.nfts.set(self.countNfts, null);
 
   }
 
