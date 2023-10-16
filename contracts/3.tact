@@ -77,12 +77,12 @@ contract Task3 with Deployable {
         return;
       }
 
-      let price: Int = 0;
-      if (self.aAmount > 0) {
-        price = self.bAmount * self.decimal / self.aAmount;
-      }
+      // let price: Int = 0;
+      // if (self.aAmount > 0) {
+      //   price = self.bAmount * self.decimal / self.aAmount;
+      // }
 
-      let amountB: Int = price * msg.amount / self.decimal;
+      let amountB: Int = (self.bAmount * self.decimal / self.aAmount)  * msg.amount / self.decimal;
 
       if (amountB > 0 && amountB <= self.bAmount) {
         self.aAmount = self.aAmount + msg.amount;
