@@ -203,9 +203,9 @@ contract Task5 with Deployable {
         mode: SendIgnoreErrors,
         // mode: SendPayGasSeparately + SendIgnoreErrors,
         body: Transfer {
-          queryId: 0,
+          queryId: 0, // can be msg.queryId
           newOwner: self.owner,
-          responseDestination: self.owner,
+          responseDestination: myAddress(),
           customPayload: null,
           forwardAmount: 0,
           forwardPayload: emptySlice()
