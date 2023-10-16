@@ -191,7 +191,6 @@ contract Task5 with Deployable {
     require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
     let count: Int = min(self.countNfts, 100);
 
-
     // nativeReserve(myBalance() - context().value, 0);
 
     // let id: Int = 0;
