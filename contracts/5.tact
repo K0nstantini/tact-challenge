@@ -180,16 +180,16 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    let count: Int = self.countNfts;
-    let tonRequired: Int = ton("1") + count * ton("0.08");
-    require(context().value >= tonRequired, "Insufficent funds");
-    require(sender() == self.owner, "Invalid sender");
+    // let count: Int = self.countNfts;
+    // let tonRequired: Int = ton("1") + count * ton("0.08");
+    // require(context().value >= tonRequired, "Insufficent funds");
+    // require(sender() == self.owner, "Invalid sender");
 
 
-    // let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
-    // require(context().value >= tonRequired || sender() == myAddress(), "Insufficent funds");
-    // require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
-    // let count: Int = min(self.countNfts, 255);
+    let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
+    require(context().value >= tonRequired || sender() == myAddress(), "Insufficent funds");
+    require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
+    let count: Int = min(self.countNfts, 100);
 
 
     // nativeReserve(myBalance() - context().value, 0);
@@ -205,9 +205,9 @@ contract Task5 with Deployable {
       send(SendParameters{
         to: nft,
         value: ton("0.08"),
+        mode: SendIgnoreErrors,
         // value: 0,
-        // mode: SendIgnoreErrors,
-        mode: SendPayGasSeparately,
+        // mode: SendPayGasSeparately,
         body: Transfer {
           queryId: msg.queryId,
           newOwner: self.owner,
@@ -219,14 +219,14 @@ contract Task5 with Deployable {
       }); 
     }
 
-    // if (self.countNfts > 0) {
-    //   send(SendParameters{
-    //     to: myAddress(),
-    //     value: 0,
-    //     mode: SendPayGasSeparately,
-    //     body: AdminWithdrawalAllNFTs { queryId: 0 }.toCell()
-    //   }); 
-    // }
+    if (self.countNfts > 0) {
+      send(SendParameters{
+        to: myAddress(),
+        value: 0,
+        mode: SendRemainingBalance,
+        body: AdminWithdrawalAllNFTs { queryId: msg.queryId }.toCell()
+      }); 
+    }
 
     // self.nfts = emptyMap();
     // self.countNfts = 0;

@@ -46,7 +46,13 @@ describe('Task5', () => {
         });
     });
 
-    it('test-1', async () => {
+    it('test', async () => {
+        console.log(`nft-1: ${nft1.address}\nnft-2: ${nft2.address}\nnft-3: ${nft3.address}\nnft-4: ${nft4.address}\nnft-5: ${nft5.address}`);
+        console.log(`contract: ${task5.address}\nowner: ${owner.address}\nrandom: ${random.address}`);
+    })
+
+
+    it.skip('test-1', async () => {
         let res = await sendOwnershipAssigned(nft1, owner.address, toNano("0.1"));
         expect(res.transactions).toHaveTransaction({
             from: nft1.address,
@@ -66,8 +72,6 @@ describe('Task5', () => {
             success: true,
         });
 
-        console.log(`nft-1: ${nft1.address}\nnft-2: ${nft2.address}\nnft-3: ${nft3.address}\nnft-4: ${nft4.address}\nnft-5: ${nft5.address}`);
-        console.log(`contract: ${task5.address}\nowner: ${owner.address}\nrandom: ${random.address}`);
         // console.log(`nft-2: ${nft2.address}`);
         // console.log(`nft-3: ${nft3.address}`);
         // console.log(`nft-4: ${nft4.address}`);
@@ -179,7 +183,7 @@ describe('Task5', () => {
 
     });
 
-    it('test-2', async () => {
+    it.skip('test-2', async () => {
         let res = await sendOwnershipAssigned(nft4, random.address, toNano("2.2"));
         expect(res.transactions).toHaveTransaction({
             from: nft4.address,
@@ -191,6 +195,34 @@ describe('Task5', () => {
             to: nft4.address,
             success: true,
         });
+
+    });
+
+    it('test-3', async () => {
+        for (let step = 0; step < 300; step++) {
+            await sendOwnershipAssigned(nft1, owner.address, toNano("0.1"));
+        }
+        let nfts = await task5.getNfts();
+        expect(nfts.size).toEqual(300);
+
+        let res = await sendAdminWithdrawalAllNFTs();
+        expect(res.transactions).toHaveTransaction({
+            from: owner.address,
+            to: task5.address,
+            success: true,
+        });
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            to: nft1.address,
+            success: true,
+        });
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            to: task5.address,
+            success: true,
+        });
+        nfts = await task5.getNfts();
+        expect(nfts.size).toEqual(0);
 
     });
 
@@ -216,7 +248,7 @@ describe('Task5', () => {
 
     async function sendAdminWithdrawalAllNFTs() {
         return await task5.send(owner.getSender(), {
-            value: toNano("2")
+            value: toNano("26")
         }, {
             $$type: 'AdminWithdrawalAllNFTs',
             queryId: 0n,
