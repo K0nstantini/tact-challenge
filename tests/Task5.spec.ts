@@ -53,49 +53,104 @@ describe('Task5', () => {
             to: task5.address,
             success: true,
         });
-        await sendOwnershipAssigned(nft2, owner.address, toNano("0.1"));
-        await sendOwnershipAssigned(nft3, owner.address, toNano("0.1"));
+        res = await sendOwnershipAssigned(nft2, owner.address, toNano("0.1"));
+        expect(res.transactions).toHaveTransaction({
+            from: nft2.address,
+            to: task5.address,
+            success: true,
+        });
+        res = await sendOwnershipAssigned(nft3, owner.address, toNano("0.1"));
+        expect(res.transactions).toHaveTransaction({
+            from: nft3.address,
+            to: task5.address,
+            success: true,
+        });
 
-        console.log(`nft-1: ${nft1.address}`);
-        console.log(`nft-2: ${nft2.address}`);
-        console.log(`nft-3: ${nft3.address}`);
-        console.log(`nft-4: ${nft4.address}`);
-        console.log(`nft-5: ${nft5.address}`);
+        console.log(`nft-1: ${nft1.address}\nnft-2: ${nft2.address}\nnft-3: ${nft3.address}\nnft-4: ${nft4.address}\nnft-5: ${nft5.address}`);
+        console.log(`contract: ${task5.address}\nowner: ${owner.address}\nrandom: ${random.address}`);
+        // console.log(`nft-2: ${nft2.address}`);
+        // console.log(`nft-3: ${nft3.address}`);
+        // console.log(`nft-4: ${nft4.address}`);
+        // console.log(`nft-5: ${nft5.address}`);
 
         // let nfts = await task5.getNfts();
         // console.log(nfts);
  
-        let balance = await task5.getBalance();
-        console.log(`balance: ${balance}`);
+        // let balance = await task5.getBalance();
+        // console.log(`balance: ${balance}`);
 
         res = await sendOwnershipAssigned(nft4, random.address, toNano("2.1"));
+        expect(res.transactions).toHaveTransaction({
+            from: nft4.address,
+            to: task5.address,
+            success: true,
+        });
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            success: true,
+        });
         // console.log(res.transactions);
 
-        balance = await task5.getBalance();
-        console.log(`balance: ${balance}`);
+        // balance = await task5.getBalance();
+        // console.log(`balance: ${balance}`);
 
         res = await sendOwnershipAssigned(nft5, random.address, toNano("5"));
+        expect(res.transactions).toHaveTransaction({
+            from: nft5.address,
+            to: task5.address,
+            success: true,
+        });
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            success: true,
+        });
         // console.log(res.transactions);
 
-        balance = await task5.getBalance();
-        console.log(`balance: ${balance}`);
+        // balance = await task5.getBalance();
+        // console.log(`balance: ${balance}`);
 
-        await sendOwnershipAssigned(nft3, random.address, toNano("1"));
-        balance = await task5.getBalance();
-        console.log(`balance: ${balance}`);
+        res = await sendOwnershipAssigned(nft4, random.address, toNano("1"));
+        expect(res.transactions).toHaveTransaction({
+            from: nft4.address,
+            to: task5.address,
+            success: true,
+        });
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            to: nft4.address,
+            success: true,
+        });
+        // balance = await task5.getBalance();
+        // console.log(`balance: ${balance}`);
 
         // let nfts = await task5.getNfts();
         // console.log(nfts);
 
         let profit = await task5.getProfit();
-        console.log(`Profit before withdraw: ${profit}`);
+        expect(profit).toBeGreaterThan(toNano("4"));
+        // console.log(`Profit before withdraw: ${profit}`);
 
-        await sendAdminWithdrawalProfit();
-        // profit = await task5.getProfit();
+
+        res = await sendAdminWithdrawalProfit();
+        expect(res.transactions).toHaveTransaction({
+            from: owner.address,
+            to: task5.address,
+            success: true,
+        });
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            to: owner.address,
+            success: true,
+        });
+        profit = await task5.getProfit();
+        expect(profit).toEqual(0n);
         // console.log(`Profit after withdraw: ${profit}`);
 
-        balance = await task5.getBalance();
-        console.log(`balance: ${balance}`);
+        // balance = await task5.getBalance();
+        // console.log(`balance: ${balance}`);
+
+        let nfts = await task5.getNfts();
+        // console.log(nfts);
 
         res = await sendAdminWithdrawalAllNFTs();
         expect(res.transactions).toHaveTransaction({
@@ -103,7 +158,23 @@ describe('Task5', () => {
             to: task5.address,
             success: true,
         });
-        // nfts = await task5.getNfts();
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            to: nfts.get(0)!,
+            success: true,
+        });
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            to: nfts.get(1)!,
+            success: true,
+        });
+        expect(res.transactions).toHaveTransaction({
+            from: task5.address,
+            to: nfts.get(2)!,
+            success: true,
+        });
+        nfts = await task5.getNfts();
+        expect(nfts.size).toEqual(0);
         // console.log(nfts);
 
     });

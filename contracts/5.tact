@@ -76,9 +76,9 @@ contract Task5 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    // if (context().value >= ton("2.1")) {
-    //   nativeReserve(myBalance() - context().value + ton("2"), 0);
-    // } 
+    if (context().value >= ton("2.1")) {
+      nativeReserve(myBalance() - context().value + ton("2"), 0);
+    } 
     // else {
     //   nativeReserve(myBalance() - context().value, 0);
     // }
@@ -148,10 +148,10 @@ contract Task5 with Deployable {
 
     send(SendParameters{
         to: nft,
-        // value: 0,
-        // mode: SendRemainingBalance,
-        value: context().value - ton("2.05"),
-        mode: SendIgnoreErrors,
+        value: 0,
+        // value: context().value - ton("2.05"),
+        mode: SendRemainingBalance,
+        // mode: SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
           newOwner: msg.prevOwner,
@@ -184,7 +184,7 @@ contract Task5 with Deployable {
     require(sender() == self.owner, "Invalid sender");
 
 
-    nativeReserve(myBalance() - context().value, 0);
+    // nativeReserve(myBalance() - context().value, 0);
 
 
     // let id: Int = 0;
@@ -197,10 +197,10 @@ contract Task5 with Deployable {
 
       send(SendParameters{
         to: nft,
-        // value: ton("0.08"),
-        value: 0,
-        // mode: SendIgnoreErrors,
-        mode: SendPayGasSeparately + SendIgnoreErrors,
+        value: ton("0.08"),
+        // value: 0,
+        mode: SendIgnoreErrors,
+        // mode: SendPayGasSeparately + SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
           newOwner: self.owner,
@@ -212,8 +212,8 @@ contract Task5 with Deployable {
       }); 
     }
 
-    // self.nfts = emptyMap();
-    // self.countNfts = 0;
+    self.nfts = emptyMap();
+    self.countNfts = 0;
   }
 
   get fun profit(): Int { 
@@ -221,9 +221,9 @@ contract Task5 with Deployable {
   }
 
   // del
-  get fun balance(): Int { 
-    return myBalance();
-  }
+  // get fun balance(): Int { 
+  //   return myBalance();
+  // }
   
   get fun nfts(): map<Int as uint16, Address> { 
     return self.nfts;
