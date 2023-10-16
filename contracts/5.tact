@@ -189,32 +189,32 @@ contract Task5 with Deployable {
     // nativeReserve(myBalance() - context().value, 0);
 
     // let id: Int = 0;
-    repeat(count) {
-      // let nft: Address = self.nfts.get(id)!!;
-      // id = id + 1;
-      self.countNfts = self.countNfts - 1;
-      let nft: Address = self.nfts.get(self.countNfts)!!;
-      self.nfts.set(self.countNfts, null);
+    // repeat(count) {
+    //   // let nft: Address = self.nfts.get(id)!!;
+    //   // id = id + 1;
+    //   self.countNfts = self.countNfts - 1;
+    //   let nft: Address = self.nfts.get(self.countNfts)!!;
+    //   self.nfts.set(self.countNfts, null);
 
-      send(SendParameters{
-        to: nft,
-        value: ton("0.08"),
-        // value: 0,
-        mode: SendIgnoreErrors,
-        // mode: SendPayGasSeparately + SendIgnoreErrors,
-        body: Transfer {
-          queryId: 0, // can be msg.queryId
-          newOwner: self.owner,
-          responseDestination: myAddress(),
-          customPayload: null,
-          forwardAmount: 0,
-          forwardPayload: emptySlice()
-        }.toCell()
-      }); 
-    }
+    //   send(SendParameters{
+    //     to: nft,
+    //     value: ton("0.08"),
+    //     // value: 0,
+    //     mode: SendIgnoreErrors,
+    //     // mode: SendPayGasSeparately + SendIgnoreErrors,
+    //     body: Transfer {
+    //       queryId: 0, // can be msg.queryId
+    //       newOwner: self.owner,
+    //       responseDestination: myAddress(), // same with self.owner
+    //       customPayload: null,
+    //       forwardAmount: 0,
+    //       forwardPayload: emptySlice()
+    //     }.toCell()
+    //   }); 
+    // }
 
-    // self.nfts = emptyMap();
-    // self.countNfts = 0;
+    self.nfts = emptyMap();
+    self.countNfts = 0;
   }
 
   get fun profit(): Int { 
