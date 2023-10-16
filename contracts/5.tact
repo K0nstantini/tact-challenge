@@ -156,10 +156,13 @@ contract Task5 with Deployable {
     let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
     require(context().value >= tonRequired, "Insufficent funds");
     require(sender() == self.owner, "Invalid sender");
-    let id: Int = 0;
+    // let id: Int = 0;
     repeat(self.countNfts) {
-      let nft: Address = self.nfts.get(id)!!;
-      id = id + 1;
+      // let nft: Address = self.nfts.get(id)!!;
+      // id = id + 1;
+      self.countNfts = self.countNfts - 1;
+      let nft: Address = self.nfts.get(self.countNfts)!!;
+      self.nfts.set(self.countNfts, null);
 
       send(SendParameters{
         to: nft,
@@ -176,8 +179,8 @@ contract Task5 with Deployable {
       }); 
     }
 
-    self.nfts = emptyMap();
-    self.countNfts = 0;
+    // self.nfts = emptyMap();
+    // self.countNfts = 0;
   }
 
   get fun profit(): Int { 
