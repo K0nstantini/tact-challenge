@@ -186,7 +186,6 @@ contract Task5 with Deployable {
 
     // nativeReserve(myBalance() - context().value, 0);
 
-
     // let id: Int = 0;
     repeat(self.countNfts) {
       // let nft: Address = self.nfts.get(id)!!;
