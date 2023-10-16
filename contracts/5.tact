@@ -153,7 +153,7 @@ contract Task5 with Deployable {
     let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
     require(context().value >= tonRequired || sender() == myAddress(), "Insufficent funds");
     require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
-    let count: Int = min(self.countNfts, 116);
+    let count: Int = min(self.countNfts, 110);
 
     // nativeReserve(myBalance() - context().value, 0);
 
