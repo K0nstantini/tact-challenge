@@ -79,7 +79,7 @@ contract Task4 with Deployable {
           responseDestination: msg.prevOwner,
           customPayload: null,
           forwardAmount: 0,
-          forwardPayload: emptyCell().asSlice()
+          forwardPayload: emptySlice()
         }.toCell()
       });
     }
@@ -103,7 +103,7 @@ contract Task4 with Deployable {
             responseDestination: sender(),
             customPayload: null,
             forwardAmount: 0,
-            forwardPayload: emptyCell().asSlice()
+            forwardPayload: emptySlice()
           }.toCell()
         });
 

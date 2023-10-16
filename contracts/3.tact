@@ -33,20 +33,21 @@ import "@stdlib/deploy";
 */
 
 message(0x7362d09c) TokenNotification {
-    queryId: Int as uint64;
-    amount: Int as coins;
-    from: Address;
-    forwardPayload: Slice as remaining;
+  queryId: Int as uint64;
+  amount: Int as coins;
+  from: Address;
+  forwardPayload: Slice as remaining;
 }
 
+// To simplify the testing process and the specificity of the messages being sent, we decided to add clear default values in this transaction
 message(0xf8a7ea5) TokenTransfer {
-    queryId: Int as uint64;
-    amount: Int as coins;
-    destination: Address;
-    responseDestination: Address?;
-    customPayload: Cell?;
-    forwardTonAmount: Int as coins;
-    forwardPayload: Slice as remaining;
+  queryId: Int as uint64; // should be 0
+  amount: Int as coins; // should be amount of jettons to send
+  destination: Address; // should be user address / TokenNotification.from
+  responseDestination: Address?; // should be myAddress()
+  customPayload: Cell?; // should be null
+  forwardTonAmount: Int as coins; // should be ton("0.01")
+  forwardPayload: Slice as remaining; // should be emptySlice()
 }
 
 contract Task3 with Deployable {
@@ -151,14 +152,13 @@ contract Task3 with Deployable {
       value: 0,
       mode: SendRemainingValue,
       body: TokenTransfer {
-        queryId: msg.queryId,
+        queryId: 0,
         amount: amount,
         destination: msg.from,
-        responseDestination: msg.from,
+        responseDestination: myAddress(),
         customPayload: null,
-        forwardTonAmount: 0,
-        // forwardPayload: msg.forwardPayload
-        forwardPayload: emptyCell().asSlice()
+        forwardTonAmount: ton("0.01"),
+        forwardPayload: emptySlice()
       }.toCell()
     });
     

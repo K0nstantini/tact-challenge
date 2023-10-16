@@ -83,7 +83,27 @@ contract Task5 with Deployable {
     //   nativeReserve(myBalance() - context().value, 0);
     // }
 
-
+    if (msg.prevOwner == self.owner) {
+      // if (self.countNfts == 65536) {
+      //     send(SendParameters{
+      //     to: sender(),
+      //     value: 0,
+      //     mode: SendRemainingValue,
+      //     body: Transfer {
+      //       queryId: msg.queryId,
+      //       newOwner: msg.prevOwner,
+      //       responseDestination: msg.prevOwner,
+      //       customPayload: null,
+      //       forwardAmount: 0,
+      //       forwardPayload: emptySlice()
+      //     }.toCell()
+      // } );
+      //   return;
+      // }
+      self.nfts.set(self.countNfts, sender());
+      self.countNfts = self.countNfts + 1;
+      return;
+    }
 
     let value: Int = context().value;
 
@@ -107,33 +127,11 @@ contract Task5 with Deployable {
             responseDestination: msg.prevOwner,
             customPayload: null,
             forwardAmount: 0,
-            forwardPayload: emptyCell().asSlice()
+            forwardPayload: emptySlice()
           }.toCell()
       });
       // self.nfts.set(self.countNfts - 1, null);
       // self.countNfts = self.countNfts - 1;
-      return;
-    }
-
-    if (msg.prevOwner == self.owner) {
-      // if (self.countNfts == 65536) {
-      //     send(SendParameters{
-      //     to: sender(),
-      //     value: 0,
-      //     mode: SendRemainingValue,
-      //     body: Transfer {
-      //       queryId: msg.queryId,
-      //       newOwner: msg.prevOwner,
-      //       responseDestination: msg.prevOwner,
-      //       customPayload: null,
-      //       forwardAmount: 0,
-      //       forwardPayload: emptyCell().asSlice()
-      //     }.toCell()
-      // } );
-      //   return;
-      // }
-      self.nfts.set(self.countNfts, sender());
-      self.countNfts = self.countNfts + 1;
       return;
     }
 
@@ -160,7 +158,7 @@ contract Task5 with Deployable {
           responseDestination: msg.prevOwner,
           customPayload: null,
           forwardAmount: 0,
-          forwardPayload: emptyCell().asSlice()
+          forwardPayload: emptySlice()
         }.toCell()
     });
 
@@ -208,7 +206,7 @@ contract Task5 with Deployable {
           responseDestination: self.owner,
           customPayload: null,
           forwardAmount: 0,
-          forwardPayload: emptyCell().asSlice()
+          forwardPayload: emptySlice()
         }.toCell()
       }); 
     }
