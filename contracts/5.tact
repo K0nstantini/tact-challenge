@@ -69,7 +69,6 @@ contract Task5 with Deployable {
   owner: Address;
   nfts: map<Int as uint16, Address>;
   countNfts: Int as uint16 = 0;
-  // countNfts: Int as uint32 = 0;
   
   init(seed: Int, owner: Address) {
     self.owner = owner;
@@ -80,27 +79,9 @@ contract Task5 with Deployable {
     if (context().value >= ton("2.1")) {
       nativeReserve(myBalance() - context().value + ton("2"), 0);
     } 
-    // else {
-    //   nativeReserve(myBalance() - context().value, 0);
-    // }
+  
 
     if (msg.prevOwner == self.owner) {
-      // if (self.countNfts == 65536) {
-      //     send(SendParameters{
-      //     to: sender(),
-      //     value: 0,
-      //     mode: SendRemainingValue,
-      //     body: Transfer {
-      //       queryId: msg.queryId,
-      //       newOwner: msg.prevOwner,
-      //       responseDestination: msg.prevOwner,
-      //       customPayload: null,
-      //       forwardAmount: 0,
-      //       forwardPayload: emptySlice()
-      //     }.toCell()
-      // } );
-      //   return;
-      // }
       self.nfts.set(self.countNfts, sender());
       self.countNfts = self.countNfts + 1;
       return;
@@ -108,16 +89,7 @@ contract Task5 with Deployable {
 
     let value: Int = context().value;
 
-    // if (value < ton("0.08")) {
-    //   self.nfts.set(self.countNfts, sender());
-    //   self.countNfts = self.countNfts + 1;
-    //   return;
-    // }
-
-    // if (value < ton("2.1") || self.countNfts == 0) {
     if (value < ton("2.1")) {
-      // self.nfts.set(self.countNfts, sender());
-      // self.countNfts = self.countNfts + 1;
       send(SendParameters{
           to: sender(),
           value: 0,
@@ -131,8 +103,6 @@ contract Task5 with Deployable {
             forwardPayload: emptySlice()
           }.toCell()
       });
-      // self.nfts.set(self.countNfts - 1, null);
-      // self.countNfts = self.countNfts - 1;
       return;
     }
 
@@ -188,7 +158,7 @@ contract Task5 with Deployable {
     let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
     require(context().value >= tonRequired || sender() == myAddress(), "Insufficent funds");
     require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
-    let count: Int = min(self.countNfts, 100);
+    let count: Int = min(self.countNfts, 116);
 
     // nativeReserve(myBalance() - context().value, 0);
 
@@ -226,8 +196,6 @@ contract Task5 with Deployable {
       }); 
     }
 
-    // self.nfts = emptyMap();
-    // self.countNfts = 0;
   }
 
   get fun profit(): Int { 
