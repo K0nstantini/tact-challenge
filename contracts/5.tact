@@ -182,6 +182,11 @@ contract Task5 with Deployable {
     let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
     require(context().value >= tonRequired, "Insufficent funds");
     require(sender() == self.owner, "Invalid sender");
+
+
+    nativeReserve(myBalance() - context().value, 0);
+
+
     // let id: Int = 0;
     repeat(self.countNfts) {
       // let nft: Address = self.nfts.get(id)!!;
@@ -192,8 +197,10 @@ contract Task5 with Deployable {
 
       send(SendParameters{
         to: nft,
-        value: ton("0.08"),
-        mode: SendIgnoreErrors,
+        // value: ton("0.08"),
+        value: 0,
+        // mode: SendIgnoreErrors,
+        mode: SendPayGasSeparately + SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
           newOwner: self.owner,
