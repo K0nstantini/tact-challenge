@@ -76,9 +76,9 @@ contract Task5 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    if (context().value >= ton("2.1")) {
-      nativeReserve(myBalance() - context().value + ton("2"), 0);
-    } 
+    // if (context().value >= ton("2.1")) {
+    //   nativeReserve(myBalance() - context().value + ton("2"), 0);
+    // } 
   
 
     if (msg.prevOwner == self.owner) {
@@ -119,10 +119,10 @@ contract Task5 with Deployable {
 
     send(SendParameters{
         to: nft,
-        value: 0,
-        // value: context().value - ton("2.05"),
-        mode: SendRemainingBalance,
-        // mode: SendIgnoreErrors,
+        // value: 0,
+        value: context().value - ton("2.05"),
+        // mode: SendRemainingBalance,
+        mode: SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
           newOwner: msg.prevOwner,
