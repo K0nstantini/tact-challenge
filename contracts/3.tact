@@ -108,8 +108,8 @@ contract Task3 with Deployable {
       let amountA: Int = price * msg.amount / self.decimal;
 
       if (amountA > 0 && amountA <= self.aAmount) {
-        self.transfer(self.jettonAddressA, amountA, msg);
         self.bAmount = self.bAmount + msg.amount;
+        self.transfer(self.jettonAddressA, amountA, msg);
         self.aAmount = self.aAmount - amountA;
       } else {
         self.transfer(self.jettonAddressB, msg.amount, msg);
@@ -149,7 +149,7 @@ contract Task3 with Deployable {
     send(SendParameters{
       to: to,
       value: 0,
-      mode: SendRemainingValue + SendIgnoreErrors,
+      mode: SendRemainingValue,
       body: TokenTransfer {
         queryId: msg.queryId,
         amount: amount,
