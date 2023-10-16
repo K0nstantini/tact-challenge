@@ -76,30 +76,30 @@ contract Task5 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    if (context().value >= ton("2.1")) {
-      nativeReserve(myBalance() - context().value + ton("2"), 0);
-    } 
+    // if (context().value >= ton("2.1")) {
+    //   nativeReserve(myBalance() - context().value + ton("2"), 0);
+    // } 
     // else {
     //   nativeReserve(myBalance() - context().value, 0);
     // }
 
     if (msg.prevOwner == self.owner) {
-      if (self.countNfts == 65536) {
-          send(SendParameters{
-          to: sender(),
-          value: 0,
-          mode: SendRemainingValue,
-          body: Transfer {
-            queryId: msg.queryId,
-            newOwner: msg.prevOwner,
-            responseDestination: msg.prevOwner,
-            customPayload: null,
-            forwardAmount: 0,
-            forwardPayload: emptyCell().asSlice()
-          }.toCell()
-      } );
-        return;
-      }
+      // if (self.countNfts == 65536) {
+      //     send(SendParameters{
+      //     to: sender(),
+      //     value: 0,
+      //     mode: SendRemainingValue,
+      //     body: Transfer {
+      //       queryId: msg.queryId,
+      //       newOwner: msg.prevOwner,
+      //       responseDestination: msg.prevOwner,
+      //       customPayload: null,
+      //       forwardAmount: 0,
+      //       forwardPayload: emptyCell().asSlice()
+      //     }.toCell()
+      // } );
+      //   return;
+      // }
       self.nfts.set(self.countNfts, sender());
       self.countNfts = self.countNfts + 1;
       return;
@@ -148,8 +148,10 @@ contract Task5 with Deployable {
 
     send(SendParameters{
         to: nft,
-        value: 0,
-        mode: SendRemainingBalance,
+        // value: 0,
+        // mode: SendRemainingBalance,
+        value: context().value - ton("2.05"),
+        mode: SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
           newOwner: msg.prevOwner,
