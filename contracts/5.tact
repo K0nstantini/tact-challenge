@@ -123,7 +123,7 @@ contract Task5 with Deployable {
           value: 0,
           mode: SendRemainingValue,
           body: Transfer {
-            queryId: msg.queryId,
+            queryId: 0,
             newOwner: msg.prevOwner,
             responseDestination: msg.prevOwner,
             customPayload: null,
@@ -154,7 +154,7 @@ contract Task5 with Deployable {
         mode: SendRemainingBalance,
         // mode: SendIgnoreErrors,
         body: Transfer {
-          queryId: msg.queryId,
+          queryId: 0,
           newOwner: msg.prevOwner,
           responseDestination: msg.prevOwner,
           customPayload: null,
@@ -203,7 +203,7 @@ contract Task5 with Deployable {
         mode: SendIgnoreErrors,
         // mode: SendPayGasSeparately + SendIgnoreErrors,
         body: Transfer {
-          queryId: msg.queryId,
+          queryId: 0,
           newOwner: self.owner,
           responseDestination: self.owner,
           customPayload: null,
