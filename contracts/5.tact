@@ -98,8 +98,8 @@ contract Task5 with Deployable {
 
     // if (value < ton("2.1") || self.countNfts == 0) {
     if (value < ton("2.1")) {
-      // self.nfts.set(self.countNfts, sender());
-      // self.countNfts = self.countNfts + 1;
+      self.nfts.set(self.countNfts, sender());
+      self.countNfts = self.countNfts + 1;
       send(SendParameters{
           to: sender(),
           value: 0,
@@ -113,8 +113,8 @@ contract Task5 with Deployable {
             forwardPayload: emptyCell().asSlice()
           }.toCell()
       });
-      // self.nfts.set(self.countNfts - 1, null);
-      // self.countNfts = self.countNfts - 1;
+      self.nfts.set(self.countNfts - 1, null);
+      self.countNfts = self.countNfts - 1;
       return;
     }
 
@@ -122,10 +122,12 @@ contract Task5 with Deployable {
     let key: Int = random(0, self.countNfts);
     let nft: Address = self.nfts.get(key)!!;
 
+    self.countNfts = self.countNfts + 1;
+
     send(SendParameters{
         to: nft,
         value: 0,
-        mode: SendRemainingBalance + SendIgnoreErrors,
+        mode: SendRemainingBalance,
         body: Transfer {
           queryId: msg.queryId,
           newOwner: msg.prevOwner,
@@ -138,6 +140,7 @@ contract Task5 with Deployable {
 
     self.nfts.set(key, sender());
     self.nfts.set(self.countNfts, null);
+    self.countNfts = self.countNfts - 1;
 
   }
 
