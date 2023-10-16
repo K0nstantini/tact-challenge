@@ -11,7 +11,7 @@ import "@stdlib/deploy";
   Decimals are only needed for price accuracy. It should be set as 1e9.
   So, if smart contract has 10 of jetton A and 2 of jetton B, then after sending 1 jetton B you should receive 5 of jettons A.
 
-  Example formula for amountOfBJettonToSend in B->A swap will be
+  Example formula for amountOfAJettonToSend in B->A swap will be
   (amountOfJettonAOnContract * decimal / amountOfJettonBOnContract) * amountOfTokenBToSwap / decimal
 
   If smart contract pool doesn't have enough jettons to trade,
@@ -33,21 +33,21 @@ import "@stdlib/deploy";
 */
 
 message(0x7362d09c) TokenNotification {
-  queryId: Int as uint64;
-  amount: Int as coins;
-  from: Address;
-  forwardPayload: Slice as remaining;
+    queryId: Int as uint64;
+    amount: Int as coins;
+    from: Address;
+    forwardPayload: Slice as remaining;
 }
 
 // To simplify the testing process and the specificity of the messages being sent, we decided to add clear default values in this transaction
 message(0xf8a7ea5) TokenTransfer {
-  queryId: Int as uint64; // should be 0
-  amount: Int as coins; // should be amount of jettons to send
-  destination: Address; // should be user address / TokenNotification.from
-  responseDestination: Address?; // should be myAddress()
-  customPayload: Cell?; // should be null
-  forwardTonAmount: Int as coins; // should be ton("0.01")
-  forwardPayload: Slice as remaining; // should be emptySlice()
+     queryId: Int as uint64; // should be 0
+     amount: Int as coins; // should be amount of jettons to send
+     destination: Address; // should be user address / TokenNotification.from
+     responseDestination: Address?; // should be myAddress()
+     customPayload: Cell?; // should be null
+     forwardTonAmount: Int as coins; // should be ton("0.01")
+     forwardPayload: Slice as remaining; // should be emptySlice()
 }
 
 contract Task3 with Deployable {
