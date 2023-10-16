@@ -86,10 +86,10 @@ contract Task3 with Deployable {
 
       if (amountB > 0 && amountB <= self.bAmount) {
         self.aAmount = self.aAmount + msg.amount;
-        self.transfer(self.jettonAddressB, amountB, msg);
+        transfer(self.jettonAddressB, amountB, msg);
         self.bAmount = self.bAmount - amountB;
       } else {
-        self.transfer(self.jettonAddressA, msg.amount, msg);
+        transfer(self.jettonAddressA, msg.amount, msg);
       }
 
       return;
@@ -110,10 +110,10 @@ contract Task3 with Deployable {
 
       if (amountA > 0 && amountA <= self.aAmount) {
         self.bAmount = self.bAmount + msg.amount;
-        self.transfer(self.jettonAddressA, amountA, msg);
+        transfer(self.jettonAddressA, amountA, msg);
         self.aAmount = self.aAmount - amountA;
       } else {
-        self.transfer(self.jettonAddressB, msg.amount, msg);
+        transfer(self.jettonAddressB, msg.amount, msg);
       }
 
       return;
@@ -145,22 +145,22 @@ contract Task3 with Deployable {
     return 0;
   }
 
-  fun transfer(to: Address, amount: Int, msg: TokenNotification) {
-    send(SendParameters{
-      to: to,
-      value: 0,
-      mode: SendRemainingValue,
-      body: TokenTransfer {
-        queryId: 0,
-        amount: amount,
-        destination: msg.from,
-        responseDestination: myAddress(),
-        customPayload: null,
-        forwardTonAmount: ton("0.01"),
-        forwardPayload: emptySlice()
-      }.toCell()
-    });
-    
-  }
+}
 
+fun transfer(to: Address, amount: Int, msg: TokenNotification) {
+  send(SendParameters{
+    to: to,
+    value: 0,
+    mode: SendRemainingValue,
+    body: TokenTransfer {
+      queryId: 0,
+      amount: amount,
+      destination: msg.from,
+      responseDestination: myAddress(),
+      customPayload: null,
+      forwardTonAmount: ton("0.01"),
+      forwardPayload: emptySlice()
+    }.toCell()
+  });
+  
 }
