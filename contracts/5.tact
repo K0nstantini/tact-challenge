@@ -76,11 +76,6 @@ contract Task5 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    // if (context().value >= ton("2.1")) {
-    //   nativeReserve(myBalance() - context().value + ton("2"), 0);
-    // } 
-  
-
     if (msg.prevOwner == self.owner) {
       self.nfts.set(self.countNfts, sender());
       self.countNfts = self.countNfts + 1;
@@ -88,10 +83,11 @@ contract Task5 with Deployable {
     }
 
     let value: Int = context().value;
+    let sender: Address = sender();
 
     if (value < ton("2.1")) {
       send(SendParameters{
-          to: sender(),
+          to: sender,
           value: 0,
           mode: SendRemainingValue,
           body: Transfer {
@@ -107,10 +103,10 @@ contract Task5 with Deployable {
     }
 
     let key: Int = random(0, self.countNfts);
-    let nft: Address = sender();
+    let nft: Address = sender;
     if (key != self.countNfts) {
       nft = self.nfts.get(key)!!;
-      self.nfts.set(key, sender());
+      self.nfts.set(key, sender);
     }
 
     // self.nfts.set(self.countNfts, sender());
@@ -119,9 +115,7 @@ contract Task5 with Deployable {
 
     send(SendParameters{
         to: nft,
-        // value: 0,
-        value: context().value - ton("2.05"),
-        // mode: SendRemainingBalance,
+        value: value - ton("2.05"),
         mode: SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
