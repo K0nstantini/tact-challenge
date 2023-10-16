@@ -180,7 +180,8 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
+    let count: Int = min(self.countNfts, 255);
+    let tonRequired: Int = ton("1") + count * ton("0.08");
     require(context().value >= tonRequired, "Insufficent funds");
     require(sender() == self.owner, "Invalid sender");
 
@@ -188,7 +189,7 @@ contract Task5 with Deployable {
     // nativeReserve(myBalance() - context().value, 0);
 
     // let id: Int = 0;
-    repeat(self.countNfts) {
+    repeat(count) {
       // let nft: Address = self.nfts.get(id)!!;
       // id = id + 1;
       self.countNfts = self.countNfts - 1;
@@ -212,8 +213,8 @@ contract Task5 with Deployable {
       }); 
     }
 
-    self.nfts = emptyMap();
-    self.countNfts = 0;
+    // self.nfts = emptyMap();
+    // self.countNfts = 0;
   }
 
   get fun profit(): Int { 
