@@ -68,7 +68,6 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
-
     let sender: Address = sender();
 
     if (sender == self.jettonAddressA) {
