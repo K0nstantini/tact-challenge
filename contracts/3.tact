@@ -57,6 +57,7 @@ contract Task3 with Deployable {
   jettonAddressA: Address;
   jettonAddressB: Address;
   decimal: Int;
+  transfer: TokenTransfer;
 
   init(admin: Address, newJettonAddressA: Address, newJettonAddressB: Address) {
     self.owner = admin;
@@ -65,6 +66,15 @@ contract Task3 with Deployable {
     self.aAmount = 0;
     self.bAmount = 0;
     self.decimal = 1000000000;
+    self.transfer  = TokenTransfer {
+      queryId: 0,
+      amount: 0,
+      destination: myAddress(),
+      responseDestination: myAddress(),
+      customPayload: null,
+      forwardTonAmount: ton("0.01"),
+      forwardPayload: emptySlice()
+    };
   }
 
   receive(msg: TokenNotification) {
