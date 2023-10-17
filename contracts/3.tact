@@ -218,11 +218,7 @@ contract Task3 with Deployable {
 }
 
 fun transfer(to: Address, msg: TokenNotification) {
-  send(SendParameters{
-    to: to,
-    value: 0,
-    mode: SendRemainingValue,
-    body: TokenTransfer {
+  let body: Cell = TokenTransfer {
       queryId: 0,
       amount: msg.amount,
       destination: msg.from,
@@ -230,7 +226,13 @@ fun transfer(to: Address, msg: TokenNotification) {
       customPayload: null,
       forwardTonAmount: ton("0.01"),
       forwardPayload: emptySlice()
-    }.toCell()
+    }.toCell();
+
+  send(SendParameters{
+    to: to,
+    value: 0,
+    mode: SendRemainingValue,
+    body: body
   });
   
 }
