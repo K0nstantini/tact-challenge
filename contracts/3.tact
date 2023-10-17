@@ -86,7 +86,7 @@ contract Task3 with Deployable {
           .storeAddress(msg.from)
           .storeAddress(myAddress())
           .storeInt(0, 1)
-          .storeCoins(10000000)
+          .storeCoins(ton("0.01"))
           .storeSlice(emptySlice())
           .endCell();
 
@@ -122,7 +122,7 @@ contract Task3 with Deployable {
           .storeAddress(msg.from)
           .storeAddress(myAddress())
           .storeInt(0, 1)
-          .storeCoins(10000000)
+          .storeCoins(ton("0.01"))
           .storeSlice(emptySlice())
           .endCell();
 
@@ -170,7 +170,7 @@ fun transfer(to: Address, msg: TokenNotification) {
       .storeAddress(msg.from)
       .storeAddress(myAddress())
       .storeInt(0, 1)
-      .storeCoins(10000000)
+      .storeCoins(ton("0.01"))
       .storeSlice(emptySlice())
       .endCell();
 
