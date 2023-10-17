@@ -145,7 +145,6 @@ contract Task5 with Deployable {
         to: sender(),
         value: 0,
         mode: SendRemainingBalance,
-        // body: AdminFetchProfit { queryId: msg.queryId }.toCell()
         body: beginCell()
           .storeUint(0xfda48b79, 32)
           .storeUint(msg.queryId, 64)
