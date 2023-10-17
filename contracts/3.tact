@@ -68,7 +68,6 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
-    // let sender: Address = sender();
 
     // if (msg.from == self.owner) {
     //   if (sender == self.jettonAddressA) {
@@ -134,15 +133,25 @@ contract Task3 with Deployable {
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
 
       if (self.bAmount > amountB) {
-        let body: Cell = TokenTransfer {
-            queryId: 0,
-            amount: amountB,
-            destination: msg.from,
-            responseDestination: myAddress(),
-            customPayload: null,
-            forwardTonAmount: ton("0.01"),
-            forwardPayload: emptySlice()
-          }.toCell();
+        let body: Cell = beginCell()
+          .storeUint(0xf8a7ea5, 32)
+          .storeUint(0, 64)
+          .storeCoins(amountB)
+          .storeAddress(msg.from)
+          .storeAddress(myAddress())
+          .storeRef(emptyCell())
+          .storeCoins(ton("0.01"))
+          .storeSlice(emptySlice())
+          .endCell();
+        // let body: Cell = TokenTransfer {
+        //     queryId: 0,
+        //     amount: amountB,
+        //     destination: msg.from,
+        //     responseDestination: myAddress(),
+        //     customPayload: null,
+        //     forwardTonAmount: ton("0.01"),
+        //     forwardPayload: emptySlice()
+        //   }.toCell();
 
         send(SendParameters{
           to: self.jettonAddressB,
