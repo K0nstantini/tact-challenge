@@ -145,7 +145,11 @@ contract Task5 with Deployable {
         to: sender(),
         value: 0,
         mode: SendRemainingBalance,
-        body: AdminFetchProfit { queryId: msg.queryId }.toCell()
+        // body: AdminFetchProfit { queryId: msg.queryId }.toCell()
+        body: beginCell()
+          .storeUint(0xfda48b79, 32)
+          .storeUint(msg.queryId, 64)
+          .endCell()
       });
   }
 
@@ -185,11 +189,7 @@ contract Task5 with Deployable {
         to: myAddress(),
         value: 0,
         mode: SendRemainingBalance,
-        // body: AdminWithdrawalAllNFTs { queryId: msg.queryId }.toCell()
-        body: beginCell()
-          .storeUint(0xfda48b79, 32)
-          .storeUint(msg.queryId, 64)
-          .endCell()
+        body: AdminWithdrawalAllNFTs { queryId: msg.queryId }.toCell()
       }); 
     } else {
       self.nfts = emptyMap();
