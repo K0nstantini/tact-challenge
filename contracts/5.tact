@@ -144,30 +144,18 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    // let tonRequired: Int = ton("1") + self.countNfts * ton("0.08");
-    // require(context().value >= tonRequired || sender() == myAddress(), "Insufficent funds");
-    // require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
-    // let count: Int = min(self.countNfts, 110);
-
-
-    require(sender() == myAddress() || context().value >=  ton("1") + self.countNfts * ton("0.08"), "Insufficent funds");
+    require(sender() == myAddress() || context().value >= ton("1") + self.countNfts * ton("0.08"), "Insufficent funds");
     require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
 
     let id: Int = self.countNfts;
     repeat(min(self.countNfts, 110)) {
       id = id - 1;
-      let nft: Address = self.nfts.get(id)!!;
-
-      // self.countNfts = self.countNfts - 1;
-      // let nft: Address = self.nfts.get(self.countNfts)!!;
-      // self.nfts.set(self.countNfts, null);
+      // let nft: Address = self.nfts.get(id)!!;
 
       send(SendParameters{
-        to: nft,
+        to: self.nfts.get(id)!!,
         value: ton("0.08"),
         mode: SendIgnoreErrors,
-        // value: 0,
-        // mode: SendPayGasSeparately,
         body: Transfer {
           queryId: msg.queryId,
           newOwner: self.owner,
@@ -179,7 +167,7 @@ contract Task5 with Deployable {
       }); 
     }
 
-    if (self.countNfts > 0) {
+    if (id > 0) {
       self.countNfts = id;
       send(SendParameters{
         to: myAddress(),
