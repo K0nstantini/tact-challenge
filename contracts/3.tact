@@ -74,9 +74,9 @@ contract Task3 with Deployable {
     if (msg.from == self.owner) {
       if (sender == self.jettonAddressA) {
         self.aAmount = self.aAmount + msg.amount;
-    } else if (sender == self.jettonAddressB ){
+      } else if (sender == self.jettonAddressB ){
         self.bAmount = self.bAmount + msg.amount;
-    } else {
+      } else {
         throw(0xFFFFFF);
     }
       return;
@@ -104,7 +104,7 @@ contract Task3 with Deployable {
       addr = from;
     }
     send(SendParameters{
-      to: to,
+      to: addr,
       value: 0,
       mode: SendRemainingValue,
       body: TokenTransfer {
