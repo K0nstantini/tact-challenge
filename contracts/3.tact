@@ -74,9 +74,9 @@ contract Task3 with Deployable {
         return;
       }
 
-      // let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
-      let price: Int = self.bAmount * self.decimal / self.aAmount;
-      let amountB: Int = price * msg.amount / self.decimal;
+      let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
+      // let price: Int = self.bAmount * self.decimal / self.aAmount;
+      // let amountB: Int = price * msg.amount / self.decimal;
 
       if (self.bAmount > amountB) {
         let body: Cell = beginCell()
@@ -97,7 +97,6 @@ contract Task3 with Deployable {
           body: body
           });
 
-        // transfer(self.jettonAddressB, amountB, msg);
         self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amountB;
       } else {
@@ -133,7 +132,6 @@ contract Task3 with Deployable {
           mode: SendRemainingValue,
           body: body
         });
-        // transfer(self.jettonAddressA, amountA, msg);
         self.bAmount = self.bAmount + msg.amount;
         self.aAmount = self.aAmount - amountA;
       } else {
