@@ -89,11 +89,29 @@ contract Task3 with Deployable {
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount)  * msg.amount / self.decimal;
 
       if (amountB > 0 && amountB <= self.bAmount) {
-        transfer(self.jettonAddressB, amountB, msg);
+        let body: TokenTransfer  = self.transfer;
+        body.amount  = amountB;
+        body.destination = msg.from;
+        send(SendParameters{
+          to: self.jettonAddressB,
+          value: 0,
+          mode: SendRemainingValue,
+          body: body.toCell()
+        });
+        // transfer(self.jettonAddressB, amountB, msg);
         self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amountB;
       } else {
-        transfer(self.jettonAddressA, msg.amount, msg);
+        let body: TokenTransfer  = self.transfer;
+        body.amount  = msg.amount;
+        body.destination = msg.from;
+        send(SendParameters{
+          to: self.jettonAddressA,
+          value: 0,
+          mode: SendRemainingValue,
+          body: body.toCell()
+        });
+        // transfer(self.jettonAddressA, msg.amount, msg);
       }
 
       return;
@@ -108,11 +126,29 @@ contract Task3 with Deployable {
       let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
 
       if (amountA > 0 && amountA <= self.aAmount) {
-        transfer(self.jettonAddressA, amountA, msg);
+        let body: TokenTransfer  = self.transfer;
+        body.amount  = amountA;
+        body.destination = msg.from;
+        send(SendParameters{
+          to: self.jettonAddressA,
+          value: 0,
+          mode: SendRemainingValue,
+          body: body.toCell()
+        });
+        // transfer(self.jettonAddressA, amountA, msg);
         self.bAmount = self.bAmount + msg.amount;
         self.aAmount = self.aAmount - amountA;
       } else {
-        transfer(self.jettonAddressB, msg.amount, msg);
+        let body: TokenTransfer  = self.transfer;
+        body.amount  = msg.amount;
+        body.destination = msg.from;
+        send(SendParameters{
+          to: self.jettonAddressB,
+          value: 0,
+          mode: SendRemainingValue,
+          body: body.toCell()
+        });
+        // transfer(self.jettonAddressB, msg.amount, msg);
       }
 
       return;
@@ -139,20 +175,20 @@ contract Task3 with Deployable {
 
 }
 
-fun transfer(to: Address, amount: Int, msg: TokenNotification) {
-  send(SendParameters{
-    to: to,
-    value: 0,
-    mode: SendRemainingValue,
-    body: TokenTransfer {
-      queryId: 0,
-      amount: amount,
-      destination: msg.from,
-      responseDestination: myAddress(),
-      customPayload: null,
-      forwardTonAmount: ton("0.01"),
-      forwardPayload: emptySlice()
-    }.toCell()
-  });
+// fun transfer(to: Address, amount: Int, msg: TokenNotification) {
+//   send(SendParameters{
+//     to: to,
+//     value: 0,
+//     mode: SendRemainingValue,
+//     body: TokenTransfer {
+//       queryId: 0,
+//       amount: amount,
+//       destination: msg.from,
+//       responseDestination: myAddress(),
+//       customPayload: null,
+//       forwardTonAmount: ton("0.01"),
+//       forwardPayload: emptySlice()
+//     }.toCell()
+//   });
   
-}
+// }
