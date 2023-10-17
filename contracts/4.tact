@@ -116,6 +116,7 @@ contract Task4 with Deployable {
     // self.nft = null;
     self.nftAddr = null;
     self.nftOwner = null;
+    self.nftTime = 0;
 
     } else {
       send(SendParameters{
@@ -130,7 +131,8 @@ contract Task4 with Deployable {
   }
 
   get fun time(): Int {
-    return self.nftTime;
+    // return self.nftTime;
+    return max(self.nftTime - now(), 0);
     // if (self.nft != null) {
     //   return max((self.nft!!).time - now(), 0);
     // }
