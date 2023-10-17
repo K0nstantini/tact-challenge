@@ -77,16 +77,11 @@ contract Task3 with Deployable {
         return;
       }
 
-      // let price: Int = 0;
-      // if (self.aAmount > 0) {
-      //   price = self.bAmount * self.decimal / self.aAmount;
-      // }
-
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount)  * msg.amount / self.decimal;
 
       if (amountB > 0 && amountB <= self.bAmount) {
-        self.aAmount = self.aAmount + msg.amount;
         transfer(self.jettonAddressB, amountB, msg);
+        self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amountB;
       } else {
         transfer(self.jettonAddressA, msg.amount, msg);
@@ -101,16 +96,11 @@ contract Task3 with Deployable {
         return;
       }
 
-      let price: Int = 0;
-      if (self.bAmount > 0) {
-        price = self.aAmount * self.decimal / self.bAmount;
-      }
-
-      let amountA: Int = price * msg.amount / self.decimal;
+      let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
 
       if (amountA > 0 && amountA <= self.aAmount) {
-        self.bAmount = self.bAmount + msg.amount;
         transfer(self.jettonAddressA, amountA, msg);
+        self.bAmount = self.bAmount + msg.amount;
         self.aAmount = self.aAmount - amountA;
       } else {
         transfer(self.jettonAddressB, msg.amount, msg);
@@ -123,26 +113,19 @@ contract Task3 with Deployable {
   } 
   
   get fun price(jetton: Address): Int { 
-    if (jetton == self.jettonAddressA && self.aAmount > 0) {
+    if (jetton == self.jettonAddressA) {
       return self.bAmount * self.decimal / self.aAmount;
-    }
-
-    if (jetton == self.jettonAddressB && self.bAmount > 0) {
+    } else {
       return self.aAmount * self.decimal / self.bAmount;
     }
-
-    return 0;
   }
   
   get fun balance(jetton: Address): Int {
     if (jetton == self.jettonAddressA) {
       return self.aAmount;
-    }
-    if (jetton == self.jettonAddressB) {
+    } else {
       return self.bAmount;
     }
-
-    return 0;
   }
 
 }
