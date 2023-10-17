@@ -78,40 +78,63 @@ contract Task3 with Deployable {
 
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount)  * msg.amount / self.decimal;
 
-      if (amountB > 0 && amountB <= self.bAmount) {
-        send(SendParameters{
-          to: self.jettonAddressB,
-          value: 0,
-          mode: SendRemainingValue,
-          body: TokenTransfer {
-            queryId: 0,
-            amount: amountB,
-            destination: msg.from,
-            responseDestination: myAddress(),
-            customPayload: null,
-            forwardTonAmount: ton("0.01"),
-            forwardPayload: emptySlice()
-          }.toCell()
-        });
-        self.aAmount = self.aAmount + msg.amount;
-        self.bAmount = self.bAmount - amountB;
-      } else {
-        send(SendParameters{
-          to: self.jettonAddressA,
-          value: 0,
-          mode: SendRemainingValue,
-          body: TokenTransfer {
-            queryId: 0,
-            amount: msg.amount,
-            destination: msg.from,
-            responseDestination: myAddress(),
-            customPayload: null,
-            forwardTonAmount: ton("0.01"),
-            forwardPayload: emptySlice()
-          }.toCell()
-        });
-        // transfer(self.jettonAddressA, msg.amount, msg);
+      let to: Address = self.jettonAddressB;
+      let amount: Int = amountB;
+      if (amountB == 0 || amountB > self.bAmount) {
+        to = self.jettonAddressA;
+        amount = msg.amount;
       }
+
+
+      // if (amountB > 0 && amountB <= self.bAmount) {
+      //   send(SendParameters{
+      //     to: self.jettonAddressB,
+      //     value: 0,
+      //     mode: SendRemainingValue,
+      //     body: TokenTransfer {
+      //       queryId: 0,
+      //       amount: amountB,
+      //       destination: msg.from,
+      //       responseDestination: myAddress(),
+      //       customPayload: null,
+      //       forwardTonAmount: ton("0.01"),
+      //       forwardPayload: emptySlice()
+      //     }.toCell()
+      //   });
+      //   self.aAmount = self.aAmount + msg.amount;
+      //   self.bAmount = self.bAmount - amountB;
+      // } else {
+      //   send(SendParameters{
+      //     to: self.jettonAddressA,
+      //     value: 0,
+      //     mode: SendRemainingValue,
+      //     body: TokenTransfer {
+      //       queryId: 0,
+      //       amount: msg.amount,
+      //       destination: msg.from,
+      //       responseDestination: myAddress(),
+      //       customPayload: null,
+      //       forwardTonAmount: ton("0.01"),
+      //       forwardPayload: emptySlice()
+      //     }.toCell()
+      //   });
+      //   // transfer(self.jettonAddressA, msg.amount, msg);
+      // }
+
+      send(SendParameters{
+          to: to,
+          value: 0,
+          mode: SendRemainingValue,
+          body: TokenTransfer {
+            queryId: 0,
+            amount: amount,
+            destination: msg.from,
+            responseDestination: myAddress(),
+            customPayload: null,
+            forwardTonAmount: ton("0.01"),
+            forwardPayload: emptySlice()
+          }.toCell()
+        });
 
       return;
     }
@@ -124,41 +147,62 @@ contract Task3 with Deployable {
 
       let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
 
-      if (amountA > 0 && amountA <= self.aAmount) {
-        send(SendParameters{
-          to: self.jettonAddressA,
-          value: 0,
-          mode: SendRemainingValue,
-          body: TokenTransfer {
-            queryId: 0,
-            amount: amountA,
-            destination: msg.from,
-            responseDestination: myAddress(),
-            customPayload: null,
-            forwardTonAmount: ton("0.01"),
-            forwardPayload: emptySlice()
-          }.toCell()
-        });
-        // transfer(self.jettonAddressA, amountA, msg);
-        self.bAmount = self.bAmount + msg.amount;
-        self.aAmount = self.aAmount - amountA;
-      } else {
-        send(SendParameters{
-          to: self.jettonAddressB,
-          value: 0,
-          mode: SendRemainingValue,
-          body: TokenTransfer {
-            queryId: 0,
-            amount: msg.amount,
-            destination: msg.from,
-            responseDestination: myAddress(),
-            customPayload: null,
-            forwardTonAmount: ton("0.01"),
-            forwardPayload: emptySlice()
-          }.toCell()
-        });
-        // transfer(self.jettonAddressB, msg.amount, msg);
+      let to: Address = self.jettonAddressA;
+      let amount: Int = amountA;
+      if (amountA == 0 || amountA > self.aAmount) {
+        to = self.jettonAddressB;
+        amount = msg.amount;
       }
+
+      // if (amountA > 0 && amountA <= self.aAmount) {
+      //   send(SendParameters{
+      //     to: self.jettonAddressA,
+      //     value: 0,
+      //     mode: SendRemainingValue,
+      //     body: TokenTransfer {
+      //       queryId: 0,
+      //       amount: amountA,
+      //       destination: msg.from,
+      //       responseDestination: myAddress(),
+      //       customPayload: null,
+      //       forwardTonAmount: ton("0.01"),
+      //       forwardPayload: emptySlice()
+      //     }.toCell()
+      //   });
+      //   // transfer(self.jettonAddressA, amountA, msg);
+      //   self.bAmount = self.bAmount + msg.amount;
+      //   self.aAmount = self.aAmount - amountA;
+      // } else {
+      //   send(SendParameters{
+      //     to: self.jettonAddressB,
+      //     value: 0,
+      //     mode: SendRemainingValue,
+      //     body: TokenTransfer {
+      //       queryId: 0,
+      //       amount: msg.amount,
+      //       destination: msg.from,
+      //       responseDestination: myAddress(),
+      //       customPayload: null,
+      //       forwardTonAmount: ton("0.01"),
+      //       forwardPayload: emptySlice()
+      //     }.toCell()
+      //   });
+      //   // transfer(self.jettonAddressB, msg.amount, msg);
+      // }
+      send(SendParameters{
+          to: to,
+          value: 0,
+          mode: SendRemainingValue,
+          body: TokenTransfer {
+            queryId: 0,
+            amount: amount,
+            destination: msg.from,
+            responseDestination: myAddress(),
+            customPayload: null,
+            forwardTonAmount: ton("0.01"),
+            forwardPayload: emptySlice()
+          }.toCell()
+        });
 
       return;
     }
