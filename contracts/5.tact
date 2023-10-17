@@ -82,9 +82,6 @@ contract Task5 with Deployable {
       return;
     }
 
-    let value: Int = context().value;
-    // let sender: Address = sender();
-
     let body: Cell = beginCell()
         .storeUint(0x5fcc3d14, 32)
         .storeUint(msg.queryId, 64)
@@ -95,6 +92,7 @@ contract Task5 with Deployable {
         .storeSlice(emptySlice())
         .endCell();
 
+    let value: Int = context().value;
     if (value < ton("2.1")) {
       send(SendParameters{
           to: sender(),

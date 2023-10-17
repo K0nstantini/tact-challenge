@@ -39,12 +39,14 @@ contract Task2 with Deployable {
               .storeRef(msgCell)
               .endCell();
 
-    send(SendParameters{
+    let params: SendParameters = SendParameters{
             to: self.admin,
             value: 0,
             mode: SendRemainingValue,
             body: body
-        });
+        };
+
+    send(params);
   }
 }
 
