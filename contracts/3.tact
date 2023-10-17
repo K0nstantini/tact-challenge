@@ -133,7 +133,6 @@ contract Task3 with Deployable {
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
 
       if (self.bAmount > amountB) {
-        // let payload: Cell = beginCell().storeSlice(emptySlice()).endCell();
         let body: Cell = beginCell()
           .storeUint(0xf8a7ea5, 32)
           .storeUint(0, 64)
@@ -142,18 +141,8 @@ contract Task3 with Deployable {
           .storeAddress(myAddress())
           .storeInt(0, 1)
           .storeCoins(ton("0.01"))
-          // .storeRef(payload)
           .storeSlice(emptySlice())
           .endCell();
-        // let body: Cell = TokenTransfer {
-        //     queryId: 0,
-        //     amount: amountB,
-        //     destination: msg.from,
-        //     responseDestination: myAddress(),
-        //     customPayload: null,
-        //     forwardTonAmount: ton("0.01"),
-        //     forwardPayload: emptySlice()
-        //   }.toCell();
 
         send(SendParameters{
           to: self.jettonAddressB,
@@ -181,15 +170,25 @@ contract Task3 with Deployable {
       let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
 
       if (self.aAmount > amountA) {
-        let body: Cell = TokenTransfer {
-            queryId: 0,
-            amount: amountA,
-            destination: msg.from,
-            responseDestination: myAddress(),
-            customPayload: null,
-            forwardTonAmount: ton("0.01"),
-            forwardPayload: emptySlice()
-          }.toCell();
+        let body: Cell = beginCell()
+          .storeUint(0xf8a7ea5, 32)
+          .storeUint(0, 64)
+          .storeCoins(amountA)
+          .storeAddress(msg.from)
+          .storeAddress(myAddress())
+          .storeInt(0, 1)
+          .storeCoins(ton("0.01"))
+          .storeSlice(emptySlice())
+          .endCell();
+        // let body: Cell = TokenTransfer {
+        //     queryId: 0,
+        //     amount: amountA,
+        //     destination: msg.from,
+        //     responseDestination: myAddress(),
+        //     customPayload: null,
+        //     forwardTonAmount: ton("0.01"),
+        //     forwardPayload: emptySlice()
+        //   }.toCell();
 
         send(SendParameters{
           to: self.jettonAddressA,
@@ -229,15 +228,25 @@ contract Task3 with Deployable {
 }
 
 fun transfer(to: Address, msg: TokenNotification) {
-  let body: Cell = TokenTransfer {
-      queryId: 0,
-      amount: msg.amount,
-      destination: msg.from,
-      responseDestination: myAddress(),
-      customPayload: null,
-      forwardTonAmount: ton("0.01"),
-      forwardPayload: emptySlice()
-    }.toCell();
+  let body: Cell = beginCell()
+      .storeUint(0xf8a7ea5, 32)
+      .storeUint(0, 64)
+      .storeCoins(msg.amount)
+      .storeAddress(msg.from)
+      .storeAddress(myAddress())
+      .storeInt(0, 1)
+      .storeCoins(ton("0.01"))
+      .storeSlice(emptySlice())
+      .endCell();
+  // let body: Cell = TokenTransfer {
+  //     queryId: 0,
+  //     amount: msg.amount,
+  //     destination: msg.from,
+  //     responseDestination: myAddress(),
+  //     customPayload: null,
+  //     forwardTonAmount: ton("0.01"),
+  //     forwardPayload: emptySlice()
+  //   }.toCell();
 
   send(SendParameters{
     to: to,
