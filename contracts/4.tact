@@ -115,17 +115,17 @@ contract Task4 with Deployable {
     self.nft = null;
 
     } else {
-      let body: Cell = beginCell()
-        .storeUint(0, 32)
-        .storeSlice("NFT is still locked".asSlice())
-        .endCell();
+      // let body: Cell = beginCell()
+      //   .storeUint(0, 32)
+      //   .storeSlice("NFT is still locked".asSlice())
+      //   .endCell();
 
       send(SendParameters{
         to: sender(),
         value: 0, 
         mode: SendRemainingValue, 
-        // body: "NFT is still locked".asComment()
-        body: body
+        body: "NFT is still locked".asComment()
+        // body: body
       });
 
     }
