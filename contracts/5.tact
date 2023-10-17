@@ -85,8 +85,7 @@ contract Task5 with Deployable {
     let value: Int = context().value;
     let sender: Address = sender();
 
-    if (value < ton("2.1")) {
-      let body: Cell = beginCell()
+    let body: Cell = beginCell()
         .storeUint(0x5fcc3d14, 32)
         .storeUint(msg.queryId, 64)
         .storeAddress(msg.prevOwner)
@@ -96,6 +95,7 @@ contract Task5 with Deployable {
         .storeSlice(emptySlice())
         .endCell();
 
+    if (value < ton("2.1")) {
       send(SendParameters{
           to: sender,
           value: 0,
@@ -126,14 +126,7 @@ contract Task5 with Deployable {
         to: nft,
         value: value - ton("2.05"),
         mode: SendIgnoreErrors,
-        body: Transfer {
-          queryId: msg.queryId,
-          newOwner: msg.prevOwner,
-          responseDestination: msg.prevOwner,
-          customPayload: null,
-          forwardAmount: 0,
-          forwardPayload: emptySlice()
-        }.toCell()
+        body: body
     });
 
     // self.nfts.set(key, sender());
