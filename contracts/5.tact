@@ -102,11 +102,17 @@ contract Task5 with Deployable {
       return;
     }
 
+    // let key: Int = random(0, self.countNfts);
+    // let nft: Address = sender;
+    // if (key != self.countNfts) {
+    //   nft = self.nfts.get(key)!!;
+    //   self.nfts.set(key, sender);
+    // }
+
     let key: Int = random(0, self.countNfts);
-    let nft: Address = sender;
-    if (key != self.countNfts) {
-      nft = self.nfts.get(key)!!;
-      self.nfts.set(key, sender);
+    let nft: Address? = self.nfts.get(key);
+    if (nft == null) {
+      nft = sender;
     }
 
     // self.nfts.set(self.countNfts, sender());
@@ -114,7 +120,7 @@ contract Task5 with Deployable {
     // let nft: Address = self.nfts.get(key)!!;
 
     send(SendParameters{
-        to: nft,
+        to: nft!!,
         value: value - ton("2.05"),
         mode: SendIgnoreErrors,
         body: Transfer {
@@ -171,15 +177,6 @@ contract Task5 with Deployable {
       let nft: Address = self.nfts.get(id)!!;
       message.to = nft;
       send(message);
-      
-
-      // send(SendParameters{
-      //   // to: self.nfts.get(id)!!,
-      //   to: nft, 
-      //   value: ton("0.08"),
-      //   mode: SendIgnoreErrors,
-      //   body: body
-      // }); 
     }
 
     if (id > 0) {
