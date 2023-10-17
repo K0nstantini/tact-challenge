@@ -148,7 +148,7 @@ contract Task5 with Deployable {
     require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
 
     let id: Int = self.countNfts;
-    let owner: Address = self.owner;
+    // let owner: Address = self.owner;
     repeat(min(self.countNfts, 110)) {
       id = id - 1;
       let nft: Address = self.nfts.get(id)!!;
@@ -160,8 +160,8 @@ contract Task5 with Deployable {
         mode: SendIgnoreErrors,
         body: Transfer {
           queryId: msg.queryId,
-          newOwner: owner,
-          responseDestination: owner,
+          newOwner: sender(),
+          responseDestination: sender(),
           customPayload: null,
           forwardAmount: 0,
           forwardPayload: emptySlice()
