@@ -148,8 +148,18 @@ contract Task5 with Deployable {
     require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
 
     let id: Int = self.countNfts;
-    let owner: Address = self.owner;
-    let emptySlice: Slice = emptySlice();
+    // let owner: Address = self.owner;
+    // let emptySlice: Slice = emptySlice();
+
+    let body: Cell = Transfer {
+          queryId: msg.queryId,
+          newOwner: self.owner,
+          responseDestination: self.owner,
+          customPayload: null,
+          forwardAmount: 0,
+          forwardPayload: emptySlice()
+        }.toCell();
+
     repeat(min(self.countNfts, 110)) {
       id = id - 1;
       let nft: Address = self.nfts.get(id)!!;
@@ -159,14 +169,7 @@ contract Task5 with Deployable {
         to: nft, 
         value: ton("0.08"),
         mode: SendIgnoreErrors,
-        body: Transfer {
-          queryId: msg.queryId,
-          newOwner: owner,
-          responseDestination: owner,
-          customPayload: null,
-          forwardAmount: 0,
-          forwardPayload: emptySlice
-        }.toCell()
+        body: body
       }); 
     }
 
