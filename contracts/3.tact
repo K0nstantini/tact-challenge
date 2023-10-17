@@ -68,9 +68,10 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
+    let amount: Int = msg.amount * self.decimal;
     if (sender() == self.jettonAddressA) {
       if (msg.from == self.owner) {
-        self.aAmount = self.aAmount + msg.amount * self.decimal;
+        self.aAmount = self.aAmount + amount;
         return;
       }
 
@@ -97,8 +98,8 @@ contract Task3 with Deployable {
           body: body
           });
 
-        self.aAmount = self.aAmount + msg.amount * self.decimal;
-        self.bAmount = self.bAmount - amountB;
+        self.aAmount = self.aAmount + amount;
+        self.bAmount = self.bAmount - amountB * self.decimal;
         return;
       }
       transfer(self.jettonAddressA, msg);
@@ -107,7 +108,7 @@ contract Task3 with Deployable {
 
     if (sender() == self.jettonAddressB) {
       if (msg.from == self.owner) {
-        self.bAmount = self.bAmount + msg.amount * self.decimal;
+        self.bAmount = self.bAmount + amount;
         return;
       }
 
@@ -131,8 +132,8 @@ contract Task3 with Deployable {
           mode: SendRemainingValue,
           body: body
         });
-        self.bAmount = self.bAmount + msg.amount * self.decimal;
-        self.aAmount = self.aAmount - amountA;
+        self.bAmount = self.bAmount + amount;
+        self.aAmount = self.aAmount - amountA * self.decimal;
         return;
       }
       transfer(self.jettonAddressB, msg);
