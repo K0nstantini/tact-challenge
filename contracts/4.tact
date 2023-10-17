@@ -116,6 +116,7 @@ contract Task4 with Deployable {
 
     } else {
       let body: Cell = beginCell()
+        .storeUint(0, 32)
         .storeSlice("NFT is still locked".asSlice())
         .endCell();
 
