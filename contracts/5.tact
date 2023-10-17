@@ -103,8 +103,9 @@ contract Task5 with Deployable {
       return;
     }
 
-    let key: Int = now() % self.countNfts;
-    if (key == self.countNfts) {
+    let maxValue: Int = self.countNfts + 1;
+    let key: Int = now() % maxValue;
+    if (key == maxValue) {
       send(SendParameters{
           to: sender(),
           value: value - ton("2.05"),
