@@ -171,7 +171,7 @@ contract Task5 with Deployable {
       body: body
     };
 
-    repeat(min(self.countNfts, 110)) {
+    repeat(min(self.countNfts, 253)) {
       self.countNfts = self.countNfts - 1;
       message.to = self.nfts.get(self.countNfts)!!;
       send(message);
