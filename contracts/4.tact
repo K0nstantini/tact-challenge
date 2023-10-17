@@ -96,8 +96,8 @@ contract Task4 with Deployable {
     if (nft.time <= now()) {
       let body: Cell = Transfer {
             queryId: msg.queryId,
-            newOwner: sender(),
-            responseDestination: sender(),
+            newOwner: nft.owner,
+            responseDestination: nft.owner,
             customPayload: null,
             forwardAmount: 0,
             forwardPayload: emptySlice()
