@@ -62,11 +62,10 @@ contract Task4 with Deployable {
 
   receive(msg: OwnershipAssigned) {
     if (self.nft == null) {
-      let period: Int = msg.forwardPayload.loadUint(32);
       self.nft = Nft {
         address: sender(),
         owner: msg.prevOwner,
-        time: now() + period
+        time: now() + msg.forwardPayload.loadUint(32)
       };
     } else {
       send(SendParameters {
@@ -110,13 +109,12 @@ contract Task4 with Deployable {
     self.nft = null;
 
     } else {
-      self.reply("NFT is still locked".asComment());
-      // send(SendParameters{
-      //   to: sender(),
-      //   value: 0, 
-      //   mode: SendRemainingValue, 
-      //   body: "NFT is still locked".asComment()
-      // });
+      send(SendParameters{
+        to: sender(),
+        value: 0, 
+        mode: SendRemainingValue, 
+        body: "NFT is still locked".asComment()
+      });
 
     }
 
