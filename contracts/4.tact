@@ -91,30 +91,29 @@ contract Task4 with Deployable {
     require(self.nft != null, "NFT not fount");
     let nft: Nft = self.nft!!;
     require(nft.address == msg.nftAddress, "Invalid NFT address");
-    let sender: Address = sender();
-    require(nft.owner == sender, "Invalid sender");
+    require(nft.owner == sender(), "Invalid sender");
 
     if (nft.time <= now()) {
-      let body: Cell = Transfer {
-            queryId: msg.queryId,
-            newOwner: sender,
-            responseDestination: sender,
-            customPayload: null,
-            forwardAmount: 0,
-            forwardPayload: emptySlice()
-          }.toCell();
+
       send(SendParameters {
           to: msg.nftAddress,
           value: 0,
           mode: SendRemainingValue,
-          body: body
+          body: Transfer {
+            queryId: msg.queryId,
+            newOwner: sender(),
+            responseDestination: sender(),
+            customPayload: null,
+            forwardAmount: 0,
+            forwardPayload: emptySlice()
+          }.toCell()
         });
 
     self.nft = null;
 
     } else {
       send(SendParameters{
-        to: sender,
+        to: sender(),
         value: 0, 
         mode: SendRemainingValue, 
         body: "NFT is still locked".asComment()
