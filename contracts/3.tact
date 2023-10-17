@@ -133,17 +133,17 @@ contract Task3 with Deployable {
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
 
       if (self.bAmount > amountB) {
-        let payload: Cell = beginCell().storeSlice(emptySlice()).endCell();
+        // let payload: Cell = beginCell().storeSlice(emptySlice()).endCell();
         let body: Cell = beginCell()
           .storeUint(0xf8a7ea5, 32)
           .storeUint(0, 64)
           .storeCoins(amountB)
           .storeAddress(msg.from)
           .storeAddress(myAddress())
-          .storeRef(emptyCell())
+          .storeInt(0, 1)
           .storeCoins(ton("0.01"))
-          .storeRef(payload)
-          // .storeSlice(emptySlice())
+          // .storeRef(payload)
+          .storeSlice(emptySlice())
           .endCell();
         // let body: Cell = TokenTransfer {
         //     queryId: 0,
