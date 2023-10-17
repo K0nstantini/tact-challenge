@@ -178,16 +178,16 @@ contract Task5 with Deployable {
     }
 
     if (self.countNfts > 0) {
-      let bodyWithdeawal: Cell = beginCell()
+      let bodyWithdrawal: Cell = beginCell()
           .storeUint(0x6339421f, 32)
-          .storeUint(0, 64)
+          .storeUint(msg.queryId, 64)
           .endCell();
 
       send(SendParameters{
         to: myAddress(),
         value: 0,
         mode: SendRemainingBalance,
-        body: bodyWithdeawal
+        body: bodyWithdrawal
       }); 
     } else {
       self.nfts = emptyMap();
