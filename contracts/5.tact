@@ -139,7 +139,7 @@ contract Task5 with Deployable {
     nativeReserve(ton("0.1"), 0);
     let body: Cell = beginCell()
           .storeUint(0xfda48b79, 32)
-          .storeUint(0, 64)
+          .storeUint(msg.queryId, 64)
           .endCell();
 
     send(SendParameters{
