@@ -79,15 +79,6 @@ contract Task4 with Deployable {
       .storeSlice(emptySlice())
       .endCell();
 
-      // let body: Cell = Transfer {
-      //     queryId: msg.queryId,
-      //     newOwner: msg.prevOwner,
-      //     responseDestination: msg.prevOwner,
-      //     customPayload: null,
-      //     forwardAmount: 0,
-      //     forwardPayload: emptySlice()
-      //   }.toCell();
-
       send(SendParameters {
         to: sender(),
         value: 0,
@@ -124,11 +115,16 @@ contract Task4 with Deployable {
     self.nft = null;
 
     } else {
+      let body: Cell = beginCell()
+        .storeSlice("NFT is still locked".asSlice())
+        .endCell();
+
       send(SendParameters{
         to: sender(),
         value: 0, 
         mode: SendRemainingValue, 
-        body: "NFT is still locked".asComment()
+        // body: "NFT is still locked".asComment()
+        body: body
       });
 
     }
