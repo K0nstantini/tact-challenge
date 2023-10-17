@@ -80,7 +80,7 @@ contract Task3 with Deployable {
 
       let to: Address = self.jettonAddressB;
       let amount: Int = amountB;
-      if (amountB == 0 || amountB > self.bAmount) {
+      if (amountB <= 0 || amountB > self.bAmount) {
         to = self.jettonAddressA;
         amount = msg.amount;
       }
@@ -149,7 +149,7 @@ contract Task3 with Deployable {
 
       let to: Address = self.jettonAddressA;
       let amount: Int = amountA;
-      if (amountA == 0 || amountA > self.aAmount) {
+      if (amountA <= 0 || amountA > self.aAmount) {
         to = self.jettonAddressB;
         amount = msg.amount;
       }
