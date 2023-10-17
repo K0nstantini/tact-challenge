@@ -137,14 +137,16 @@ contract Task5 with Deployable {
   receive(msg: AdminWithdrawalProfit) {
     require(sender() == self.owner, "Insufficient privelegies");
     nativeReserve(ton("0.1"), 0);
+    let body: Cell = beginCell()
+          .storeUint(0xfda48b79, 32)
+          .storeUint(0, 64)
+          .endCell();
+
     send(SendParameters{
         to: sender(),
         value: 0,
         mode: SendRemainingBalance,
-        body: beginCell()
-          .storeUint(0xfda48b79, 32)
-          .storeUint(msg.queryId, 64)
-          .endCell()
+        body: body
       });
   }
 
@@ -171,18 +173,21 @@ contract Task5 with Deployable {
 
     repeat(min(self.countNfts, 110)) {
       self.countNfts = self.countNfts - 1;
-      // let nft: Address = self.nfts.get(self.countNfts)!!;
-      // message.to = nft;
       message.to = self.nfts.get(self.countNfts)!!;
       send(message);
     }
 
     if (self.countNfts > 0) {
+      let bodyWithdeawal: Cell = beginCell()
+          .storeUint(0x6339421f, 32)
+          .storeUint(0, 64)
+          .endCell();
+
       send(SendParameters{
         to: myAddress(),
         value: 0,
         mode: SendRemainingBalance,
-        body: AdminWithdrawalAllNFTs { queryId: msg.queryId }.toCell()
+        body: bodyWithdeawal
       }); 
     } else {
       self.nfts = emptyMap();
