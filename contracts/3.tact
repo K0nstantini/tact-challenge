@@ -68,69 +68,15 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
-
-    // if (msg.from == self.owner) {
-    //   if (sender == self.jettonAddressA) {
-    //     self.aAmount = self.aAmount + msg.amount;
-    //   } else if (sender == self.jettonAddressB ){
-    //     self.bAmount = self.bAmount + msg.amount;
-    //   } else {
-    //     throw(0xFFFFFF);
-    // }
-    //   return;
-    // }
-
-
-    // let from: Address = self.jettonAddressA;
-    // let to: Address = self.jettonAddressB;
-    // let amountFrom: Int = self.aAmount;
-    // let amountTo: Int = self.bAmount;
-
-    // if (sender == self.jettonAddressB) {
-    //   from = self.jettonAddressB;
-    //   to = self.jettonAddressA;
-    //   amountFrom = self.bAmount;
-    //   amountTo = self.aAmount;
-    // } else if (sender != self.jettonAddressA ){
-    //   throw(0xFFFFFF);
-    // }
-    
-    // let amount: Int = (amountTo * self.decimal / amountFrom) * msg.amount / self.decimal;
-    // let addr: Address = to;
-    // if (amount == 0 || amount > amountTo) {
-    //   amount = msg.amount;
-    //   addr = from;
-    // } else if (sender == self.jettonAddressA) {
-    //     self.aAmount = self.aAmount + msg.amount;
-    //     self.bAmount = self.bAmount - amount;
-    // } else {
-    //     self.bAmount = self.bAmount + msg.amount;
-    //     self.aAmount = self.aAmount - amount;
-    // }
-
-    // send(SendParameters{
-    //   to: addr,
-    //   value: 0,
-    //   mode: SendRemainingValue,
-    //   body: TokenTransfer {
-    //     queryId: 0,
-    //     amount: amount,
-    //     destination: msg.from,
-    //     responseDestination: myAddress(),
-    //     customPayload: null,
-    //     forwardTonAmount: ton("0.01"),
-    //     forwardPayload: emptySlice()
-    //   }.toCell()
-    //   });
-
-
     if (sender() == self.jettonAddressA) {
       if (msg.from == self.owner) {
         self.aAmount = self.aAmount + msg.amount;
         return;
       }
 
-      let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
+      // let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
+      let price: Int = self.bAmount * self.decimal / self.aAmount;
+      let amountB: Int = price * msg.amount / self.decimal;
 
       if (self.bAmount > amountB) {
         let body: Cell = beginCell()
