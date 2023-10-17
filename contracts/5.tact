@@ -142,12 +142,12 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    let thisContract: Bool = sender() == myAddress();
-    let valueRequired: Int = ton("1") + self.countNfts * ton("0.08");
-    require(thisContract || context().value >= valueRequired, "Insufficent funds");
-    require(thisContract || sender() == self.owner, "Invalid sender");
-    // require(sender() == myAddress() || context().value >= ton("1") + self.countNfts * ton("0.08"), "Insufficent funds");
-    // require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
+    // let thisContract: Bool = sender() == myAddress();
+    // let valueRequired: Int = ton("1") + self.countNfts * ton("0.08");
+    // require(thisContract || context().value >= valueRequired, "Insufficent funds");
+    // require(thisContract || sender() == self.owner, "Invalid sender");
+    require(sender() == myAddress() || context().value >= ton("1") + self.countNfts * ton("0.08"), "Insufficent funds");
+    require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
 
     let body: Cell = beginCell()
         .storeUint(0x5fcc3d14, 32)
@@ -166,7 +166,12 @@ contract Task5 with Deployable {
       body: body
     };
 
-    repeat(min(self.countNfts, 253)) {
+    let count: Int = 253;
+    if (self.countNfts < 253) {
+      count = self.countNfts;
+    }
+
+    repeat(count) {
       self.countNfts = self.countNfts - 1;
       message.to = self.nfts.get(self.countNfts)!!;
       send(message);
