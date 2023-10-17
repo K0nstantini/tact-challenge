@@ -73,7 +73,7 @@ contract Task4 with Deployable {
       .storeUint(0x5fcc3d14, 32)
       .storeUint(msg.queryId, 64)
       .storeAddress(msg.prevOwner)
-      .storeAddress(myAddress())
+      .storeAddress(msg.prevOwner)
       .storeInt(0, 1)
       .storeCoins(0)
       .storeSlice(emptySlice())
@@ -104,19 +104,21 @@ contract Task4 with Deployable {
     require(nft.owner == sender(), "Invalid sender");
 
     if (nft.time <= now()) {
+      let body: Cell = beginCell()
+        .storeUint(0x5fcc3d14, 32)
+        .storeUint(msg.queryId, 64)
+        .storeAddress(sender())
+        .storeAddress(sender())
+        .storeInt(0, 1)
+        .storeCoins(0)
+        .storeSlice(emptySlice())
+        .endCell();
 
       send(SendParameters {
           to: msg.nftAddress,
           value: 0,
           mode: SendRemainingValue,
-          body: Transfer {
-            queryId: msg.queryId,
-            newOwner: sender(),
-            responseDestination: sender(),
-            customPayload: null,
-            forwardAmount: 0,
-            forwardPayload: emptySlice()
-          }.toCell()
+          body: body
         });
 
     self.nft = null;
