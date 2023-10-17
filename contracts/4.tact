@@ -69,7 +69,7 @@ contract Task4 with Deployable {
         time: time
       };
     } else {
-      let body: Celll = Transfer {
+      let body: Cell = Transfer {
           queryId: msg.queryId,
           newOwner: msg.prevOwner,
           responseDestination: msg.prevOwner,
