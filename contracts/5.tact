@@ -103,7 +103,6 @@ contract Task5 with Deployable {
       return;
     }
 
-    // let key: Int = random(0, self.countNfts);
     let key: Int = now() % self.countNfts;
     let nft: Address = sender();
     if (key != self.countNfts) {
@@ -117,19 +116,12 @@ contract Task5 with Deployable {
     //   nft = sender;
     // }
 
-    // self.nfts.set(self.countNfts, sender());
-    // let key: Int = random(0, self.countNfts);
-    // let nft: Address = self.nfts.get(key)!!;
-
     send(SendParameters{
         to: nft,
         value: value - ton("2.05"),
         mode: SendIgnoreErrors,
         body: body
     });
-
-    // self.nfts.set(key, sender());
-    // self.nfts.set(self.countNfts, null);
 
   }
 
@@ -165,7 +157,7 @@ contract Task5 with Deployable {
 
     let message: SendParameters = SendParameters{
       to: self.owner, 
-      value: ton("0.08"),
+      value: ton("0.07"),
       mode: SendIgnoreErrors,
       body: body
     };
