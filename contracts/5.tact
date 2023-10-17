@@ -152,18 +152,7 @@ contract Task5 with Deployable {
     require(sender() == myAddress() || context().value >= ton("1") + self.countNfts * ton("0.08"), "Insufficent funds");
     require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
 
-    let id: Int = self.countNfts;
-    // let owner: Address = self.owner;
-
-    // let body: Cell = Transfer {
-    //   queryId: msg.queryId,
-    //   newOwner: self.owner,
-    //   responseDestination: self.owner,
-    //   customPayload: null,
-    //   forwardAmount: 0,
-    //   forwardPayload: emptySlice()
-    // }.toCell();
-
+    // let id: Int = self.countNfts;
     let body: Cell = beginCell()
         .storeUint(0x5fcc3d14, 32)
         .storeUint(msg.queryId, 64)
@@ -182,14 +171,16 @@ contract Task5 with Deployable {
     };
 
     repeat(min(self.countNfts, 110)) {
-      id = id - 1;
-      let nft: Address = self.nfts.get(id)!!;
+      // id = id - 1;
+      // let nft: Address = self.nfts.get(id)!!;
+      self.countNfts = self.countNfts - 1;
+      let nft: Address = self.nfts.get(self.countNfts)!!;
       message.to = nft;
       send(message);
     }
 
-    if (id > 0) {
-      self.countNfts = id;
+    if (self.countNfts > 0) {
+      // self.countNfts = id;
       send(SendParameters{
         to: myAddress(),
         value: 0,
@@ -198,7 +189,7 @@ contract Task5 with Deployable {
       }); 
     } else {
       self.nfts = emptyMap();
-      self.countNfts = 0;
+      // self.countNfts = 0;
     }
 
   }
