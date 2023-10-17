@@ -69,8 +69,8 @@ contract Task3 with Deployable {
 
   receive(msg: TokenNotification) {
     if (sender() == self.jettonAddressA) {
+      self.aAmount = self.aAmount + msg.amount;
       if (msg.from == self.owner) {
-        self.aAmount = self.aAmount + msg.amount;
         return;
       }
 
@@ -97,10 +97,10 @@ contract Task3 with Deployable {
           body: body
           });
 
-        self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amountB;
         return;
       }
+      self.aAmount = self.aAmount - msg.amount;
       transfer(self.jettonAddressA, msg);
       return;
     }
