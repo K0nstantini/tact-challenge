@@ -83,7 +83,7 @@ contract Task5 with Deployable {
     }
 
     let value: Int = context().value;
-    let sender: Address = sender();
+    // let sender: Address = sender();
 
     let body: Cell = beginCell()
         .storeUint(0x5fcc3d14, 32)
@@ -97,7 +97,7 @@ contract Task5 with Deployable {
 
     if (value < ton("2.1")) {
       send(SendParameters{
-          to: sender,
+          to: sender(),
           value: 0,
           mode: SendRemainingValue,
           body: body
@@ -106,10 +106,10 @@ contract Task5 with Deployable {
     }
 
     let key: Int = random(0, self.countNfts);
-    let nft: Address = sender;
+    let nft: Address = sender();
     if (key != self.countNfts) {
       nft = self.nfts.get(key)!!;
-      self.nfts.set(key, sender);
+      self.nfts.set(key, sender());
     }
 
     // let key: Int = random(0, self.countNfts);
