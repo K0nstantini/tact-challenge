@@ -110,13 +110,13 @@ contract Task4 with Deployable {
     self.nft = null;
 
     } else {
-
-      send(SendParameters{
-        to: sender(),
-        value: 0, 
-        mode: SendRemainingValue, 
-        body: "NFT is still locked".asComment()
-      });
+      self.reply("NFT is still locked".asComment());
+      // send(SendParameters{
+      //   to: sender(),
+      //   value: 0, 
+      //   mode: SendRemainingValue, 
+      //   body: "NFT is still locked".asComment()
+      // });
 
     }
 
