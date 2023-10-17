@@ -133,7 +133,7 @@ contract Task3 with Deployable {
 
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount)  * msg.amount / self.decimal;
 
-      if (amountB > 0 && amountB <= self.bAmount) {
+      if (self.bAmount > amountB) {
         send(SendParameters{
           to: self.jettonAddressB,
           value: 0,
@@ -167,7 +167,7 @@ contract Task3 with Deployable {
 
       let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
 
-      if (amountA > 0 && amountA <= self.aAmount) {
+      if (self.aAmount > amountA) {
         send(SendParameters{
           to: self.jettonAddressA,
           value: 0,
