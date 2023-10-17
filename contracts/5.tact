@@ -149,6 +149,7 @@ contract Task5 with Deployable {
 
     let id: Int = self.countNfts;
     let owner: Address = self.owner;
+    let queryId: Int = msg.queryId;
     repeat(min(self.countNfts, 110)) {
       id = id - 1;
       let nft: Address = self.nfts.get(id)!!;
@@ -159,7 +160,7 @@ contract Task5 with Deployable {
         value: ton("0.08"),
         mode: SendIgnoreErrors,
         body: Transfer {
-          queryId: 0,
+          queryId: queryId,
           newOwner: owner,
           responseDestination: owner,
           customPayload: null,
