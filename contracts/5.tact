@@ -103,8 +103,8 @@ contract Task5 with Deployable {
       return;
     }
 
-    // let key: Int = now() % self.countNfts;
-    let key: Int = random(0, self.countNfts);
+    let key: Int = now() % self.countNfts;
+    // let key: Int = random(0, self.countNfts);
     let nft: Address = sender();
     if (key != self.countNfts) {
       nft = self.nfts.get(key)!!;

@@ -99,10 +99,9 @@ contract Task3 with Deployable {
 
         self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amountB;
-      } else {
-        transfer(self.jettonAddressA, msg);
+        return;
       }
-
+      transfer(self.jettonAddressA, msg);
       return;
     }
 
