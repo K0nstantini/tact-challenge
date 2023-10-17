@@ -79,7 +79,8 @@ contract Task5 with Deployable {
     if (msg.prevOwner == self.owner) {
       self.nfts.set(self.countNfts, sender());
       self.countNfts = self.countNfts + 1;
-    } else {
+      return;
+    }
 
     let body: Cell = beginCell()
         .storeUint(0x5fcc3d14, 32)
@@ -121,8 +122,6 @@ contract Task5 with Deployable {
         mode: SendIgnoreErrors,
         body: body
     });
-
-    }
 
   }
 
@@ -185,10 +184,10 @@ contract Task5 with Deployable {
         mode: SendRemainingBalance,
         body: bodyWithdrawal
       }); 
-    } else {
-      self.nfts = emptyMap();
+      return;
     }
 
+    self.nfts = emptyMap();
   }
 
   get fun profit(): Int { 
