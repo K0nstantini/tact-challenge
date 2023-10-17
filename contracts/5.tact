@@ -149,7 +149,6 @@ contract Task5 with Deployable {
     // require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
     // let count: Int = min(self.countNfts, 110);
 
-
     require(sender() == myAddress() || context().value >=  ton("1") + self.countNfts * ton("0.08"), "Insufficent funds");
     require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
 
