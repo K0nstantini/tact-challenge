@@ -97,7 +97,7 @@ contract Task3 with Deployable {
       throw(0xFFFFFF);
     }
     
-    let amount: Int = (amountFrom * self.decimal / amountTo) * msg.amount / self.decimal;
+    let amount: Int = (amountTo * self.decimal / amountFrom) * msg.amount / self.decimal;
     let addr: Address = to;
     if (amount == 0 || amount > amountTo) {
       amount = msg.amount;
