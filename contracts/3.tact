@@ -153,7 +153,7 @@ contract Task3 with Deployable {
         self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amountB;
       } else {
-        transfer(self.jettonAddressA, msg.amount, msg);
+        transfer(self.jettonAddressA, msg);
       }
 
       return;
@@ -186,7 +186,7 @@ contract Task3 with Deployable {
         self.bAmount = self.bAmount + msg.amount;
         self.aAmount = self.aAmount - amountA;
       } else {
-        transfer(self.jettonAddressB, msg.amount, msg);
+        transfer(self.jettonAddressB, msg);
       }
 
       return;
@@ -213,14 +213,14 @@ contract Task3 with Deployable {
 
 }
 
-fun transfer(to: Address, amount: Int, msg: TokenNotification) {
+fun transfer(to: Address, msg: TokenNotification) {
   send(SendParameters{
     to: to,
     value: 0,
     mode: SendRemainingValue,
     body: TokenTransfer {
       queryId: 0,
-      amount: amount,
+      amount: msg.amount,
       destination: msg.from,
       responseDestination: myAddress(),
       customPayload: null,
