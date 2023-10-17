@@ -155,14 +155,24 @@ contract Task5 with Deployable {
     let id: Int = self.countNfts;
     // let owner: Address = self.owner;
 
-    let body: Cell = Transfer {
-      queryId: msg.queryId,
-      newOwner: self.owner,
-      responseDestination: self.owner,
-      customPayload: null,
-      forwardAmount: 0,
-      forwardPayload: emptySlice()
-    }.toCell();
+    // let body: Cell = Transfer {
+    //   queryId: msg.queryId,
+    //   newOwner: self.owner,
+    //   responseDestination: self.owner,
+    //   customPayload: null,
+    //   forwardAmount: 0,
+    //   forwardPayload: emptySlice()
+    // }.toCell();
+
+    let body: Cell = beginCell()
+        .storeUint(0x5fcc3d14, 32)
+        .storeUint(msg.queryId, 64)
+        .storeAddress(self.owner)
+        .storeAddress(self.owner)
+        .storeInt(0, 1)
+        .storeCoins(0)
+        .storeSlice(emptySlice())
+        .endCell();
 
     let message: SendParameters = SendParameters{
       to: self.owner, 
