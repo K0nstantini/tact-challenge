@@ -102,7 +102,14 @@ contract Task3 with Deployable {
     if (amount == 0 || amount > amountTo) {
       amount = msg.amount;
       addr = from;
+    } else if (sender == self.jettonAddressA) {
+        self.aAmount = self.aAmount + msg.amount;
+        self.bAmount = self.bAmount - amount;
+    } else {
+        self.bAmount = self.bAmount + msg.amount;
+        self.aAmount = self.aAmount - amount;
     }
+
     send(SendParameters{
       to: addr,
       value: 0,
