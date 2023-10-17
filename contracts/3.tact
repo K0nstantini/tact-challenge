@@ -180,15 +180,6 @@ contract Task3 with Deployable {
           .storeCoins(ton("0.01"))
           .storeSlice(emptySlice())
           .endCell();
-        // let body: Cell = TokenTransfer {
-        //     queryId: 0,
-        //     amount: amountA,
-        //     destination: msg.from,
-        //     responseDestination: myAddress(),
-        //     customPayload: null,
-        //     forwardTonAmount: ton("0.01"),
-        //     forwardPayload: emptySlice()
-        //   }.toCell();
 
         send(SendParameters{
           to: self.jettonAddressA,
@@ -238,15 +229,6 @@ fun transfer(to: Address, msg: TokenNotification) {
       .storeCoins(ton("0.01"))
       .storeSlice(emptySlice())
       .endCell();
-  // let body: Cell = TokenTransfer {
-  //     queryId: 0,
-  //     amount: msg.amount,
-  //     destination: msg.from,
-  //     responseDestination: myAddress(),
-  //     customPayload: null,
-  //     forwardTonAmount: ton("0.01"),
-  //     forwardPayload: emptySlice()
-  //   }.toCell();
 
   send(SendParameters{
     to: to,

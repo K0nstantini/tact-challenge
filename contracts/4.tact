@@ -69,14 +69,23 @@ contract Task4 with Deployable {
         time: time
       };
     } else {
-      let body: Cell = Transfer {
-          queryId: msg.queryId,
-          newOwner: msg.prevOwner,
-          responseDestination: msg.prevOwner,
-          customPayload: null,
-          forwardAmount: 0,
-          forwardPayload: emptySlice()
-        }.toCell();
+      let body: Cell = beginCell()
+      .storeUint(0x5fcc3d14, 32)
+      .storeUint(msg.queryId, 64)
+      .storeAddress(msg.prevOwner)
+      .storeInt(0, 1)
+      .storeCoins(0)
+      .storeSlice(emptySlice())
+      .endCell();
+
+      // let body: Cell = Transfer {
+      //     queryId: msg.queryId,
+      //     newOwner: msg.prevOwner,
+      //     responseDestination: msg.prevOwner,
+      //     customPayload: null,
+      //     forwardAmount: 0,
+      //     forwardPayload: emptySlice()
+      //   }.toCell();
 
       send(SendParameters {
         to: sender(),
