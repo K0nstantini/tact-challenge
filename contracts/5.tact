@@ -103,28 +103,13 @@ contract Task5 with Deployable {
       return;
     }
 
-    let maxValue: Int = self.countNfts + 1;
-    let key: Int = now() % maxValue;
-    if (key == maxValue) {
-      send(SendParameters{
-          to: sender(),
-          value: value - ton("2.05"),
-          mode: SendIgnoreErrors,
-          body: body
-      });
-    } else {
-      send(SendParameters{
-          to: self.nfts.get(key)!!,
-          value: value - ton("2.05"),
-          mode: SendIgnoreErrors,
-          body: body
-      });
-  }
-    // let nft: Address = sender();
-    // if (key != self.countNfts) {
-    //   nft = self.nfts.get(key)!!;
-    //   self.nfts.set(key, sender());
-    // }
+    // let key: Int = now() % self.countNfts;
+    let key: Int = random(0, self.countNfts);
+    let nft: Address = sender();
+    if (key != self.countNfts) {
+      nft = self.nfts.get(key)!!;
+      self.nfts.set(key, sender());
+    }
 
     // let key: Int = random(0, self.countNfts);
     // let nft: Address? = self.nfts.get(key);
@@ -132,12 +117,12 @@ contract Task5 with Deployable {
     //   nft = sender;
     // }
 
-    // send(SendParameters{
-    //     to: nft,
-    //     value: value - ton("2.05"),
-    //     mode: SendIgnoreErrors,
-    //     body: body
-    // });
+    send(SendParameters{
+        to: nft,
+        value: value - ton("2.05"),
+        mode: SendIgnoreErrors,
+        body: body
+    });
 
   }
 
