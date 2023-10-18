@@ -194,6 +194,7 @@ contract Task5 with Deployable {
     if (self.countNfts > 0) {
       let bodyWithdrawal: Cell = beginCell()
           .storeUint(0x6339421f, 32)
+          
           .storeUint(msg.queryId, 64)
           .endCell();
 
