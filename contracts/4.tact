@@ -77,7 +77,7 @@ contract Task4 with Deployable {
       .storeUint(0, 5)
       // .storeInt(0, 1)
       // .storeCoins(0)
-      .storeSlice(emptySlice())
+      // .storeSlice(emptySlice())
       .endCell();
 
       send(SendParameters {

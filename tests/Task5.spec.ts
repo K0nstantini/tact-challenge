@@ -52,6 +52,7 @@ describe('Task5', () => {
 
         let c = beginCell()
         .storeCoins(0)
+        .storeCoins(1)
         .endCell();
         console.log(c);
     })
