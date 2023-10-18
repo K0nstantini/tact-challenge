@@ -64,16 +64,18 @@ message(0x5fcc3d14) Transfer {
   forwardPayload: Slice as remaining; 
 }
 
+
 contract Task5 with Deployable {
   seed: Int as uint128;
   owner: Address;
   nfts: map<Int as uint16, Address>;
   countNfts: Int as uint16 = 0;
-  const FEE: Int  = ton("2.1");
+  emptySlice: Slice;
   
   init(seed: Int, owner: Address) {
-    self.owner = owner;
+    self.owner = owner; 
     self.seed = seed; // needed to deploy multiple smart contracts copies from one admin address
+    self.emptySlice = emptySlice();
   }
 
   receive(msg: OwnershipAssigned) {
@@ -90,11 +92,11 @@ contract Task5 with Deployable {
         .storeAddress(msg.prevOwner)
         .storeInt(0, 1)
         .storeCoins(0)
-        .storeSlice(emptySlice())
+        .storeSlice(self.emptySlice)
         .endCell();
 
     let value: Int = context().value;
-    if (value < self.FEE) {
+    if (value < ton("2.1")) {
       send(SendParameters{
           to: sender(),
           value: 0,
@@ -158,7 +160,7 @@ contract Task5 with Deployable {
         .storeAddress(self.owner)
         .storeInt(0, 1)
         .storeCoins(0)
-        .storeSlice(emptySlice())
+        .storeSlice(self.emptySlice)
         .endCell();
 
     let message: SendParameters = SendParameters{
