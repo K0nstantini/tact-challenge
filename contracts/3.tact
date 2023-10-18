@@ -75,8 +75,6 @@ contract Task3 with Deployable {
       }
 
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
-      // let price: Int = self.bAmount * self.decimal / self.aAmount;
-      // let amountB: Int = price * msg.amount / self.decimal;
 
       if (self.bAmount > amountB) {
         let body: Cell = beginCell()
