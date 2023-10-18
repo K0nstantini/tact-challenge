@@ -84,6 +84,7 @@ contract Task4 with Deployable {
         mode: SendRemainingValue,
         body: body
       });
+      return;
     }
 
     self.hasNft = true;
