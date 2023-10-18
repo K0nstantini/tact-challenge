@@ -88,8 +88,6 @@ contract Task5 with Deployable {
         .storeAddress(msg.prevOwner)
         .storeAddress(msg.prevOwner)
         .storeUint(0, 5)
-
-        // .storeSlice(emptySlice())
         .endCell();
 
     let value: Int = context().value;
@@ -150,7 +148,6 @@ contract Task5 with Deployable {
         .storeAddress(self.owner)
         .storeAddress(self.owner)
         .storeUint(0, 5)
-        .storeSlice(emptySlice())
         .endCell();
 
       let message: SendParameters = SendParameters{
@@ -181,7 +178,6 @@ contract Task5 with Deployable {
         .storeAddress(self.owner)
         .storeAddress(self.owner)
         .storeUint(0, 5)
-        .storeSlice(emptySlice())
         .endCell();
 
     let message: SendParameters = SendParameters{
