@@ -184,6 +184,7 @@ contract Task5 with Deployable {
         .storeAddress(self.owner)
         .storeAddress(self.owner)
         .storeUint(0, 5)
+
         // .storeInt(0, 1)
         // .storeCoins(0)
         .storeSlice(emptySlice())
