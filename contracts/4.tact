@@ -46,28 +46,29 @@ message NftWithdrawal {
   nftAddress: Address;
 }
 
-// struct Nft {
-//   address: Address;
-//   owner: Address;
-//   time: Int as uint32;
-// }
+struct Nft {
+  address: Address;
+  owner: Address;
+  time: Int as uint32;
+}
 
 contract Task4 with Deployable {
   seed: Int as uint128;
-  // nft: Nft?;
-  hasNft: Bool = false;
-  nftAddress: Address;
-  nftOwner: Address;
-  nftTime: Int as uint32 = 0;
+  nft: Nft?;
   
   init(seed: Int) {
     self.seed = seed; // needed to deploy multiple smart contracts copies from one admin address
-    self.nftAddress = myAddress();
-    self.nftOwner  = myAddress();
   }
 
   receive(msg: OwnershipAssigned) {
-     if (self.hasNft) {
+    if (self.nft == null) {
+      let time: Int = now() + msg.forwardPayload.loadUint(32);
+      self.nft = Nft {
+        address: sender(),
+        owner: msg.prevOwner,
+        time: time
+      };
+    } else {
       let body: Cell = beginCell()
       .storeUint(0x5fcc3d14, 32)
       .storeUint(msg.queryId, 64)
@@ -84,46 +85,16 @@ contract Task4 with Deployable {
         mode: SendRemainingValue,
         body: body
       });
-      return;
     }
-
-    self.hasNft = true;
-    self.nftAddress = sender();
-    self.nftOwner = msg.prevOwner;
-    self.nftTime = now() + msg.forwardPayload.loadUint(32);
-    // if (self.nft == null) {
-    //   let time: Int = now() + msg.forwardPayload.loadUint(32);
-    //   self.nft = Nft {
-    //     address: sender(),
-    //     owner: msg.prevOwner,
-    //     time: time
-    //   };
-    // } else {
-    //   let body: Cell = beginCell()
-    //   .storeUint(0x5fcc3d14, 32)
-    //   .storeUint(msg.queryId, 64)
-    //   .storeAddress(msg.prevOwner)
-    //   .storeAddress(msg.prevOwner)
-    //   .storeInt(0, 1)
-    //   .storeCoins(0)
-    //   .storeSlice(emptySlice())
-    //   .endCell();
-
-    //   send(SendParameters {
-    //     to: sender(),
-    //     value: 0,
-    //     mode: SendRemainingValue,
-    //     body: body
-    //   });
-    // }
   }
 
   receive(msg: NftWithdrawal) {
-    require(self.hasNft, "NFT not fount");
-    require(self.nftAddress == msg.nftAddress, "Invalid NFT address");
-    require(self.nftOwner == sender(), "Invalid sender");
+    require(self.nft != null, "NFT not fount");
+    let nft: Nft = self.nft!!;
+    require(nft.address == msg.nftAddress, "Invalid NFT address");
+    require(nft.owner == sender(), "Invalid sender");
 
-    if (self.nftTime <= now()) {
+    if (nft.time <= now()) {
       let body: Cell = beginCell()
         .storeUint(0x5fcc3d14, 32)
         .storeUint(msg.queryId, 64)
@@ -141,7 +112,7 @@ contract Task4 with Deployable {
           body: body
         });
 
-    self.hasNft = false;
+    self.nft = null;
 
     } else {
       // let body: Cell = beginCell()
@@ -162,22 +133,22 @@ contract Task4 with Deployable {
   }
 
   get fun time(): Int {
-    if (self.hasNft) {
-      return max(self.nftTime - now(), 0);
+    if (self.nft != null) {
+      return max((self.nft!!).time - now(), 0);
     }
       return 0;
   }
 
   get fun nft(): Address? {
-    if (self.hasNft) {
-      return self.nftAddress;
+    if (self.nft != null) {
+      return (self.nft!!).address;
     }
     return null;
   }
 
   get fun owner(): Address? {
-    if (self.hasNft) {
-      return self.nftOwner;
+    if (self.nft != null) {
+      return (self.nft!!).owner;
     }
     return null;
   }
