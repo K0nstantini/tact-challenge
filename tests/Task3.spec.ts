@@ -44,6 +44,11 @@ describe('Task3', () => {
 
 
     it('test', async () => {
+        let c = beginCell()
+        // .storeUint(0, 1)
+        .storeCoins(toNano("0.01"))
+        .endCell();
+        console.log(c);
 
         let res = await sendNotification(jettonB, random.address, 10n);
         expect(res.transactions).toHaveTransaction({
