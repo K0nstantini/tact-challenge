@@ -84,9 +84,6 @@ contract Task5 with Deployable {
 
     let body: Cell = beginCell()
         .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
-
-        // .storeUint(0x5fcc3d14, 32)
-        // .storeUint(msg.queryId, 64)
         .storeAddress(msg.prevOwner)
         .storeAddress(msg.prevOwner)
         .storeUint(0, 5)
@@ -130,7 +127,8 @@ contract Task5 with Deployable {
     require(sender() == self.owner, "Insufficient privelegies");
     nativeReserve(ton("0.1"), 0);
     let body: Cell = beginCell()
-          .storeUint(0xfda48b79, 32)
+          .storeUint(0xfda48b790000000000000000 + msg.queryId, 96)
+          // .storeUint(0xfda48b79, 32)
           .storeUint(msg.queryId, 64)
           .endCell();
 
@@ -145,8 +143,7 @@ contract Task5 with Deployable {
   receive(msg: AdminWithdrawalAllNFTs) {
     if (sender() == myAddress()) {
       let body: Cell = beginCell()
-        .storeUint(0x5fcc3d14, 32)
-        .storeUint(msg.queryId, 64)
+        .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
         .storeAddress(self.owner)
         .storeAddress(self.owner)
         .storeUint(0, 5)
@@ -175,8 +172,7 @@ contract Task5 with Deployable {
     require(sender() == self.owner, "Invalid sender");
 
     let body: Cell = beginCell()
-        .storeUint(0x5fcc3d14, 32)
-        .storeUint(msg.queryId, 64)
+        .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
         .storeAddress(self.owner)
         .storeAddress(self.owner)
         .storeUint(0, 5)
