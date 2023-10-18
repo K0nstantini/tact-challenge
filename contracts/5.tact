@@ -167,23 +167,23 @@ contract Task5 with Deployable {
       body: body
     };
 
-    repeat(min(self.countNfts, 254)) {
+    repeat(min(self.countNfts, 253)) {
       self.countNfts = self.countNfts - 1;
       message.to = self.nfts.get(self.countNfts)!!;
       send(message);
     }
 
     if (self.countNfts > 0) {
-      let bodyWithdrawal: Cell = beginCell()
-          .storeUint(0x6339421f, 32)
-          .storeUint(msg.queryId, 64)
-          .endCell();
+      // let bodyWithdrawal: Cell = beginCell()
+      //     .storeUint(0x6339421f, 32)
+      //     .storeUint(msg.queryId, 64)
+      //     .endCell();
 
       send(SendParameters{
         to: myAddress(),
         value: 0,
         mode: SendRemainingBalance,
-        body: bodyWithdrawal
+        body: msg.toCell()
       }); 
       return;
     }
