@@ -33,18 +33,21 @@ contract Task2 with Deployable {
   }
 
   receive(msg: Slice) {
-    let msgCell: Cell = beginCell().storeSlice(msg).endCell();
+    let msgCell: Cell = beginCell()
+      .storeSlice(msg)
+      .endCell();
+
     let body: Cell = beginCell()
-              .storeAddress(sender())
-              .storeRef(msgCell)
-              .endCell();
+      .storeAddress(sender())
+      .storeRef(msgCell)
+      .endCell();
 
     let params: SendParameters = SendParameters{
-            to: self.admin,
-            value: 0,
-            mode: SendRemainingValue,
-            body: body
-        };
+        to: self.admin,
+        value: 0,
+        mode: SendRemainingValue,
+        body: body
+    };
 
     send(params);
   }
