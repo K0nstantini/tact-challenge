@@ -87,8 +87,9 @@ contract Task5 with Deployable {
         .storeUint(msg.queryId, 64)
         .storeAddress(msg.prevOwner)
         .storeAddress(msg.prevOwner)
-        .storeInt(0, 1)
-        .storeCoins(0)
+        .storeUint(0, 5)
+        // .storeInt(0, 1)
+        // .storeCoins(0)
         .storeSlice(emptySlice())
         .endCell();
 
@@ -149,8 +150,9 @@ contract Task5 with Deployable {
         .storeUint(msg.queryId, 64)
         .storeAddress(self.owner)
         .storeAddress(self.owner)
-        .storeInt(0, 1)
-        .storeCoins(0)
+        .storeUint(0, 5)
+        // .storeInt(0, 1)
+        // .storeCoins(0)
         .storeSlice(emptySlice())
         .endCell();
 
@@ -181,8 +183,9 @@ contract Task5 with Deployable {
         .storeUint(msg.queryId, 64)
         .storeAddress(self.owner)
         .storeAddress(self.owner)
-        .storeInt(0, 1)
-        .storeCoins(0)
+        .storeUint(0, 5)
+        // .storeInt(0, 1)
+        // .storeCoins(0)
         .storeSlice(emptySlice())
         .endCell();
 

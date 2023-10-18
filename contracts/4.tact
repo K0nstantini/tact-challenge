@@ -75,9 +75,7 @@ contract Task4 with Deployable {
       .storeAddress(msg.prevOwner)
       .storeAddress(msg.prevOwner)
       .storeUint(0, 5)
-      // .storeInt(0, 1)
-      // .storeCoins(0)
-      // .storeSlice(emptySlice())
+      .storeSlice(emptySlice())
       .endCell();
 
       send(SendParameters {
