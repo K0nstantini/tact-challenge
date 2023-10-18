@@ -74,7 +74,7 @@ contract Task3 with Deployable {
         return;
       }
 
-      let amountB: Int = (self.bAmount * 1000000000 / self.aAmount) * msg.amount / 1000000000;
+      let amountB: Int = (self.bAmount * 1000000000 / self.aAmount) * msg.amount / 1000000000; // sorry )
       // let price: Int = self.bAmount * self.decimal / self.aAmount;
       // let amountB: Int = price * msg.amount / self.decimal;
 
