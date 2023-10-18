@@ -88,6 +88,7 @@ contract Task5 with Deployable {
         .storeAddress(msg.prevOwner)
         .storeAddress(msg.prevOwner)
         .storeUint(0, 5)
+
         // .storeSlice(emptySlice())
         .endCell();
 
