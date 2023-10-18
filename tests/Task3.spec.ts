@@ -45,8 +45,7 @@ describe('Task3', () => {
 
     it('test', async () => {
         let c = beginCell()
-        // .storeUint(0, 1)
-        .storeCoins(toNano("0.01"))
+        .storeSlice(beginCell().asSlice())
         .endCell();
         console.log(c);
 

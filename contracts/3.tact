@@ -91,7 +91,6 @@ contract Task3 with Deployable {
           .storeAddress(msg.from)
           .storeAddress(myAddress())
           .storeUint(0x3989680, 29)
-          .storeSlice(emptySlice())
           .endCell();
 
         send(SendParameters{
@@ -124,7 +123,6 @@ contract Task3 with Deployable {
           .storeAddress(msg.from)
           .storeAddress(myAddress())
           .storeUint(0x3989680, 29)
-          .storeSlice(emptySlice())
           .endCell();
 
         send(SendParameters{
@@ -169,7 +167,6 @@ fun transfer(to: Address, msg: TokenNotification) {
       .storeAddress(msg.from)
       .storeAddress(myAddress())
       .storeUint(0x3989680, 29)
-      .storeSlice(emptySlice())
       .endCell();
 
   send(SendParameters{
