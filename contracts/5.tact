@@ -129,7 +129,7 @@ contract Task5 with Deployable {
     let body: Cell = beginCell()
           .storeUint(0xfda48b790000000000000000 + msg.queryId, 96)
           // .storeUint(0xfda48b79, 32)
-          .storeUint(msg.queryId, 64)
+          // .storeUint(msg.queryId, 64)
           .endCell();
 
     send(SendParameters{
@@ -193,9 +193,9 @@ contract Task5 with Deployable {
 
     if (self.countNfts > 0) {
       let bodyWithdrawal: Cell = beginCell()
-          .storeUint(0x6339421f, 32)
-          
-          .storeUint(msg.queryId, 64)
+          .storeUint(0x6339421f0000000000000000 + msg.queryId, 96)
+          // .storeUint(0x6339421f, 32)
+          // .storeUint(msg.queryId, 64)
           .endCell();
 
       send(SendParameters{
