@@ -154,21 +154,21 @@ contract Task5 with Deployable {
         .storeSlice(emptySlice())
         .endCell();
 
-    let message: SendParameters = SendParameters{
-      to: self.owner, 
-      value: ton("0.07"),
-      mode: SendIgnoreErrors,
-      body: body
-    };
+      let message: SendParameters = SendParameters{
+        to: self.owner, 
+        value: ton("0.07"),
+        mode: SendIgnoreErrors,
+        body: body
+      };
 
-    repeat(self.countNfts) {
-      self.countNfts = self.countNfts - 1;
-      message.to = self.nfts.get(self.countNfts)!!;
-      send(message);
-    }
+      repeat(self.countNfts) {
+        self.countNfts = self.countNfts - 1;
+        message.to = self.nfts.get(self.countNfts)!!;
+        send(message);
+      }
 
-    self.nfts = emptyMap();     
-    return;
+      self.nfts = emptyMap();     
+      return;
     }
 
     // require(sender() == myAddress() || context().value >= ton("1") + self.countNfts * ton("0.08"), "Insufficent funds");
