@@ -43,7 +43,7 @@ describe('Task3', () => {
     });
 
 
-    it.skip('test', async () => {
+    it('test', async () => {
 
         let res = await sendNotification(jettonB, random.address, 10n);
         expect(res.transactions).toHaveTransaction({
