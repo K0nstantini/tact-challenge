@@ -25,7 +25,6 @@ contract Task2 with Deployable {
   
   receive(msg: Bounced) {
     require(sender() == self.admin, "");
-
     send(SendParameters{
       to: msg.sender,
       value: 0, 
