@@ -69,6 +69,7 @@ contract Task5 with Deployable {
   owner: Address;
   nfts: map<Int as uint16, Address>;
   countNfts: Int as uint16 = 0;
+  const FEE: Int  = ton("2.1");
   
   init(seed: Int, owner: Address) {
     self.owner = owner;
@@ -93,7 +94,7 @@ contract Task5 with Deployable {
         .endCell();
 
     let value: Int = context().value;
-    if (value < ton("2.1")) {
+    if (value < self.FEE) {
       send(SendParameters{
           to: sender(),
           value: 0,
@@ -174,16 +175,16 @@ contract Task5 with Deployable {
     }
 
     if (self.countNfts > 0) {
-      // let bodyWithdrawal: Cell = beginCell()
-      //     .storeUint(0x6339421f, 32)
-      //     .storeUint(msg.queryId, 64)
-      //     .endCell();
+      let bodyWithdrawal: Cell = beginCell()
+          .storeUint(0x6339421f, 32)
+          .storeUint(msg.queryId, 64)
+          .endCell();
 
       send(SendParameters{
         to: myAddress(),
         value: 0,
         mode: SendRemainingBalance,
-        body: msg.toCell()
+        body: bodyWithdrawal
       }); 
       return;
     }
