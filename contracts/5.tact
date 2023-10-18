@@ -68,7 +68,7 @@ contract Task5 with Deployable {
   seed: Int as uint128;
   owner: Address;
   nfts: map<Int as uint16, Address>;
-  countNfts: Int as uint128 = 0;
+  countNfts: Int as uint16 = 0;
   
   init(seed: Int, owner: Address) {
     self.owner = owner;
@@ -103,8 +103,8 @@ contract Task5 with Deployable {
       return;
     }
 
-    let key: Int = now() % self.countNfts;
-    // let key: Int = random(0, self.countNfts);
+    // let key: Int = now() % self.countNfts;
+    let key: Int = random(0, self.countNfts);
     let nft: Address = sender();
     if (key != self.countNfts) {
       nft = self.nfts.get(key)!!;
@@ -167,7 +167,7 @@ contract Task5 with Deployable {
       body: body
     };
 
-    repeat(min(self.countNfts, 253)) {
+    repeat(min(self.countNfts, 254)) {
       self.countNfts = self.countNfts - 1;
       message.to = self.nfts.get(self.countNfts)!!;
       send(message);
