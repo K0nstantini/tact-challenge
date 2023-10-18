@@ -90,7 +90,7 @@ contract Task3 with Deployable {
           .storeCoins(amountB)
           .storeAddress(msg.from)
           .storeAddress(myAddress())
-          .storeUint(ton("0.01"), 121)
+          .storeUint(10010000000, 29)
           // .storeInt(0, 1)
           // .storeCoins(ton("0.01"))
           .storeSlice(emptySlice())
