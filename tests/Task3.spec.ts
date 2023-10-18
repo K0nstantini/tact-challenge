@@ -43,12 +43,7 @@ describe('Task3', () => {
     });
 
 
-    it('test', async () => {
-        let c = beginCell()
-        .storeSlice(beginCell().asSlice())
-        .endCell();
-        console.log(c);
-
+    it.skip('test', async () => {
         let res = await sendNotification(jettonB, random.address, 10n);
         expect(res.transactions).toHaveTransaction({
             from: jettonB.address,

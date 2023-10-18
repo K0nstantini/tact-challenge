@@ -49,6 +49,11 @@ describe('Task5', () => {
     it('test', async () => {
         console.log(`nft-1: ${nft1.address}\nnft-2: ${nft2.address}\nnft-3: ${nft3.address}\nnft-4: ${nft4.address}\nnft-5: ${nft5.address}`);
         console.log(`contract: ${task5.address}\nowner: ${owner.address}\nrandom: ${random.address}`);
+
+        let c = beginCell()
+        .storeCoins(0)
+        .endCell();
+        console.log(c);
     })
 
 

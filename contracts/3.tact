@@ -68,12 +68,6 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
-    // let c: Cell = beginCell()
-    //     .storeInt(0, 1)
-    //     .storeCoins(ton("0.01"))
-    //     .endCell();
-
-    // dump(c);
     if (sender() == self.jettonAddressA) {
       if (msg.from == self.owner) {
         self.aAmount = self.aAmount + msg.amount;
