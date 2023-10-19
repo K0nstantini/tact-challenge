@@ -33,21 +33,21 @@ import "@stdlib/deploy";
 */
 
 message(0x7362d09c) TokenNotification {
-  queryId: Int as uint64;
-  amount: Int as coins;
-  from: Address;
-  forwardPayload: Slice as remaining;
+    queryId: Int as uint64;
+    amount: Int as coins;
+    from: Address;
+    forwardPayload: Slice as remaining;
 }
 
 // To simplify the testing process and the specificity of the messages being sent, we decided to add clear default values in this transaction
 message(0xf8a7ea5) TokenTransfer {
-  queryId: Int as uint64; // should be 0
-  amount: Int as coins; // should be amount of jettons to send
-  destination: Address; // should be user address / TokenNotification.from
-  responseDestination: Address?; // should be myAddress()
-  customPayload: Cell?; // should be null
-  forwardTonAmount: Int as coins; // should be ton("0.01")
-  forwardPayload: Slice as remaining; // should be emptySlice()
+     queryId: Int as uint64; // should be 0
+     amount: Int as coins; // should be amount of jettons to send
+     destination: Address; // should be user address / TokenNotification.from
+     responseDestination: Address?; // should be myAddress()
+     customPayload: Cell?; // should be null
+     forwardTonAmount: Int as coins; // should be ton("0.01")
+     forwardPayload: Slice as remaining; // should be emptySlice()
 }
 
 contract Task3 with Deployable {
@@ -68,104 +68,11 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
-    if (sender() == self.jettonAddressA) {
-      if (msg.from == self.owner) {
-        self.aAmount = self.aAmount + msg.amount;
-        return;
-      }
-
-      let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
-
-      if (self.bAmount > amountB) {
-        let body: Cell = beginCell()
-          .storeUint(0x0f8a7ea50000000000000000, 96)
-          .storeCoins(amountB)
-          .storeAddress(msg.from)
-          .storeAddress(myAddress())
-          .storeUint(0x3989680, 29)
-          .endCell();
-
-        send(SendParameters{
-          to: self.jettonAddressB,
-          value: 0,
-          mode: SendRemainingValue,
-          body: body
-          });
-
-        self.aAmount = self.aAmount + msg.amount;
-        self.bAmount = self.bAmount - amountB;
-        return;
-      }
-      transfer(self.jettonAddressA, msg);
-      return;
-    }
-
-    if (sender() == self.jettonAddressB) {
-      if (msg.from == self.owner) {
-        self.bAmount = self.bAmount + msg.amount;
-        return;
-      }
-
-      let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
-
-      if (self.aAmount > amountA) {
-        let body: Cell = beginCell()
-          .storeUint(0x0f8a7ea50000000000000000, 96)
-          .storeCoins(amountA)
-          .storeAddress(msg.from)
-          .storeAddress(myAddress())
-          .storeUint(0x3989680, 29)
-          .endCell();
-
-        send(SendParameters{
-          to: self.jettonAddressA,
-          value: 0,
-          mode: SendRemainingValue,
-          body: body
-        });
-        self.bAmount = self.bAmount + msg.amount;
-        self.aAmount = self.aAmount - amountA;
-        return;
-      }
-      transfer(self.jettonAddressB, msg);
-      return;
-    }
-
-    throw(0xFFFFFF);
   } 
   
   get fun price(jetton: Address): Int { 
-    if (jetton == self.jettonAddressA) {
-      return self.bAmount * self.decimal / self.aAmount;
-    } else {
-      return self.aAmount * self.decimal / self.bAmount;
-    }
   }
   
-  get fun balance(jetton: Address): Int {
-    if (jetton == self.jettonAddressA) {
-      return self.aAmount;
-    } else {
-      return self.bAmount;
-    }
+  get fun balance(jetton: Address): Int { 
   }
-
-}
-
-fun transfer(to: Address, msg: TokenNotification) {
-  let body: Cell = beginCell()
-      .storeUint(0x0f8a7ea50000000000000000, 96)
-      .storeCoins(msg.amount)
-      .storeAddress(msg.from)
-      .storeAddress(myAddress())
-      .storeUint(0x3989680, 29)
-      .endCell();
-
-  send(SendParameters{
-    to: to,
-    value: 0,
-    mode: SendRemainingValue,
-    body: body
-  });
-  
 }

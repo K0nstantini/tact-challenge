@@ -46,110 +46,25 @@ message NftWithdrawal {
   nftAddress: Address;
 }
 
-struct Nft {
-  address: Address;
-  owner: Address;
-  time: Int as uint32;
-}
-
 contract Task4 with Deployable {
   seed: Int as uint128;
-  nft: Nft?;
   
   init(seed: Int) {
     self.seed = seed; // needed to deploy multiple smart contracts copies from one admin address
   }
 
   receive(msg: OwnershipAssigned) {
-    if (self.nft == null) {
-      let time: Int = now() + msg.forwardPayload.loadUint(32);
-      self.nft = Nft {
-        address: sender(),
-        owner: msg.prevOwner,
-        time: time
-      };
-    } else {
-      let body: Cell = beginCell()
-      .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
-      // .storeUint(0x5fcc3d14, 32)
-      // .storeUint(msg.queryId, 64)
-      .storeAddress(msg.prevOwner)
-      .storeAddress(msg.prevOwner)
-      .storeUint(0, 5)
-      .storeSlice(emptySlice())
-      .endCell();
-
-      send(SendParameters {
-        to: sender(),
-        value: 0,
-        mode: SendRemainingValue,
-        body: body
-      });
-    }
   }
 
   receive(msg: NftWithdrawal) {
-    require(self.nft != null, "NFT not fount");
-    let nft: Nft = self.nft!!;
-    require(nft.address == msg.nftAddress, "Invalid NFT address");
-    require(nft.owner == sender(), "Invalid sender");
-
-    if (nft.time <= now()) {
-      let body: Cell = beginCell()
-        .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
-        // .storeUint(0x5fcc3d14, 32)
-        // .storeUint(msg.queryId, 64)
-        .storeAddress(sender())
-        .storeAddress(sender())
-        .storeUint(0, 5)
-        .storeSlice(emptySlice())
-        .endCell();
-
-      send(SendParameters {
-          to: msg.nftAddress,
-          value: 0,
-          mode: SendRemainingValue,
-          body: body
-        });
-
-    self.nft = null;
-
-    } else {
-      // let body: Cell = beginCell()
-      //   .storeUint(0, 32)
-      //   .storeSlice("NFT is still locked".asSlice())
-      //   .endCell();
-
-      send(SendParameters{
-        to: sender(),
-        value: 0, 
-        mode: SendRemainingValue, 
-        body: "NFT is still locked".asComment()
-        // body: body
-      });
-
-    }
-
   }
 
   get fun time(): Int {
-    if (self.nft != null) {
-      return max((self.nft!!).time - now(), 0);
-    }
-      return 0;
   }
 
   get fun nft(): Address? {
-    if (self.nft != null) {
-      return (self.nft!!).address;
-    }
-    return null;
   }
 
   get fun owner(): Address? {
-    if (self.nft != null) {
-      return (self.nft!!).owner;
-    }
-    return null;
   }
 }
