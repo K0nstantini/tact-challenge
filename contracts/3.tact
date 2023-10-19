@@ -70,11 +70,11 @@ contract Task3 with Deployable {
   receive(msg: TokenNotification) {
     if (sender() == self.jettonAddressA) {
       if (msg.from == self.owner) {
-        self.aAmount = self.aAmount + msg.amount;
+        self.aAmount = self.aAmount + msg.amount * self.decimal;
         return;
       }
 
-      let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
+      let amountB: Int = self.bAmount / self.aAmount * msg.amount;
 
       if (self.bAmount > amountB) {
         let body: Cell = beginCell()
@@ -92,8 +92,8 @@ contract Task3 with Deployable {
             body: body
           });
 
-        self.aAmount = self.aAmount + msg.amount;
-        self.bAmount = self.bAmount - amountB;
+        self.aAmount = self.aAmount + msg.amount * self.decimal;
+        self.bAmount = self.bAmount - amountB * self.decimal;
         return;
       }
       // let body: Cell = beginCell()
@@ -125,11 +125,11 @@ contract Task3 with Deployable {
 
     if (sender() == self.jettonAddressB) {
       if (msg.from == self.owner) {
-        self.bAmount = self.bAmount + msg.amount;
+        self.bAmount = self.bAmount + msg.amount * self.decimal;
         return;
       }
 
-      let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
+      let amountA: Int = self.aAmount / self.bAmount * msg.amount;
 
       if (self.aAmount > amountA) {
         let body: Cell = beginCell()
@@ -146,8 +146,8 @@ contract Task3 with Deployable {
           mode: SendRemainingValue,
           body: body
         });
-        self.bAmount = self.bAmount + msg.amount;
-        self.aAmount = self.aAmount - amountA;
+        self.bAmount = self.bAmount + msg.amount * self.decimal;
+        self.aAmount = self.aAmount - amountA * self.decimal;
         return;
       }
       transfer(self.jettonAddressB, msg);
@@ -167,9 +167,9 @@ contract Task3 with Deployable {
   
   get fun balance(jetton: Address): Int {
     if (jetton == self.jettonAddressA) {
-      return self.aAmount;
+      return self.aAmount * self.decimal;
     } else {
-      return self.bAmount;
+      return self.bAmount * self.decimal;
     }
   }
 
