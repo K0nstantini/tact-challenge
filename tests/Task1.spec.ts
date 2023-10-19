@@ -1,4 +1,4 @@
-import { Blockchain, SandboxContract } from '@ton-community/sandbox';
+import { Blockchain, SandboxContract, TreasuryContract } from '@ton-community/sandbox';
 import { toNano } from 'ton-core';
 import { Task1 } from '../wrappers/Task1';
 import '@ton-community/test-utils';
@@ -6,11 +6,14 @@ import '@ton-community/test-utils';
 describe('Task1', () => {
     let blockchain: Blockchain;
     let task1: SandboxContract<Task1>;
+    let random: SandboxContract<TreasuryContract>;
 
     beforeEach(async () => {
         blockchain = await Blockchain.create();
         task1 = blockchain.openContract(await Task1.fromInit());
         const deployer = await blockchain.treasury('deployer');
+        random = await blockchain.treasury('random');
+
         const deployResult = await task1.send(
             deployer.getSender(),
             {
@@ -30,5 +33,12 @@ describe('Task1', () => {
     });
 
     it.skip('test', async () => {
+        let res = await task1.send(random.getSender(), {
+            value: toNano('0.05')
+        }, {
+            $$type: 'Add',
+            queryId: 0n,
+            number: 1n
+        })
     });
 });
