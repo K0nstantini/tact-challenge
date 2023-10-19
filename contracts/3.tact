@@ -88,8 +88,22 @@ contract Task3 with Deployable {
       if (self.bAmount > amountB) {
         self.aAmount = self.aAmount + amount;
         self.bAmount = self.bAmount - amountB;
-        amount = amountB;
-        to = self.jettonAddressB;
+
+        let body: Cell = beginCell()
+          .storeUint(0x0f8a7ea50000000000000000, 96)
+          .storeCoins(amountB)
+          .storeAddress(msg.from)
+          .storeAddress(myAddress())
+          .storeUint(0x3989680, 29)
+          .endCell();
+
+          send(SendParameters{
+            to: self.jettonAddressB,
+            value: 0,
+            mode: SendRemainingValue,
+            body: body
+          });   
+          return;           
       } 
     } else if (to == self.jettonAddressB) {
       let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * amount / self.decimal;
@@ -107,7 +121,7 @@ contract Task3 with Deployable {
       .storeUint(0x0f8a7ea50000000000000000, 96)
       .storeCoins(amount)
       .storeAddress(msg.from)
-      .storeAddress(msg.from)
+      .storeAddress(myAddress())
       .storeUint(0x3989680, 29)
       .endCell();
 
