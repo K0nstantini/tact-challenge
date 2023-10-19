@@ -55,9 +55,11 @@ struct Nft {
 contract Task4 with Deployable {
   seed: Int as uint128;
   nft: Nft?;
+  b: Builder;
   
   init(seed: Int) {
     self.seed = seed; // needed to deploy multiple smart contracts copies from one admin address
+    self.b = beginCell().storeUint(0x5fcc3d14, 32);
   }
 
   receive(msg: OwnershipAssigned) {
@@ -71,9 +73,8 @@ contract Task4 with Deployable {
       return;
     }
 
-    let body: Cell = beginCell()
     // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
-    .storeUint(0x5fcc3d14, 32)
+    let body: Cell = self.b
     .storeUint(msg.queryId, 64)
     .storeAddress(msg.prevOwner)
     .storeAddress(msg.prevOwner)
@@ -95,10 +96,9 @@ contract Task4 with Deployable {
     require(nft.address == msg.nftAddress, "Invalid NFT address");
     require(nft.owner == sender(), "Invalid sender");
 
+    // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
     if (nft.time <= now()) {
-      let body: Cell = beginCell()
-        // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
-        .storeUint(0x5fcc3d14, 32)
+      let body: Cell = self.b
         .storeUint(msg.queryId, 64)
         .storeAddress(sender())
         .storeAddress(sender())
