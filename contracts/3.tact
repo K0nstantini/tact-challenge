@@ -107,7 +107,7 @@ contract Task3 with Deployable {
       .storeUint(0x0f8a7ea50000000000000000, 96)
       .storeCoins(amount)
       .storeAddress(msg.from)
-      .storeAddress(myAddress())
+      .storeAddress(msg.from)
       .storeUint(0x3989680, 29)
       .endCell();
 
