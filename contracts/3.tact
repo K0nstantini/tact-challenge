@@ -83,23 +83,22 @@ contract Task3 with Deployable {
       throw(0xFFFFFF);
     }
 
-    
-    if (to == self.jettonAddressB) {
-      let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * amount / self.decimal;
-      if (self.aAmount > amountA) {
-        self.bAmount = self.bAmount + amount;
-        self.aAmount = self.aAmount - amountA;
-        amount = amountA;
-        to = self.jettonAddressA;
-      } 
-    } else if (to == self.jettonAddressA) {
+    if (to == self.jettonAddressA) {
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * amount / self.decimal;
       if (self.bAmount > amountB) {
         self.aAmount = self.aAmount + amount;
         self.bAmount = self.bAmount - amountB;
-        amount = amountB;
         to = self.jettonAddressB;
       } 
+      amount = amountB;
+    } else if (to == self.jettonAddressB) {
+      let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * amount / self.decimal;
+      if (self.aAmount > amountA) {
+        self.bAmount = self.bAmount + amount;
+        self.aAmount = self.aAmount - amountA;
+        to = self.jettonAddressA;
+      } 
+      amount = amountA;
     } else {
       throw(0xFFFFFF);
     }
@@ -112,12 +111,16 @@ contract Task3 with Deployable {
       .storeUint(0x3989680, 29)
       .endCell();
 
-      send(SendParameters{
-        to: to,
-        value: 0,
-        mode: SendRemainingValue,
-        body: body
-      });       
+      if (amount > 0) {
+        send(SendParameters{
+          to: to,
+          value: 0,
+          mode: SendRemainingValue,
+          body: body
+        });
+        return;
+      }  
+      self.reply(body);     
   
   } 
   
