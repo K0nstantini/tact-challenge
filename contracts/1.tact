@@ -28,7 +28,7 @@ contract Task1 with Deployable {
       // let s: Slice =  context().raw;
       // dump(s.bits()); // 562
       // let skip: Int  = s.loadUint(530);
-      // dump(s.loadUint(32));
+      // dump(s.loadUint(6));
       // // dump(s.loadUint(64));
       // // let skip: Int  = s.loadUint(96);
       // // // let n: Int  = s.loadUint(32);
