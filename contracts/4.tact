@@ -90,7 +90,7 @@ contract Task4 with Deployable {
   }
 
   receive(msg: NftWithdrawal) {
-    require(self.nft != null, "NFT not fount");
+    require(self.nft != null, "1");
     let nft: Nft = self.nft!!;
     require(nft.address == msg.nftAddress, "Invalid NFT address");
     require(nft.owner == sender(), "Invalid sender");
@@ -119,16 +119,16 @@ contract Task4 with Deployable {
       //   .storeUint(0, 32)
       //   .storeSlice("NFT is still locked".asSlice())
       //   .endCell();
-      let body: Cell = beginCell()
-        .storeUint(0x000000004E4654206973207374696C6C206C6F636B6564, 184)
-        .endCell();
+      // let body: Cell = beginCell()
+        // .storeUint(0x000000004E4654206973207374696C6C206C6F636B6564, 184)
+        // .endCell();
 
       send(SendParameters{
         to: sender(),
         value: 0, 
         mode: SendRemainingValue, 
-        // body: "NFT is still locked".asComment()
-        body: body
+        body: "NFT is still locked".asComment()
+        // body: body
       });
 
     }
