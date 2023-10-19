@@ -25,11 +25,11 @@ contract Task1 with Deployable {
     }
 
     receive(msg: Add) {
-      let s: Slice =  context().raw;
-      let id: Int  = s.loadUint(64);
-      self.counter = self.counter + s.loadUint(32);
+      // let s: Slice =  context().raw;
+      // let id: Int  = s.loadUint(64);
+      // self.counter = self.counter + s.loadUint(32);
 
-      // self.counter = self.counter + msg.number;
+      self.counter = self.counter + msg.number;
     }
     
     receive(msg: Subtract) {
