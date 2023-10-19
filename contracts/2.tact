@@ -24,13 +24,14 @@ contract Task2 with Deployable {
   }
   
   receive(msg: Bounced) {
-    require(sender() == self.admin, "1");
-
-    send(SendParameters{
-      to: msg.sender,
-      value: 0, 
-      mode: SendRemainingValue
-    });
+    // require(sender() == self.admin, "1");
+    if (sender() == self.admin) {
+      send(SendParameters{
+        to: msg.sender,
+        value: 0, 
+        mode: SendRemainingValue
+      });
+    }
   }
 
   receive(msg: Slice) {
