@@ -29,7 +29,7 @@ contract Task2 with Deployable {
     send(SendParameters{
       to: msg.sender,
       value: 0, 
-      mode: 64
+      mode: SendRemainingValue
     });
   }
 
@@ -43,7 +43,7 @@ contract Task2 with Deployable {
     let params: SendParameters = SendParameters{
         to: self.admin,
         value: 0,
-        mode: 64,
+        mode: SendRemainingValue,
         body: body
     };
 
