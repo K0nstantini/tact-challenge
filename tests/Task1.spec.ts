@@ -34,7 +34,7 @@ describe('Task1', () => {
 
     it('test', async () => {
         let res = await task1.send(random.getSender(), {
-            value: toNano('0.05')
+            value: toNano('100')
         }, {
             $$type: 'Add',
             queryId: 0n,
