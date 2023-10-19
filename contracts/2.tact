@@ -18,19 +18,22 @@ message(0x44) Bounced {
 
 contract Task2 with Deployable {
   admin: Address;
+  p: SendParameters;
 
   init(admin: Address) {
     self.admin = admin;
+    self.p = SendParameters{
+        to: admin,
+        value: 0,
+        mode: SendRemainingValue
+    };
   }
   
   receive(msg: Bounced) {
     nativeThrowUnless(100, sender() == self.admin);
 
-    send(SendParameters{
-      to: msg.sender,
-      value: 0, 
-      mode: SendRemainingValue
-    });
+    self.p.to = msg.sender;
+    send(self.p);
   }
 
   receive(msg: Slice) {
@@ -40,14 +43,16 @@ contract Task2 with Deployable {
       .storeRef(c)
       .endCell();
 
-    let params: SendParameters = SendParameters{
-        to: self.admin,
-        value: 0,
-        mode: SendRemainingValue,
-        body: body
-    };
+    self.p.to = self.admin;
+    self.p.body = body;
+    // let params: SendParameters = SendParameters{
+    //     to: self.admin,
+    //     value: 0,
+    //     mode: SendRemainingValue,
+    //     body: body
+    // };
 
-    send(params);
+    send(self.p);
   }
 }
 
