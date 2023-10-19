@@ -68,33 +68,33 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
+    let amount: Int = msg.amount;
     if (msg.from == self.owner) {
       if (sender() == self.jettonAddressA) {
-        self.aAmount = self.aAmount + msg.amount;
+        self.aAmount = self.aAmount + amount;
         return;
       }
       if (sender() == self.jettonAddressB) {
-        self.bAmount = self.bAmount + msg.amount;
+        self.bAmount = self.bAmount + amount;
         return;
       }
       throw(0xFFFFFF);
     }
 
-    let amount: Int = msg.amount;
     let to: Address = sender();
 
     if (sender() == self.jettonAddressA) {
-      let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
+      let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * amount / self.decimal;
       if (self.bAmount > amountB) {
-        self.aAmount = self.aAmount + msg.amount;
+        self.aAmount = self.aAmount + amount;
         self.bAmount = self.bAmount - amountB;
         amount = amountB;
         to = self.jettonAddressB;
       } 
     } else if (sender() == self.jettonAddressB) {
-      let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
+      let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * amount / self.decimal;
       if (self.aAmount > amountA) {
-        self.bAmount = self.bAmount + msg.amount;
+        self.bAmount = self.bAmount + amount;
         self.aAmount = self.aAmount - amountA;
         amount = amountA;
         to = self.jettonAddressA;
