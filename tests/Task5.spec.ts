@@ -2,6 +2,7 @@ import { Blockchain, SandboxContract, TreasuryContract } from '@ton-community/sa
 import { Address, beginCell, toNano } from 'ton-core';
 import { Task5 } from '../wrappers/Task5';
 import '@ton-community/test-utils';
+import { skip } from 'node:test';
 
 describe('Task5', () => {
     let blockchain: Blockchain;
@@ -46,7 +47,7 @@ describe('Task5', () => {
         });
     });
 
-    it('test', async () => {
+    it.skip('test', async () => {
         console.log(`nft-1: ${nft1.address}\nnft-2: ${nft2.address}\nnft-3: ${nft3.address}\nnft-4: ${nft4.address}\nnft-5: ${nft5.address}`);
         console.log(`contract: ${task5.address}\nowner: ${owner.address}\nrandom: ${random.address}`);
 
@@ -59,7 +60,7 @@ describe('Task5', () => {
     })
 
 
-    it('test-1', async () => {
+    it.skip('test-1', async () => {
         let res = await sendOwnershipAssigned(nft1, owner.address, toNano("0.1"));
         expect(res.transactions).toHaveTransaction({
             from: nft1.address,

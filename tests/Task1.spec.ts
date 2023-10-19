@@ -32,7 +32,7 @@ describe('Task1', () => {
         });
     });
 
-    it.skip('test', async () => {
+    it('test', async () => {
         let res = await task1.send(random.getSender(), {
             value: toNano('0.05')
         }, {
@@ -40,5 +40,10 @@ describe('Task1', () => {
             queryId: 0n,
             number: 1n
         })
+        expect(res.transactions).toHaveTransaction({
+            from: random.address,
+            to: task1.address,
+            success: true,
+        });
     });
 });
