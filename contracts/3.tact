@@ -72,32 +72,33 @@ contract Task3 with Deployable {
     let to: Address = sender();
 
     if (msg.from == self.owner) {
-      if (to == self.jettonAddressB) {
-        self.bAmount = self.bAmount + amount;
-        return;
-      }
       if (to == self.jettonAddressA) {
         self.aAmount = self.aAmount + amount;
+        return;
+      }
+      if (to == self.jettonAddressB) {
+        self.bAmount = self.bAmount + amount;
         return;
       }
       throw(0xFFFFFF);
     }
 
-    if (to == self.jettonAddressA) {
-      let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * amount / self.decimal;
-      if (self.bAmount > amountB) {
-        self.aAmount = self.aAmount + amount;
-        self.bAmount = self.bAmount - amountB;
-        amount = amountB;
-        to = self.jettonAddressB;
-      } 
-    } else if (to == self.jettonAddressB) {
+    
+    if (to == self.jettonAddressB) {
       let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * amount / self.decimal;
       if (self.aAmount > amountA) {
         self.bAmount = self.bAmount + amount;
         self.aAmount = self.aAmount - amountA;
         amount = amountA;
         to = self.jettonAddressA;
+      } 
+    } else if (to == self.jettonAddressA) {
+      let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * amount / self.decimal;
+      if (self.bAmount > amountB) {
+        self.aAmount = self.aAmount + amount;
+        self.bAmount = self.bAmount - amountB;
+        amount = amountB;
+        to = self.jettonAddressB;
       } 
     } else {
       throw(0xFFFFFF);
