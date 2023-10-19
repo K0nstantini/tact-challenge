@@ -96,21 +96,21 @@ contract Task3 with Deployable {
         self.bAmount = self.bAmount - amountB;
         return;
       }
-      let body: Cell = beginCell()
-          .storeUint(0x0f8a7ea50000000000000000, 96)
-          .storeCoins(msg.amount)
-          .storeAddress(msg.from)
-          .storeAddress(myAddress())
-          .storeUint(0x3989680, 29)
-          .endCell();
+      // let body: Cell = beginCell()
+      //     .storeUint(0x0f8a7ea50000000000000000, 96)
+      //     .storeCoins(msg.amount)
+      //     .storeAddress(msg.from)
+      //     .storeAddress(myAddress())
+      //     .storeUint(0x3989680, 29)
+      //     .endCell();
 
-        send(SendParameters{
-            to: self.jettonAddressA,
-            value: 0,
-            mode: SendRemainingValue,
-            body: body
-          });
-      // transfer(self.jettonAddressA, msg);
+      //   send(SendParameters{
+      //       to: self.jettonAddressA,
+      //       value: 0,
+      //       mode: SendRemainingValue,
+      //       body: body
+      //     });
+      transfer(self.jettonAddressA, msg.from, msg.amount);
       return;
     }
 
@@ -141,7 +141,7 @@ contract Task3 with Deployable {
         self.aAmount = self.aAmount - amountA;
         return;
       }
-      transfer(self.jettonAddressB, msg);
+      transfer(self.jettonAddressB, msg.from, msg.amount);
       return;
     }
 
@@ -166,11 +166,11 @@ contract Task3 with Deployable {
 
 }
 
-fun transfer(to: Address, msg: TokenNotification) {
+fun transfer(to: Address, from: Address, amount: Int) {
   let body: Cell = beginCell()
       .storeUint(0x0f8a7ea50000000000000000, 96)
-      .storeCoins(msg.amount)
-      .storeAddress(msg.from)
+      .storeCoins(amount)
+      .storeAddress(from)
       .storeAddress(myAddress())
       .storeUint(0x3989680, 29)
       .endCell();
