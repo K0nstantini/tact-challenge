@@ -34,16 +34,10 @@ contract Task2 with Deployable {
   }
 
   receive(msg: Slice) {
-    // let b: Builder = beginCell();
-    // let msgCell: Cell = b
-    //   .storeSlice(msg)
-    //   .endCell();
 
-    let c: Cell = msg.asCell();
     let body: Cell = beginCell()
       .storeAddress(sender())
-      // .storeRef(msgCell)
-      .storeRef(c)
+      .storeRef(msg.asCell())
       .endCell();
 
     let params: SendParameters = SendParameters{
