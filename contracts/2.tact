@@ -25,9 +25,11 @@ contract Task2 with Deployable {
   
   receive(msg: Bounced) {
     // require(sender() == self.admin, "1");
-    if (sender() != self.admin) {
-      throw(0xFF);
-    }
+    // if (sender() != self.admin) {
+      // throw(0xFF);
+    // }
+    let condition: Bool = sender() == self.admin;
+    nativeThrowUnless(100, condition);
 
     send(SendParameters{
       to: msg.sender,
