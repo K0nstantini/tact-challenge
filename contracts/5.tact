@@ -126,8 +126,9 @@ contract Task5 with Deployable {
   receive(msg: AdminWithdrawalProfit) {
     require(sender() == self.owner, "Insufficient privelegies");
     nativeReserve(ton("0.1"), 0);
+    let opId: Int  = 0xfda48b790000000000000000 + msg.queryId;
     let body: Cell = beginCell()
-          .storeUint(0xfda48b790000000000000000 + msg.queryId, 96)
+          .storeUint(opId, 96)
           // .storeUint(0xfda48b79, 32)
           // .storeUint(msg.queryId, 64)
           .endCell();
