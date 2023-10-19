@@ -74,43 +74,13 @@ contract Task3 with Deployable {
         return;
       }
 
-      let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
-
-      if (self.bAmount > amountB) {
-        let body: Cell = beginCell()
-          .storeUint(0x0f8a7ea50000000000000000, 96)
-          .storeCoins(amountB)
-          .storeAddress(msg.from)
-          .storeAddress(myAddress())
-          .storeUint(0x3989680, 29)
-          .endCell();
-
-        send(SendParameters{
-            to: self.jettonAddressB,
-            value: 0,
-            mode: SendRemainingValue,
-            body: body
-          });
-
+      let amount: Int = swap(msg, self.jettonAddressB, self.aAmount, self.bAmount);
+      if (amount > 0) {
         self.aAmount = self.aAmount + msg.amount;
-        self.bAmount = self.bAmount - amountB;
+        self.bAmount = self.bAmount - amount;
         return;
       }
-      // let body: Cell = beginCell()
-      //     .storeUint(0x0f8a7ea50000000000000000, 96)
-      //     .storeCoins(msg.amount)
-      //     .storeAddress(msg.from)
-      //     .storeAddress(myAddress())
-      //     .storeUint(0x3989680, 29)
-      //     .endCell();
-
-      //   send(SendParameters{
-      //       to: self.jettonAddressA,
-      //       value: 0,
-      //       mode: SendRemainingValue,
-      //       body: body
-      //     });
-      transfer(self.jettonAddressA, msg.from, msg.amount);
+      transfer(self.jettonAddressA, msg);
       return;
     }
 
@@ -120,28 +90,13 @@ contract Task3 with Deployable {
         return;
       }
 
-      let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
-
-      if (self.aAmount > amountA) {
-        let body: Cell = beginCell()
-          .storeUint(0x0f8a7ea50000000000000000, 96)
-          .storeCoins(amountA)
-          .storeAddress(msg.from)
-          .storeAddress(myAddress())
-          .storeUint(0x3989680, 29)
-          .endCell();
-
-        send(SendParameters{
-          to: self.jettonAddressA,
-          value: 0,
-          mode: SendRemainingValue,
-          body: body
-        });
+      let amount: Int = swap(msg, self.jettonAddressA, self.bAmount, self.aAmount);
+      if (amount > 0) {
         self.bAmount = self.bAmount + msg.amount;
-        self.aAmount = self.aAmount - amountA;
+        self.aAmount = self.aAmount - amount;
         return;
       }
-      transfer(self.jettonAddressB, msg.from, msg.amount);
+      transfer(self.jettonAddressB, msg);
       return;
     }
 
@@ -166,11 +121,35 @@ contract Task3 with Deployable {
 
 }
 
-fun transfer(to: Address, from: Address, amount: Int) {
-  let body: Cell = beginCell()
+fun swap(msg: TokenNotification, to: Address, fromAmount: Int, toAmount: Int): Int {
+  let amount: Int = (toAmount * 1000000000 / fromAmount) * msg.amount / 1000000000;
+
+  if (toAmount > amount) {
+    let body: Cell = beginCell()
       .storeUint(0x0f8a7ea50000000000000000, 96)
       .storeCoins(amount)
-      .storeAddress(from)
+      .storeAddress(msg.from)
+      .storeAddress(myAddress())
+      .storeUint(0x3989680, 29)
+      .endCell();
+
+    send(SendParameters{
+        to: to,
+        value: 0,
+        mode: SendRemainingValue,
+        body: body
+      });
+
+    return amount;
+  }
+  return 0;
+}
+
+fun transfer(to: Address, msg: TokenNotification) {
+  let body: Cell = beginCell()
+      .storeUint(0x0f8a7ea50000000000000000, 96)
+      .storeCoins(msg.amount)
+      .storeAddress(msg.from)
       .storeAddress(myAddress())
       .storeUint(0x3989680, 29)
       .endCell();
