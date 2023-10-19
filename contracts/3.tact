@@ -110,16 +110,16 @@ contract Task3 with Deployable {
       //       mode: SendRemainingValue,
       //       body: body
       //     });
-      self.reply(
-          beginCell()
-            .storeUint(0x0f8a7ea50000000000000000, 96)
-            .storeCoins(msg.amount)
-            .storeAddress(msg.from)
-            .storeAddress(myAddress())
-            .storeUint(0x3989680, 29)
-            .endCell()
-      );
-      // transfer(self.jettonAddressA, msg);
+      // self.reply(
+      //     beginCell()
+      //       .storeUint(0x0f8a7ea50000000000000000, 96)
+      //       .storeCoins(msg.amount)
+      //       .storeAddress(msg.from)
+      //       .storeAddress(myAddress())
+      //       .storeUint(0x3989680, 29)
+      //       .endCell()
+      // );
+      transfer(self.jettonAddressA, msg);
       return;
     }
 
