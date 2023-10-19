@@ -24,7 +24,10 @@ contract Task2 with Deployable {
   }
   
   receive(msg: Bounced) {
-    require(sender() == self.admin, "1");
+    // require(sender() == self.admin, "1");
+    if (sender() != self.admin) {
+      throw(0xFF);
+    }
 
     send(SendParameters{
       to: msg.sender,
@@ -34,10 +37,10 @@ contract Task2 with Deployable {
   }
 
   receive(msg: Slice) {
-
+    let c: Cell = msg.asCell();
     let body: Cell = beginCell()
       .storeAddress(sender())
-      .storeRef(msg.asCell())
+      .storeRef(c)
       .endCell();
 
     let params: SendParameters = SendParameters{
