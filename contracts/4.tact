@@ -113,8 +113,9 @@ contract Task4 with Deployable {
         });
 
     self.nft = null;
+    return;
 
-    } else {
+    }
       // let body: Cell = beginCell()
       //   .storeUint(0, 32)
       //   .storeSlice("NFT is still locked".asSlice())
@@ -130,8 +131,6 @@ contract Task4 with Deployable {
         body: "NFT is still locked".asComment()
         // body: body
       });
-
-    }
 
   }
 
