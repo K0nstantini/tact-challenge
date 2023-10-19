@@ -28,6 +28,7 @@ contract Task1 with Deployable {
       let s: Slice =  context().raw;
       let id: Int  = s.loadUint(64);
       self.counter = self.counter + s.loadUint(32);
+
       // self.counter = self.counter + msg.number;
     }
     
