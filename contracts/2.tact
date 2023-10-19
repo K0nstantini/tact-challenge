@@ -24,22 +24,22 @@ contract Task2 with Deployable {
   }
   
   receive(msg: Bounced) {
-    // require(sender() == self.admin, "1");
-    if (sender() == self.admin) {
-      send(SendParameters{
-        to: msg.sender,
-        value: 0, 
-        mode: SendRemainingValue
-      });
-    }
+    require(sender() == self.admin, "1");
+
+    send(SendParameters{
+      to: msg.sender,
+      value: 0, 
+      mode: SendRemainingValue
+    });
   }
 
   receive(msg: Slice) {
-    let msgCell: Cell = beginCell()
+    let b: Builder = beginCell();
+    let msgCell: Cell = b
       .storeSlice(msg)
       .endCell();
 
-    let body: Cell = beginCell()
+    let body: Cell = b
       .storeAddress(sender())
       .storeRef(msgCell)
       .endCell();
