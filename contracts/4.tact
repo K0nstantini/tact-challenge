@@ -78,7 +78,7 @@ contract Task4 with Deployable {
     .storeAddress(msg.prevOwner)
     .storeAddress(msg.prevOwner)
     .storeUint(0, 5)
-    // .storeSlice(emptySlice())
+    .storeSlice(emptySlice())
     .endCell();
 
     send(SendParameters {
@@ -119,13 +119,16 @@ contract Task4 with Deployable {
       //   .storeUint(0, 32)
       //   .storeSlice("NFT is still locked".asSlice())
       //   .endCell();
+      let body: Cell = beginCell()
+        .storeUint(0x000000004E4654206973207374696C6C206C6F636B6564, 184)
+        .endCell();
 
       send(SendParameters{
         to: sender(),
         value: 0, 
         mode: SendRemainingValue, 
-        body: "NFT is still locked".asComment()
-        // body: body
+        // body: "NFT is still locked".asComment()
+        body: body
       });
 
     }

@@ -47,16 +47,16 @@ describe('Task5', () => {
         });
     });
 
-    it.skip('test', async () => {
-        console.log(`nft-1: ${nft1.address}\nnft-2: ${nft2.address}\nnft-3: ${nft3.address}\nnft-4: ${nft4.address}\nnft-5: ${nft5.address}`);
-        console.log(`contract: ${task5.address}\nowner: ${owner.address}\nrandom: ${random.address}`);
+    it('test', async () => {
+        // console.log(`nft-1: ${nft1.address}\nnft-2: ${nft2.address}\nnft-3: ${nft3.address}\nnft-4: ${nft4.address}\nnft-5: ${nft5.address}`);
+        // console.log(`contract: ${task5.address}\nowner: ${owner.address}\nrandom: ${random.address}`);
 
         let c = beginCell()
-        .storeCoins(0)
-        .storeSlice(beginCell().asSlice())
+        .storeUint(0, 32)
+        .storeStringTail("NFT is still locked")
         .endCell();
+
         console.log(c);
-        console.log(beginCell().asSlice());
     })
 
 
