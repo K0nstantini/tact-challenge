@@ -38,12 +38,15 @@ describe('Task1', () => {
         }, {
             $$type: 'Add',
             queryId: 0n,
-            number: 1n
+            number: 5n
         })
         expect(res.transactions).toHaveTransaction({
             from: random.address,
             to: task1.address,
             success: true,
         });
+        
+        let counter = await task1.getCounter();
+        expect(counter).toEqual(5n);
     });
 });

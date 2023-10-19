@@ -27,6 +27,7 @@ contract Task1 with Deployable {
     receive(msg: Add) {
       // let s: Slice =  context().raw;
       // let skip: Int  = s.loadUint(96);
+      // // let n: Int  = s.loadUint(32);
       // self.counter = self.counter + s.loadUint(32);
 
       self.counter = self.counter + msg.number;
