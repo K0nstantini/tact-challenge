@@ -43,8 +43,9 @@ contract Task2 with Deployable {
     let msgCell: Cell = beginCell()
       .storeUint(0x18, 6)
       .storeAddress(self.admin)
-      .storeCoins(0)
-      .storeUint(1, 107)
+      .storeUint(1, 111)
+      // .storeCoins(0)
+      // .storeUint(1, 107)
       .storeRef(body)
       .endCell();
 
