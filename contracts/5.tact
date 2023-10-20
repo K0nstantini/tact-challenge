@@ -200,8 +200,6 @@ contract Task5 with Deployable {
       let msgCell: Cell = b
         .storeAddress(nft)
         .storeSlice(s)
-        // .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
-        // .storeRef(body)
         .endCell();
 
       nativeSendMessage(msgCell, SendIgnoreErrors);
@@ -215,8 +213,7 @@ contract Task5 with Deployable {
           .endCell();
           
 
-      let msgWithdrawal: Cell = emptyBuilder
-        .storeUint(0x18, 6)
+      let msgWithdrawal: Cell = b
         .storeAddress(myAddress())
         .storeUint(1, 111)
         .storeRef(bodyWithdrawal)
