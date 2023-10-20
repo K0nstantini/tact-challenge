@@ -30,7 +30,8 @@ contract Task2 with Deployable {
         to: sender(),
         value: 0, 
         bounce: true,
-        mode: SendRemainingValue
+        mode: SendRemainingValue,
+        body: msg.toCell()
       });
       return;
     }
