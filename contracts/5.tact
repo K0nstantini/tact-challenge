@@ -120,48 +120,29 @@ contract Task5 with Deployable {
         .storeRef(body)
         .endCell();
 
-      nativeSendMessage(msgCell, SendIgnoreErrors);
-
-    // let key: Int = now() % self.countNfts;
-    // let key: Int = random(0, self.countNfts);
-    // if (key < self.countNfts) {
-    //   send(SendParameters{
-    //     to: self.nfts.get(key)!!,
-    //     value: value - ton("2.05"),
-    //     mode: SendIgnoreErrors,
-    //     body: body
-    //   });
-    //   self.nfts.set(key, sender());
-    //   return;
-    // }
-
-
-    // let key: Int = random(0, self.countNfts);
-    // let nft: Address? = self.nfts.get(key);
-    // if (nft == null) {
-    //   nft = sender;
-    // }
-
-   
+    nativeSendMessage(msgCell, SendIgnoreErrors);
 
   }
 
   receive(msg: AdminWithdrawalProfit) {
     require(sender() == self.owner, "Insufficient privelegies");
     nativeReserve(ton("0.1"), 0);
-    // let opId: Int  = 0xfda48b790000000000000000 + msg.queryId;
-    let body: Cell = beginCell()
-          // .storeUint(opId, 96)
+    
+    let b: Builder = beginCell();
+    let body: Cell = b
+          // .storeUint(0xfda48b790000000000000000 + msg.queryId, 96)
           .storeUint(0xfda48b79, 32)
           .storeUint(msg.queryId, 64)
           .endCell();
 
-    send(SendParameters{
-        to: sender(),
-        value: 0,
-        mode: SendRemainingBalance,
-        body: body
-      });
+    let msgCell: Cell = b
+      .storeUint(0x18, 6)
+      .storeAddress(sender())
+      .storeUint(1, 111)
+      .storeRef(body)
+      .endCell();
+
+    nativeSendMessage(msgCell, SendRemainingValue);
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
