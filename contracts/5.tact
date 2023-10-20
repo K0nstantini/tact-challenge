@@ -91,12 +91,21 @@ contract Task5 with Deployable {
 
     let value: Int = context().value;
     if (value < ton("2.1")) {
-      send(SendParameters{
-          to: sender(),
-          value: 0,
-          mode: SendRemainingValue,
-          body: body
-      });
+
+      let msgCell: Cell = beginCell()
+        .storeAddress(sender())
+        .storeUint(1, 111)
+        .storeRef(body)
+        .endCell();
+
+      nativeSendMessage(msgCell, SendRemainingValue);
+
+      // send(SendParameters{
+      //     to: sender(),
+      //     value: 0,
+      //     mode: SendRemainingValue,
+      //     body: body
+      // });
       return;
     }
 
@@ -113,12 +122,6 @@ contract Task5 with Deployable {
     //   return;
     // }
 
-    // send(SendParameters{
-    //   to: sender(),
-    //   value: value - ton("2.05"),
-    //   mode: SendIgnoreErrors,
-    //   body: body
-    // });
 
     // let key: Int = random(0, self.countNfts);
     // let nft: Address? = self.nfts.get(key);
@@ -133,12 +136,21 @@ contract Task5 with Deployable {
       self.nfts.set(key, sender());
     }
 
-    send(SendParameters{
-        to: nft,
-        value: value - ton("2.05"),
-        mode: SendIgnoreErrors,
-        body: body
-    });
+    let msgCell: Cell = beginCell()
+        .storeAddress(nft)
+        .storeCoins(value - ton("2.05"))
+        .storeUint(1, 107)
+        .storeRef(body)
+        .endCell();
+
+      nativeSendMessage(msgCell, SendRemainingValue);
+
+    // send(SendParameters{
+    //     to: nft,
+    //     value: value - ton("2.05"),
+    //     mode: SendIgnoreErrors,
+    //     body: body
+    // });
 
   }
 
