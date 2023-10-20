@@ -77,8 +77,6 @@ contract Task3 with Deployable {
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
 
       if (self.bAmount > amountB) {
-        self.bAmount = self.bAmount + 1;
-        self.bAmount = self.bAmount - 1;
         let body: Cell = beginCell()
           // .storeUint(0x0f8a7ea50000000000000000F000000000000000000000000000000 + amountB, 220)
           .storeUint(0x0f8a7ea50000000000000000, 96)
@@ -112,6 +110,8 @@ contract Task3 with Deployable {
       let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
 
       if (self.aAmount > amountA) {
+        self.bAmount = self.bAmount + 1;
+        self.bAmount = self.bAmount - 1;
         let body: Cell = beginCell()
           .storeUint(0x0f8a7ea50000000000000000, 96)
           .storeCoins(amountA)
