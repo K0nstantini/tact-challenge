@@ -206,7 +206,7 @@ describe('Task5', () => {
 
     });
 
-    it.skip('test-3', async () => {
+    it('test-3', async () => {
         for (let step = 0; step < 300; step++) {
             await sendOwnershipAssigned(nft1, owner.address, toNano("0.1"));
         }

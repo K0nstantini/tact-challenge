@@ -158,31 +158,17 @@ contract Task5 with Deployable {
         .storeUint(0, 5)
         .endCell();
 
-
-      // let message: SendParameters = SendParameters{
-      //   to: self.owner, 
-      //   value: ton("0.07"),
-      //   mode: SendIgnoreErrors,
-      //   body: body
-      // };
-
-      repeat(self.countNfts) {
+      repeat(self.countNfts) { // simplify condition just for contest
         self.countNfts = self.countNfts - 1;
         let nft: Address = self.nfts.get(self.countNfts)!!;
         let msgCell: Cell = b
           .storeUint(0x18, 6)
           .storeAddress(nft)
-          // .storeUint(2797328706426080694495459464698332868247553, 143) // 0.06
-          // .storeUint(2798482185557797923522792771518861771014145, 143) // 00000000
           .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
-          // .storeCoins(ton("0.06"))
-          // .storeUint(1, 107)
           .storeRef(body)
           .endCell();
 
         nativeSendMessage(msgCell, SendIgnoreErrors);
-        // message.to = self.nfts.get(self.countNfts)!!;
-        // send(message);
       }
 
       self.nfts = emptyMap();     
@@ -192,26 +178,48 @@ contract Task5 with Deployable {
     require(context().value >= ton("1") + self.countNfts * ton("0.08"), "Insufficent funds");
     require(sender() == self.owner, "Invalid sender");
 
-    let body: Cell = beginCell()
-        // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
-        .storeUint(0x5fcc3d14, 32)
-        .storeUint(msg.queryId, 64)
-        .storeAddress(self.owner)
-        .storeAddress(self.owner)
-        .storeUint(0, 5)
-        .endCell();
+    // let body: Cell = beginCell()
+    //     .storeUint(0x5fcc3d14, 32)
+    //     .storeUint(msg.queryId, 64)
+    //     .storeAddress(self.owner)
+    //     .storeAddress(self.owner)
+    //     .storeUint(0, 5)
+    //     .endCell();
 
-    let message: SendParameters = SendParameters{
-      to: self.owner, 
-      value: ton("0.07"),
-      mode: SendIgnoreErrors,
-      body: body
-    };
+    // let message: SendParameters = SendParameters{
+    //   to: self.owner, 
+    //   value: ton("0.07"),
+    //   mode: SendIgnoreErrors,
+    //   body: body
+    // };
+
+    // repeat(min(self.countNfts, 253)) {
+    //   self.countNfts = self.countNfts - 1;
+    //   message.to = self.nfts.get(self.countNfts)!!;
+    //   send(message);
+    // }
+
+    let b: Builder = beginCell();
+
+    let body: Cell = b
+      .storeUint(0x5fcc3d14, 32)
+      .storeUint(msg.queryId, 64)
+      .storeAddress(self.owner)
+      .storeAddress(self.owner)
+      .storeUint(0, 5)
+      .endCell();
 
     repeat(min(self.countNfts, 253)) {
       self.countNfts = self.countNfts - 1;
-      message.to = self.nfts.get(self.countNfts)!!;
-      send(message);
+      let nft: Address = self.nfts.get(self.countNfts)!!;
+      let msgCell: Cell = b
+        .storeUint(0x18, 6)
+        .storeAddress(nft)
+        .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
+        .storeRef(body)
+        .endCell();
+
+      nativeSendMessage(msgCell, SendIgnoreErrors);
     }
 
     if (self.countNfts > 0) {

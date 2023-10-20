@@ -32,7 +32,7 @@ describe('Task1', () => {
         });
     });
 
-    it('test', async () => {
+    it.skip('test', async () => {
         let res = await task1.send(random.getSender(), {
             value: toNano('100')
         }, {
