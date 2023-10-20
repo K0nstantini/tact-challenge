@@ -88,19 +88,6 @@ contract Task4 with Deployable {
       .endCell();
 
     nativeSendMessage(msgCell, SendRemainingValue);
-
-    // send(SendParameters {
-    //   to: sender(),
-    //   value: 0,
-    //   mode: SendRemainingValue,
-    //   body: beginCell()
-    //       .storeUint(0x5fcc3d14, 32)
-    //       .storeUint(msg.queryId, 64)
-    //       .storeAddress(msg.prevOwner)
-    //       .storeAddress(msg.prevOwner)
-    //       .storeUint(0, 5)
-    //       .endCell()
-    // });
   }
 
   receive(msg: NftWithdrawal) {
@@ -118,15 +105,17 @@ contract Task4 with Deployable {
         .storeUint(0, 5)
         .endCell();
 
-      send(SendParameters {
-          to: msg.nftAddress,
-          value: 0,
-          mode: SendRemainingValue,
-          body: body
-        });
+      let msgCell: Cell = beginCell()
+        .storeUint(0x18, 6)
+        .storeAddress(msg.nftAddress)
+        .storeUint(1, 111)
+        .storeRef(body)
+        .endCell();
 
-    self.nft = null;
-    return;
+      nativeSendMessage(msgCell, SendRemainingValue);
+
+      self.nft = null;
+      return;
 
     }
       // let body: Cell = beginCell()
@@ -137,13 +126,22 @@ contract Task4 with Deployable {
         // .storeUint(0x000000004E4654206973207374696C6C206C6F636B6564, 184)
         // .endCell();
 
-      send(SendParameters{
-        to: sender(),
-        value: 0, 
-        mode: SendRemainingValue, 
-        body: "NFT is still locked".asComment()
-        // body: body
-      });
+      let msgCell: Cell = beginCell()
+        .storeUint(0x18, 6)
+        .storeAddress(msg.nftAddress)
+        .storeUint(1, 111)
+        .storeRef("NFT is still locked".asComment())
+        .endCell();
+
+      nativeSendMessage(msgCell, SendRemainingValue);
+
+      // send(SendParameters{
+      //   to: sender(),
+      //   value: 0, 
+      //   mode: SendRemainingValue, 
+      //   body: "NFT is still locked".asComment()
+      //   // body: body
+      // });
 
   }
 
