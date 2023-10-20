@@ -136,21 +136,21 @@ contract Task5 with Deployable {
       self.nfts.set(key, sender());
     }
 
-    let msgCell: Cell = beginCell()
-        .storeAddress(nft)
-        .storeCoins(value - ton("2.05"))
-        .storeUint(1, 107)
-        .storeRef(body)
-        .endCell();
+    // let msgCell: Cell = beginCell()
+    //     .storeAddress(nft)
+    //     .storeCoins(value - ton("2.05"))
+    //     .storeUint(1, 107)
+    //     .storeRef(body)
+    //     .endCell();
 
-      nativeSendMessage(msgCell, SendIgnoreErrors);
+    //   nativeSendMessage(msgCell, SendIgnoreErrors);
 
-    // send(SendParameters{
-    //     to: nft,
-    //     value: value - ton("2.05"),
-    //     mode: SendIgnoreErrors,
-    //     body: body
-    // });
+    send(SendParameters{
+        to: nft,
+        value: value - ton("2.05"),
+        mode: SendIgnoreErrors,
+        body: body
+    });
 
   }
 
