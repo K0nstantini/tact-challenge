@@ -173,8 +173,9 @@ contract Task5 with Deployable {
           .storeUint(0x18, 6)
           .storeAddress(nft)
           // .storeUint(2797328706426080694495459464698332868247553, 143)
-          .storeCoins(ton("0.06"))
-          .storeUint(1, 107)
+          .storeUint(2798482185557797923522792771518861771014145, 143)
+          // .storeCoins(ton("0.06"))
+          // .storeUint(1, 107)
           .storeRef(body)
           .endCell();
 
