@@ -189,18 +189,19 @@ contract Task5 with Deployable {
       .endCell();
 
     let b: Builder = emptyBuilder.storeUint(0x18, 6);
+    let s: Slice = emptyBuilder
+        .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
+        .storeRef(body)
+        .asSlice();
 
-    let count: Int = min(self.countNfts, 253);
-    if (self.countNfts == 254) {
-      count = 254;
-    }
-    repeat(count) {
+    repeat(min(self.countNfts, 253)) {
       self.countNfts = self.countNfts - 1;
       let nft: Address = self.nfts.get(self.countNfts)!!;
       let msgCell: Cell = b
         .storeAddress(nft)
-        .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
-        .storeRef(body)
+        .storeSlice(s)
+        // .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
+        // .storeRef(body)
         .endCell();
 
       nativeSendMessage(msgCell, SendIgnoreErrors);
