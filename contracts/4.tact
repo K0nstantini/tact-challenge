@@ -71,7 +71,8 @@ contract Task4 with Deployable {
       return;
     }
 
-    let body: Cell = beginCell()
+    let b: Builder = beginCell();
+    let body: Cell = b
       // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
       .storeUint(0x5fcc3d14, 32)
       .storeUint(msg.queryId, 64)
@@ -80,7 +81,7 @@ contract Task4 with Deployable {
       .storeUint(0, 5)
       .endCell();
 
-    let msgCell: Cell = beginCell()
+    let msgCell: Cell = b
       .storeUint(0x18, 6)
       .storeAddress(sender())
       .storeUint(1, 111)
@@ -95,12 +96,11 @@ contract Task4 with Deployable {
     require(nft.address == msg.nftAddress, "Invalid NFT address");
     require(nft.owner == sender(), "Invalid sender");
 
-    // let b: Builder = beginCell()
-      // .storeUint(0x18, 6);
+    let b: Builder = beginCell()
+      .storeUint(0x18, 6);
 
-    let b: Builder = beginCell();
     if (nft.time <= now()) {
-      let body: Cell = b
+      let body: Cell = beginCell()
         // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
         .storeUint(0x5fcc3d14, 32)
         .storeUint(msg.queryId, 64)
@@ -110,7 +110,6 @@ contract Task4 with Deployable {
         .endCell();
 
       let msgCell: Cell = b
-        .storeUint(0x18, 6)
         .storeAddress(msg.nftAddress)
         .storeUint(1, 111)
         .storeRef(body)
@@ -124,7 +123,6 @@ contract Task4 with Deployable {
     }
 
     let msgCell: Cell = b
-      .storeUint(0x18, 6)
       .storeAddress(sender())
       .storeUint(1, 111)
       .storeRef("NFT is still locked".asComment())
