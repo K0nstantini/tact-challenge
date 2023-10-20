@@ -143,7 +143,7 @@ contract Task5 with Deployable {
         .storeRef(body)
         .endCell();
 
-      nativeSendMessage(msgCell, SendRemainingValue);
+      nativeSendMessage(msgCell, SendIgnoreErrors);
 
     // send(SendParameters{
     //     to: nft,
