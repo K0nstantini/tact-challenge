@@ -213,7 +213,7 @@ contract Task5 with Deployable {
           .endCell();
           
 
-      let msgWithdrawal: Cell = emptyBuilder
+      let msgWithdrawal: Cell = beginCell()
         .storeUint(0x18, 6)
         .storeAddress(myAddress())
         .storeUint(1, 111)
