@@ -76,21 +76,34 @@ contract Task3 with Deployable {
 
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
 
-      let amount: Int = amountB;
-      let to: Address = self.jettonAddressB;
+      let b1: Builder =  beginCell()
+          .storeUint(0x0f8a7ea50000000000000000, 96);
 
       if (self.bAmount > amountB) {
+        let body: Cell = b1
+          // .storeUint(0x0f8a7ea50000000000000000F000000000000000000000000000000 + amountB, 220)
+          .storeCoins(amountB)
+          .storeAddress(msg.from)
+          .storeAddress(myAddress())
+          .storeUint(0x3989680, 29)
+          .endCell();
+
+        let msgCell: Cell = beginCell()
+          .storeUint(0x18, 6)
+          .storeAddress(self.jettonAddressB)
+          .storeUint(1, 111)
+          .storeRef(body)
+          .endCell();
+
+        nativeSendMessage(msgCell, SendRemainingValue);
+
         self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amountB;
-      } else {
-        amount = msg.amount;
-        to = self.jettonAddressA;
+        return;
       }
 
-      let body: Cell = beginCell()
-        // .storeUint(0x0f8a7ea50000000000000000F000000000000000000000000000000 + amountB, 220)
-        .storeUint(0x0f8a7ea50000000000000000, 96)
-        .storeCoins(amount)
+      let body: Cell = b1
+        .storeCoins(msg.amount)
         .storeAddress(msg.from)
         .storeAddress(myAddress())
         .storeUint(0x3989680, 29)
@@ -98,7 +111,7 @@ contract Task3 with Deployable {
 
       let msgCell: Cell = beginCell()
         .storeUint(0x18, 6)
-        .storeAddress(to)
+        .storeAddress(self.jettonAddressA)
         .storeUint(1, 111)
         .storeRef(body)
         .endCell();
