@@ -74,6 +74,10 @@ contract Task3 with Deployable {
         return;
       }
 
+      if (self.bAmount == 0) {
+        transfer(self.jettonAddressA, msg);
+      }
+
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
 
       if (self.bAmount > amountB) {

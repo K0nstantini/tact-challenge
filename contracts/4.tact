@@ -96,7 +96,6 @@ contract Task4 with Deployable {
   }
 
   receive(msg: NftWithdrawal) {
-    // nativeThrowUnless(100, self.nft != null);
     let nft: Nft = self.nft!!;
     require(nft.address == msg.nftAddress, "Invalid NFT address");
     require(nft.owner == sender(), "Invalid sender");
