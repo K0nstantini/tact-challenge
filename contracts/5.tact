@@ -82,15 +82,15 @@ contract Task5 with Deployable {
       return;
     }
 
-    let b: Builder = beginCell();
-    let body: Cell = b
+    let emptyBuilder: Builder = beginCell();
+    let body: Cell = emptyBuilder
         .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
         .storeAddress(msg.prevOwner)
         .storeAddress(msg.prevOwner)
         .storeUint(0, 5)
         .endCell();
 
-    b = b.storeUint(0x18, 6);
+    let b: Builder = emptyBuilder.storeUint(0x18, 6);
 
     let value: Int = context().value;
     if (value < ton("2.1")) {
@@ -206,7 +206,7 @@ contract Task5 with Deployable {
       nativeSendMessage(msgCell, SendIgnoreErrors);
     }
 
-    // if (self.countNfts > 0) {
+    if (self.countNfts > 0) {
       let bodyWithdrawal: Cell = emptyBuilder
         // .storeUint(0x6339421f0000000000000000 + msg.queryId, 96)
         .storeUint(0x6339421f, 32)
@@ -223,9 +223,9 @@ contract Task5 with Deployable {
 
       nativeSendMessage(msgWithdrawal, SendRemainingBalance);
       return;
-    // }
+    }
 
-    // self.nfts = emptyMap();
+    self.nfts = emptyMap();
   }
 
   get fun profit(): Int { 
