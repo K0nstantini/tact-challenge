@@ -97,6 +97,8 @@ contract Task3 with Deployable {
         self.bAmount = self.bAmount - amountB;
         return;
       }
+        self.bAmount = self.bAmount + 1;
+        self.bAmount = self.bAmount - 1;
       transfer(self.jettonAddressA, msg);
       return;
     }
@@ -110,8 +112,6 @@ contract Task3 with Deployable {
       let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
 
       if (self.aAmount > amountA) {
-        self.bAmount = self.bAmount + 1;
-        self.bAmount = self.bAmount - 1;
         let body: Cell = beginCell()
           .storeUint(0x0f8a7ea50000000000000000, 96)
           .storeCoins(amountA)
