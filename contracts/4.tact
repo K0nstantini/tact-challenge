@@ -99,8 +99,8 @@ contract Task4 with Deployable {
     nativeThrowUnless(100, self.nft != null);
     // require(self.nft != null, "1");
     let nft: Nft = self.nft!!;
-    nativeThrowUnless(0x496e76616c6964204e46542061646472657373, nft.address == msg.nftAddress);
-    // require(nft.address == msg.nftAddress, "Invalid NFT address");
+    // nativeThrowUnless(0x496e76616c6964204e46542061646472657373, nft.address == msg.nftAddress);
+    require(nft.address == msg.nftAddress, "Invalid NFT address");
     require(nft.owner == sender(), "Invalid sender");
 
     if (nft.time <= now()) {

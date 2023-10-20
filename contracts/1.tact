@@ -33,6 +33,7 @@ contract Task1 with Deployable {
       // // // let n: Int  = s.loadUint(32);
       // // self.counter = self.counter + s.loadUint(32);
 
+    // require(false, "Invalid NFT address");
       self.counter = self.counter + msg.number;
     }
     
