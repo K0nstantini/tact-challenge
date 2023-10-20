@@ -24,17 +24,7 @@ contract Task2 with Deployable {
   }
   
   receive(msg: Bounced) {
-    // nativeThrowUnless(100, sender() == self.admin);
-    if (sender() != self.admin) {
-      send(SendParameters{
-        to: sender(),
-        value: 0, 
-        bounce: true,
-        mode: SendRemainingValue,
-        body: msg.toCell()
-      });
-      return;
-    }
+    nativeThrowUnless(100, sender() == self.admin);
 
     send(SendParameters{
       to: msg.sender,
