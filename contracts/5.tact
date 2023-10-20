@@ -82,15 +82,15 @@ contract Task5 with Deployable {
       return;
     }
 
-    let emptyBuilder: Builder = beginCell();
-    let body: Cell = emptyBuilder
+    let b: Builder = beginCell();
+    let body: Cell = b
         .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
         .storeAddress(msg.prevOwner)
         .storeAddress(msg.prevOwner)
         .storeUint(0, 5)
         .endCell();
 
-    let b: Builder = emptyBuilder.storeUint(0x18, 6);
+    b = b.storeUint(0x18, 6);
 
     let value: Int = context().value;
     if (value < ton("2.1")) {
@@ -106,7 +106,8 @@ contract Task5 with Deployable {
       return;
     }
 
-    let key: Int = random(0, self.countNfts);
+    let key: Int = now() % (self.countNfts + 1);
+    // let key: Int = random(0, self.countNfts);
     let nft: Address = sender();
     if (key != self.countNfts) {
       nft = self.nfts.get(key)!!;
