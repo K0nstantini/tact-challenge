@@ -97,8 +97,6 @@ contract Task3 with Deployable {
         self.bAmount = self.bAmount - amountB;
         return;
       }
-        self.bAmount = self.bAmount + 1;
-        self.bAmount = self.bAmount - 1;
       transfer(self.jettonAddressA, msg);
       return;
     }
@@ -130,6 +128,8 @@ contract Task3 with Deployable {
         self.aAmount = self.aAmount - amountA;
         return;
       }
+        self.bAmount = self.bAmount + 1;
+        self.bAmount = self.bAmount - 1;
       transfer(self.jettonAddressB, msg);
       return;
     }
