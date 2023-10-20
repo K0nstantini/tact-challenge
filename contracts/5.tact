@@ -178,30 +178,9 @@ contract Task5 with Deployable {
     require(context().value >= ton("1") + self.countNfts * ton("0.08"), "Insufficent funds");
     require(sender() == self.owner, "Invalid sender");
 
-    // let body: Cell = beginCell()
-    //     .storeUint(0x5fcc3d14, 32)
-    //     .storeUint(msg.queryId, 64)
-    //     .storeAddress(self.owner)
-    //     .storeAddress(self.owner)
-    //     .storeUint(0, 5)
-    //     .endCell();
+    let emptyBuilder: Builder = beginCell();
 
-    // let message: SendParameters = SendParameters{
-    //   to: self.owner, 
-    //   value: ton("0.07"),
-    //   mode: SendIgnoreErrors,
-    //   body: body
-    // };
-
-    // repeat(min(self.countNfts, 253)) {
-    //   self.countNfts = self.countNfts - 1;
-    //   message.to = self.nfts.get(self.countNfts)!!;
-    //   send(message);
-    // }
-
-    let b: Builder = beginCell();
-
-    let body: Cell = b
+    let body: Cell = emptyBuilder
       .storeUint(0x5fcc3d14, 32)
       .storeUint(msg.queryId, 64)
       .storeAddress(self.owner)
@@ -209,11 +188,12 @@ contract Task5 with Deployable {
       .storeUint(0, 5)
       .endCell();
 
+    let b: Builder = emptyBuilder.storeUint(0x18, 6);
+
     repeat(min(self.countNfts, 253)) {
       self.countNfts = self.countNfts - 1;
       let nft: Address = self.nfts.get(self.countNfts)!!;
       let msgCell: Cell = b
-        .storeUint(0x18, 6)
         .storeAddress(nft)
         .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
         .storeRef(body)
@@ -223,14 +203,14 @@ contract Task5 with Deployable {
     }
 
     if (self.countNfts > 0) {
-      let bodyWithdrawal: Cell = b
+      let bodyWithdrawal: Cell = emptyBuilder
           // .storeUint(0x6339421f0000000000000000 + msg.queryId, 96)
           .storeUint(0x6339421f, 32)
           .storeUint(msg.queryId, 64)
           .endCell();
           
 
-      let msgWithdrawal: Cell = b
+      let msgWithdrawal: Cell = emptyBuilder
         .storeUint(0x18, 6)
         .storeAddress(myAddress())
         .storeUint(1, 111)
