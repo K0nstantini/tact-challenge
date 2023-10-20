@@ -95,6 +95,9 @@ contract Task4 with Deployable {
     require(nft.address == msg.nftAddress, "Invalid NFT address");
     require(nft.owner == sender(), "Invalid sender");
 
+    let b: Builder = beginCell()
+      .storeUint(0x18, 6);
+
     if (nft.time <= now()) {
       let body: Cell = beginCell()
         // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
@@ -105,8 +108,7 @@ contract Task4 with Deployable {
         .storeUint(0, 5)
         .endCell();
 
-      let msgCell: Cell = beginCell()
-        .storeUint(0x18, 6)
+      let msgCell: Cell = b
         .storeAddress(msg.nftAddress)
         .storeUint(1, 111)
         .storeRef(body)
@@ -114,13 +116,12 @@ contract Task4 with Deployable {
 
       nativeSendMessage(msgCell, SendRemainingValue);
 
-      // self.nft = null;
+      self.nft = null;
       return;
 
     }
 
-    let msgCell: Cell = beginCell()
-      .storeUint(0x18, 6)
+    let msgCell: Cell = b
       .storeAddress(sender())
       .storeUint(1, 111)
       .storeRef("NFT is still locked".asComment())
