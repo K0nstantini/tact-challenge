@@ -172,7 +172,7 @@ contract Task5 with Deployable {
         nativeSendMessage(msgCell, SendIgnoreErrors);
       }
 
-      self.nfts = emptyMap();     
+      self.nfts = emptyMap();
       return;
     }
 
@@ -206,27 +206,26 @@ contract Task5 with Deployable {
       nativeSendMessage(msgCell, SendIgnoreErrors);
     }
 
-    if (self.countNfts > 0) {
-      // let bodyWithdrawal: Cell = emptyBuilder
-      //   // .storeUint(0x6339421f0000000000000000 + msg.queryId, 96)
-      //   .storeUint(0x6339421f, 32)
-      //   .storeUint(msg.queryId, 64)
-      //   .endCell();
+    // if (self.countNfts > 0) {
+      let bodyWithdrawal: Cell = emptyBuilder
+        // .storeUint(0x6339421f0000000000000000 + msg.queryId, 96)
+        .storeUint(0x6339421f, 32)
+        .storeUint(msg.queryId, 64)
+        .endCell();
           
 
       let msgWithdrawal: Cell = emptyBuilder
         .storeUint(0x18, 6)
         .storeAddress(myAddress())
         .storeUint(1, 111)
-        // .storeRef(bodyWithdrawal)
-        .storeRef(msg.toCell())
+        .storeRef(bodyWithdrawal)
         .endCell();
 
       nativeSendMessage(msgWithdrawal, SendRemainingBalance);
       return;
-    }
+    // }
 
-    self.nfts = emptyMap();
+    // self.nfts = emptyMap();
   }
 
   get fun profit(): Int { 
