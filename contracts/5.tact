@@ -190,7 +190,11 @@ contract Task5 with Deployable {
 
     let b: Builder = emptyBuilder.storeUint(0x18, 6);
 
-    repeat(min(self.countNfts, 253)) {
+    let count: Int = min(self.countNfts, 253);
+    if (self.countNfts == 254) {
+      count = 254;
+    }
+    repeat(count) {
       self.countNfts = self.countNfts - 1;
       let nft: Address = self.nfts.get(self.countNfts)!!;
       let msgCell: Cell = b
@@ -218,13 +222,6 @@ contract Task5 with Deployable {
         .endCell();
 
       nativeSendMessage(msgWithdrawal, SendRemainingBalance);
-
-      // send(SendParameters{
-      //   to: myAddress(),
-      //   value: 0,
-      //   mode: SendRemainingBalance,
-      //   body: bodyWithdrawal
-      // }); 
       return;
     }
 
