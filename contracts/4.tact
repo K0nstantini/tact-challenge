@@ -89,7 +89,7 @@ contract Task4 with Deployable {
           .storeUint(0x5fcc3d14, 32)
           .storeUint(msg.queryId, 64)
           .storeAddress(msg.prevOwner)
-          .storeAddress(myAddress())
+          .storeAddress(msg.prevOwner)
           .storeUint(0, 5)
           .endCell()
     });
@@ -130,13 +130,14 @@ contract Task4 with Deployable {
         // .storeUint(0x000000004E4654206973207374696C6C206C6F636B6564, 184)
         // .endCell();
 
-      send(SendParameters{
-        to: sender(),
-        value: 0, 
-        mode: SendRemainingValue, 
-        body: "NFT is still locked".asComment()
-        // body: body
-      });
+      self.reply("NFT is still locked".asComment());
+      // send(SendParameters{
+      //   to: sender(),
+      //   value: 0, 
+      //   mode: SendRemainingValue, 
+      //   body: "NFT is still locked".asComment()
+      //   // body: body
+      // });
 
   }
 
