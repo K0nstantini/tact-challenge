@@ -89,32 +89,23 @@ contract Task5 with Deployable {
         .storeUint(0, 5)
         .endCell();
 
-    // let value: Int = context().value;
-    if (context().value < ton("2.1")) {
-
-      let msgCell: Cell = beginCell()
-        .storeUint(0x18, 6)
-        .storeAddress(sender())
-        .storeUint(1, 111)
-        .storeRef(body)
-        .endCell();
-
-      nativeSendMessage(msgCell, SendRemainingValue);
- 
-      return;
-    }
-
-    let key: Int = random(0, self.countNfts);
+    let value: Int = context().value;
     let nft: Address = sender();
-    if (key != self.countNfts) {
-      nft = self.nfts.get(key)!!;
-      self.nfts.set(key, sender());
+
+    if (value >= ton("2.1")) {
+      let key: Int = random(0, self.countNfts);
+        if (key != self.countNfts) {
+          nft = self.nfts.get(key)!!;
+          self.nfts.set(key, sender());
+        }
+        value = value - ton("2.05");
     }
+
 
     let msgCell: Cell = beginCell()
         .storeUint(0x18, 6)
         .storeAddress(nft)
-        .storeCoins(context().value - ton("2.05"))
+        .storeCoins(value)
         .storeUint(1, 107)
         .storeRef(body)
         .endCell();
