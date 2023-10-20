@@ -128,7 +128,7 @@ contract Task4 with Deployable {
 
       let msgCell: Cell = beginCell()
         .storeUint(0x18, 6)
-        .storeAddress(msg.nftAddress)
+        .storeAddress(sender())
         .storeUint(1, 111)
         .storeRef("NFT is still locked".asComment())
         .endCell();
