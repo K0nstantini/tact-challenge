@@ -71,28 +71,36 @@ contract Task4 with Deployable {
       return;
     }
 
-    // let body: Cell = beginCell()
-    // // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
-    // .storeUint(0x5fcc3d14, 32)
-    // .storeUint(msg.queryId, 64)
-    // .storeAddress(msg.prevOwner)
-    // .storeAddress(msg.prevOwner)
-    // .storeUint(0, 5)
-    // .storeSlice(emptySlice())
-    // .endCell();
+    let body: Cell = beginCell()
+      // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
+      .storeUint(0x5fcc3d14, 32)
+      .storeUint(msg.queryId, 64)
+      .storeAddress(msg.prevOwner)
+      .storeAddress(msg.prevOwner)
+      .storeUint(0, 5)
+      .endCell();
 
-    send(SendParameters {
-      to: sender(),
-      value: 0,
-      mode: SendRemainingValue,
-      body: beginCell()
-          .storeUint(0x5fcc3d14, 32)
-          .storeUint(msg.queryId, 64)
-          .storeAddress(msg.prevOwner)
-          .storeAddress(msg.prevOwner)
-          .storeUint(0, 5)
-          .endCell()
-    });
+    let msgCell: Cell = beginCell()
+      .storeUint(0x18, 6)
+      .storeAddress(sender())
+      .storeUint(1, 111)
+      .storeRef(body)
+      .endCell();
+
+    nativeSendMessage(msgCell, SendRemainingValue);
+
+    // send(SendParameters {
+    //   to: sender(),
+    //   value: 0,
+    //   mode: SendRemainingValue,
+    //   body: beginCell()
+    //       .storeUint(0x5fcc3d14, 32)
+    //       .storeUint(msg.queryId, 64)
+    //       .storeAddress(msg.prevOwner)
+    //       .storeAddress(msg.prevOwner)
+    //       .storeUint(0, 5)
+    //       .endCell()
+    // });
   }
 
   receive(msg: NftWithdrawal) {
