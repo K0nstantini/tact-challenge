@@ -169,6 +169,7 @@ contract Task5 with Deployable {
       repeat(self.countNfts) {
         self.countNfts = self.countNfts - 1;
         let msgCell: Cell = b
+          .storeUint(0x18, 6)
           .storeAddress(self.nfts.get(self.countNfts)!!)
           .storeCoins(ton("0.07"))
           .storeUint(1, 107)
