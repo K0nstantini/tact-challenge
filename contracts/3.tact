@@ -76,15 +76,13 @@ contract Task3 with Deployable {
 
       let amountB: Int = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
 
-      // let b1: Builder =  beginCell()
-      //     .storeUint(0x0f8a7ea50000000000000000, 96);
-      // let b2: Builder =  beginCell()
-      //     .storeUint(0x18, 6);
-      let b: Builder = beginCell();
+      let b1: Builder =  beginCell()
+          .storeUint(0x0f8a7ea50000000000000000, 96);
+      let b2: Builder =  beginCell()
+          .storeUint(0x18, 6);
 
       if (self.bAmount > amountB) {
-        let body: Cell = b
-          .storeUint(0x0f8a7ea50000000000000000, 96)
+        let body: Cell = b1
           // .storeUint(0x0f8a7ea50000000000000000F000000000000000000000000000000 + amountB, 220)
           .storeCoins(amountB)
           .storeAddress(msg.from)
@@ -92,8 +90,7 @@ contract Task3 with Deployable {
           .storeUint(0x3989680, 29)
           .endCell();
 
-        let msgCell: Cell = b
-          .storeUint(0x18, 6)
+        let msgCell: Cell = b2
           .storeAddress(self.jettonAddressB)
           .storeUint(1, 111)
           .storeRef(body)
@@ -106,23 +103,20 @@ contract Task3 with Deployable {
         return;
       }
 
-      let body: Cell = b
-          .storeUint(0x0f8a7ea50000000000000000, 96)
+      let body: Cell = b1
         .storeCoins(msg.amount)
         .storeAddress(msg.from)
         .storeAddress(myAddress())
         .storeUint(0x3989680, 29)
         .endCell();
 
-      let msgCell: Cell = b
-          .storeUint(0x18, 6)
+      let msgCell: Cell = b2
         .storeAddress(self.jettonAddressA)
         .storeUint(1, 111)
         .storeRef(body)
         .endCell();
 
       nativeSendMessage(msgCell, SendRemainingValue);
-      // transfer(self.jettonAddressA, msg);
       return;
     }
 
@@ -134,9 +128,13 @@ contract Task3 with Deployable {
 
       let amountA: Int = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
 
+      let b1: Builder =  beginCell()
+          .storeUint(0x0f8a7ea50000000000000000, 96);
+      let b2: Builder =  beginCell()
+          .storeUint(0x18, 6);
+
       if (self.aAmount > amountA) {
         let body: Cell = beginCell()
-          .storeUint(0x0f8a7ea50000000000000000, 96)
           .storeCoins(amountA)
           .storeAddress(msg.from)
           .storeAddress(myAddress())
@@ -144,7 +142,6 @@ contract Task3 with Deployable {
           .endCell();
 
         let msgCell: Cell = beginCell()
-          .storeUint(0x18, 6)
           .storeAddress(self.jettonAddressA)
           .storeUint(1, 111)
           .storeRef(body)
@@ -156,7 +153,21 @@ contract Task3 with Deployable {
         self.aAmount = self.aAmount - amountA;
         return;
       }
-      transfer(self.jettonAddressB, msg);
+      
+      let body: Cell = b1
+        .storeCoins(msg.amount)
+        .storeAddress(msg.from)
+        .storeAddress(myAddress())
+        .storeUint(0x3989680, 29)
+        .endCell();
+
+      let msgCell: Cell = b2
+        .storeAddress(self.jettonAddressB)
+        .storeUint(1, 111)
+        .storeRef(body)
+        .endCell();
+
+      nativeSendMessage(msgCell, SendRemainingValue);
       return;
     }
 
@@ -181,21 +192,21 @@ contract Task3 with Deployable {
 
 }
 
-fun transfer(to: Address, msg: TokenNotification) {
-  let body: Cell = beginCell()
-      .storeUint(0x0f8a7ea50000000000000000, 96)
-      .storeCoins(msg.amount)
-      .storeAddress(msg.from)
-      .storeAddress(myAddress())
-      .storeUint(0x3989680, 29)
-      .endCell();
+// fun transfer(to: Address, msg: TokenNotification) {
+//   let body: Cell = beginCell()
+//       .storeUint(0x0f8a7ea50000000000000000, 96)
+//       .storeCoins(msg.amount)
+//       .storeAddress(msg.from)
+//       .storeAddress(myAddress())
+//       .storeUint(0x3989680, 29)
+//       .endCell();
 
-  let msgCell: Cell = beginCell()
-      .storeUint(0x18, 6)
-      .storeAddress(to)
-      .storeUint(1, 111)
-      .storeRef(body)
-      .endCell();
+//   let msgCell: Cell = beginCell()
+//       .storeUint(0x18, 6)
+//       .storeAddress(to)
+//       .storeUint(1, 111)
+//       .storeRef(body)
+//       .endCell();
 
-  nativeSendMessage(msgCell, SendRemainingValue);
-}
+//   nativeSendMessage(msgCell, SendRemainingValue);
+// }
