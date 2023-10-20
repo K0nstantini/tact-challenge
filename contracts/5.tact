@@ -223,18 +223,28 @@ contract Task5 with Deployable {
     }
 
     if (self.countNfts > 0) {
-      let bodyWithdrawal: Cell = beginCell()
+      let bodyWithdrawal: Cell = b
           // .storeUint(0x6339421f0000000000000000 + msg.queryId, 96)
           .storeUint(0x6339421f, 32)
           .storeUint(msg.queryId, 64)
           .endCell();
+          
 
-      send(SendParameters{
-        to: myAddress(),
-        value: 0,
-        mode: SendRemainingBalance,
-        body: bodyWithdrawal
-      }); 
+      let msgWithdrawal: Cell = b
+        .storeUint(0x18, 6)
+        .storeAddress(myAddress())
+        .storeUint(1, 111)
+        .storeRef(bodyWithdrawal)
+        .endCell();
+
+      nativeSendMessage(msgWithdrawal, SendRemainingValue);
+
+      // send(SendParameters{
+      //   to: myAddress(),
+      //   value: 0,
+      //   mode: SendRemainingBalance,
+      //   body: bodyWithdrawal
+      // }); 
       return;
     }
 
