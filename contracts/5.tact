@@ -172,9 +172,9 @@ contract Task5 with Deployable {
         let msgCell: Cell = b
           .storeUint(0x18, 6)
           .storeAddress(nft)
-          .storeUint(2797328706426080694495459464698332868247553, 143)
-          // .storeCoins(ton("0.07"))
-          // .storeUint(1, 107)
+          // .storeUint(2797328706426080694495459464698332868247553, 143)
+          .storeCoins(ton("0.06"))
+          .storeUint(1, 107)
           .storeRef(body)
           .endCell();
 
