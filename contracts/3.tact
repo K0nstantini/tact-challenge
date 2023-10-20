@@ -86,13 +86,14 @@ contract Task3 with Deployable {
           .storeUint(0x3989680, 29)
           .endCell();
 
-        // nativeSendMessage(body, SendRemainingValue);
-        send(SendParameters{
-            to: self.jettonAddressB,
-            value: 0,
-            mode: SendRemainingValue,
-            body: body
-          });
+        let msgCell: Cell = beginCell()
+          .storeUint(0x18, 6)
+          .storeAddress(self.jettonAddressB)
+          .storeUint(1, 111)
+          .storeRef(body)
+          .endCell();
+
+        nativeSendMessage(msgCell, SendRemainingValue);
 
         self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amountB;
@@ -119,12 +120,15 @@ contract Task3 with Deployable {
           .storeUint(0x3989680, 29)
           .endCell();
 
-        send(SendParameters{
-          to: self.jettonAddressA,
-          value: 0,
-          mode: SendRemainingValue,
-          body: body
-        });
+        let msgCell: Cell = beginCell()
+          .storeUint(0x18, 6)
+          .storeAddress(self.jettonAddressA)
+          .storeUint(1, 111)
+          .storeRef(body)
+          .endCell();
+
+        nativeSendMessage(msgCell, SendRemainingValue);
+
         self.bAmount = self.bAmount + msg.amount;
         self.aAmount = self.aAmount - amountA;
         return;
@@ -163,11 +167,12 @@ fun transfer(to: Address, msg: TokenNotification) {
       .storeUint(0x3989680, 29)
       .endCell();
 
-  send(SendParameters{
-    to: to,
-    value: 0,
-    mode: SendRemainingValue,
-    body: body
-  });
-  
+  let msgCell: Cell = beginCell()
+      .storeUint(0x18, 6)
+      .storeAddress(to)
+      .storeUint(1, 111)
+      .storeRef(body)
+      .endCell();
+
+  nativeSendMessage(msgCell, SendRemainingValue);
 }
