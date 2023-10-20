@@ -83,7 +83,6 @@ contract Task3 with Deployable {
 
       if (self.bAmount > amountB) {
         let body: Cell = b1
-          // .storeUint(0x0f8a7ea50000000000000000F000000000000000000000000000000 + amountB, 220)
           .storeCoins(amountB)
           .storeAddress(msg.from)
           .storeAddress(myAddress())

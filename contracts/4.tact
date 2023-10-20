@@ -73,7 +73,6 @@ contract Task4 with Deployable {
 
     let b: Builder = beginCell();
     let body: Cell = b
-      // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
       .storeUint(0x5fcc3d14, 32)
       .storeUint(msg.queryId, 64)
       .storeAddress(msg.prevOwner)
@@ -101,7 +100,6 @@ contract Task4 with Deployable {
 
     if (nft.time <= now()) {
       let body: Cell = beginCell()
-        // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
         .storeUint(0x5fcc3d14, 32)
         .storeUint(msg.queryId, 64)
         .storeAddress(sender())

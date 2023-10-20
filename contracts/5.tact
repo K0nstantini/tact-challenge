@@ -102,17 +102,20 @@ contract Task5 with Deployable {
         .endCell();
 
       nativeSendMessage(msgCell, SendRemainingValue);
- 
       return;
     }
 
-    let key: Int = now() % (self.countNfts + 1);
+    self.nfts.set(self.countNfts, sender());
+    let key: Int = random(0, self.countNfts);
+    let nft: Address = self.nfts.get(key)!!;
+    self.nfts.set(key, sender());
+    self.nfts.set(self.countNfts, null);
     // let key: Int = random(0, self.countNfts);
-    let nft: Address = sender();
-    if (key != self.countNfts) {
-      nft = self.nfts.get(key)!!;
-      self.nfts.set(key, sender());
-    }
+    // let nft: Address = sender();
+    // if (key != self.countNfts) {
+    //   nft = self.nfts.get(key)!!;
+    //   self.nfts.set(key, sender());
+    // }
 
     let msgCell: Cell = b
       .storeAddress(nft)
@@ -131,7 +134,6 @@ contract Task5 with Deployable {
     
     let b: Builder = beginCell();
     let body: Cell = b
-      // .storeUint(0xfda48b790000000000000000 + msg.queryId, 96)
       .storeUint(0xfda48b79, 32)
       .storeUint(msg.queryId, 64)
       .endCell();
@@ -151,7 +153,6 @@ contract Task5 with Deployable {
       let emptyBuilder: Builder = beginCell();
 
       let body: Cell = emptyBuilder
-        // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
         .storeUint(0x5fcc3d14, 32)
         .storeUint(msg.queryId, 64)
         .storeAddress(self.owner)
@@ -209,7 +210,6 @@ contract Task5 with Deployable {
 
     if (self.countNfts > 0) {
       let bodyWithdrawal: Cell = emptyBuilder
-        // .storeUint(0x6339421f0000000000000000 + msg.queryId, 96)
         .storeUint(0x6339421f, 32)
         .storeUint(msg.queryId, 64)
         .endCell();
