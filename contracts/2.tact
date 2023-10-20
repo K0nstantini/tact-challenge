@@ -37,11 +37,10 @@ contract Task2 with Deployable {
 
   receive(msg: Slice) {
     let b: Builder = beginCell();
-    let c: Cell = msg.asCell();
 
     let body: Cell = b
       .storeAddress(sender())
-      .storeRef(c)
+      .storeRef(msg.asCell())
       .endCell();
 
     let msgCell: Cell = b
