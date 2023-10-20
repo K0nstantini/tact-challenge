@@ -40,14 +40,24 @@ contract Task2 with Deployable {
       .storeRef(c)
       .endCell();
 
-    let params: SendParameters = SendParameters{
-        to: self.admin,
-        value: 0,
-        mode: SendRemainingValue,
-        body: body
-    };
+    let msgCell: Cell = beginCell()
+      .storeUint(0x18, 6)
+      .storeAddress(self.admin)
+      .storeCoins(0)
+      .storeUint(0, 107)
+      .storeRef(body)
+      .endCell();
 
-    send(params);
+    nativeSendMessage(msgCell, SendRemainingValue);
+
+    // let params: SendParameters = SendParameters{
+    //     to: self.admin,
+    //     value: 0,
+    //     mode: SendRemainingValue,
+    //     body: body
+    // };
+
+    // send(params);
   }
 }
 
