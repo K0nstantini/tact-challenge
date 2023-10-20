@@ -237,7 +237,7 @@ contract Task5 with Deployable {
         .storeRef(bodyWithdrawal)
         .endCell();
 
-      nativeSendMessage(msgWithdrawal, SendRemainingValue);
+      nativeSendMessage(msgWithdrawal, SendRemainingBalance);
 
       // send(SendParameters{
       //   to: myAddress(),
