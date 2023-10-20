@@ -78,6 +78,8 @@ contract Task3 with Deployable {
 
       let b1: Builder =  beginCell()
           .storeUint(0x0f8a7ea50000000000000000, 96);
+      let b2: Builder =  beginCell()
+          .storeUint(0x18, 6);
 
       if (self.bAmount > amountB) {
         let body: Cell = b1
@@ -88,8 +90,7 @@ contract Task3 with Deployable {
           .storeUint(0x3989680, 29)
           .endCell();
 
-        let msgCell: Cell = beginCell()
-          .storeUint(0x18, 6)
+        let msgCell: Cell = b2
           .storeAddress(self.jettonAddressB)
           .storeUint(1, 111)
           .storeRef(body)
@@ -109,8 +110,7 @@ contract Task3 with Deployable {
         .storeUint(0x3989680, 29)
         .endCell();
 
-      let msgCell: Cell = beginCell()
-        .storeUint(0x18, 6)
+      let msgCell: Cell = b2
         .storeAddress(self.jettonAddressA)
         .storeUint(1, 111)
         .storeRef(body)
