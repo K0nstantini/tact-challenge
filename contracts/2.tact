@@ -27,7 +27,7 @@ contract Task2 with Deployable {
     // nativeThrowUnless(100, sender() == self.admin);
     if (sender() != self.admin) {
       send(SendParameters{
-        to: msg.sender,
+        to: sender(),
         value: 0, 
         bounce: true,
         mode: SendRemainingValue
