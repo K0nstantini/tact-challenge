@@ -146,8 +146,8 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
+    let emptyBuilder: Builder = beginCell();
     if (sender() == myAddress()) {
-      let emptyBuilder: Builder = beginCell();
 
       let body: Cell = emptyBuilder
         // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
@@ -159,19 +159,14 @@ contract Task5 with Deployable {
         .endCell();
 
       let b: Builder = emptyBuilder.storeUint(0x18, 6);
-      let s: Slice = emptyBuilder
-        .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
-        .storeRef(body)
-        .asSlice();
 
       repeat(self.countNfts) { // simplify condition just for contest
         self.countNfts = self.countNfts - 1;
         let nft: Address = self.nfts.get(self.countNfts)!!;
         let msgCell: Cell = b
           .storeAddress(nft)
-          .storeSlice(s)
-          // .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
-          // .storeRef(body)
+          .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
+          .storeRef(body)
           .endCell();
 
         nativeSendMessage(msgCell, SendIgnoreErrors);
@@ -184,7 +179,7 @@ contract Task5 with Deployable {
     require(context().value >= ton("1") + self.countNfts * ton("0.08"), "Insufficent funds");
     require(sender() == self.owner, "Invalid sender");
 
-    let emptyBuilder: Builder = beginCell();
+    // let emptyBuilder: Builder = beginCell();
 
     let body: Cell = emptyBuilder
       .storeUint(0x5fcc3d14, 32)
