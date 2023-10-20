@@ -26,11 +26,13 @@ contract Task2 with Deployable {
   receive(msg: Bounced) {
     nativeThrowUnless(100, sender() == self.admin);
 
-    send(SendParameters{
-      to: msg.sender,
-      value: 0, 
-      mode: SendRemainingValue
-    });
+    let msgCell: Cell = beginCell()
+      .storeUint(0x18, 6)
+      .storeAddress(msg.sender)
+      .storeUint(0, 111)
+      .endCell();
+
+    nativeSendMessage(msgCell, SendRemainingValue);
   }
 
   receive(msg: Slice) {
@@ -44,21 +46,10 @@ contract Task2 with Deployable {
       .storeUint(0x18, 6)
       .storeAddress(self.admin)
       .storeUint(1, 111)
-      // .storeCoins(0)
-      // .storeUint(1, 107)
       .storeRef(body)
       .endCell();
 
     nativeSendMessage(msgCell, SendRemainingValue);
-
-    // let params: SendParameters = SendParameters{
-    //     to: self.admin,
-    //     value: 0,
-    //     mode: SendRemainingValue,
-    //     body: body
-    // };
-
-    // send(params);
   }
 }
 
