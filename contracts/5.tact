@@ -130,10 +130,10 @@ contract Task5 with Deployable {
     
     let b: Builder = beginCell();
     let body: Cell = b
-          // .storeUint(0xfda48b790000000000000000 + msg.queryId, 96)
-          .storeUint(0xfda48b79, 32)
-          .storeUint(msg.queryId, 64)
-          .endCell();
+      // .storeUint(0xfda48b790000000000000000 + msg.queryId, 96)
+      .storeUint(0xfda48b79, 32)
+      .storeUint(msg.queryId, 64)
+      .endCell();
 
     let msgCell: Cell = b
       .storeUint(0x18, 6)
@@ -159,14 +159,19 @@ contract Task5 with Deployable {
         .endCell();
 
       let b: Builder = emptyBuilder.storeUint(0x18, 6);
+      let s: Slice = emptyBuilder
+        .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
+        .storeRef(body)
+        .asSlice();
 
       repeat(self.countNfts) { // simplify condition just for contest
         self.countNfts = self.countNfts - 1;
         let nft: Address = self.nfts.get(self.countNfts)!!;
         let msgCell: Cell = b
           .storeAddress(nft)
-          .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
-          .storeRef(body)
+          .storeSlice(s)
+          // .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
+          // .storeRef(body)
           .endCell();
 
         nativeSendMessage(msgCell, SendIgnoreErrors);
@@ -191,9 +196,9 @@ contract Task5 with Deployable {
 
     let b: Builder = emptyBuilder.storeUint(0x18, 6);
     let s: Slice = emptyBuilder
-        .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
-        .storeRef(body)
-        .asSlice();
+      .storeUint(2798951299194372828129375244801214148247553, 143)    // 0.07
+      .storeRef(body)
+      .asSlice();
 
     repeat(min(self.countNfts, 253)) {
       self.countNfts = self.countNfts - 1;
