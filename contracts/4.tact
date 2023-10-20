@@ -118,36 +118,21 @@ contract Task4 with Deployable {
       return;
 
     }
-      // let body: Cell = beginCell()
-      //   .storeUint(0, 32)
-      //   .storeSlice("NFT is still locked".asSlice())
-      //   .endCell();
-      // let body: Cell = beginCell()
-        // .storeUint(0x000000004E4654206973207374696C6C206C6F636B6564, 184)
-        // .endCell();
 
-      let msgCell: Cell = beginCell()
-        .storeUint(0x18, 6)
-        .storeAddress(sender())
-        .storeUint(1, 111)
-        .storeRef("NFT is still locked".asComment())
-        .endCell();
+    let msgCell: Cell = beginCell()
+      .storeUint(0x18, 6)
+      .storeAddress(sender())
+      .storeUint(1, 111)
+      .storeRef("NFT is still locked".asComment())
+      .endCell();
 
-      nativeSendMessage(msgCell, SendRemainingValue);
-
-      // send(SendParameters{
-      //   to: sender(),
-      //   value: 0, 
-      //   mode: SendRemainingValue, 
-      //   body: "NFT is still locked".asComment()
-      //   // body: body
-      // });
-
+    nativeSendMessage(msgCell, SendRemainingValue);
   }
 
   get fun time(): Int {
     if (self.nft != null) {
-      return max((self.nft!!).time - now(), 0);
+      // return max((self.nft!!).time - now(), 0);
+      return (self.nft!!).time - now();
     }
       return 0;
   }
