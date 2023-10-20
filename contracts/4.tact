@@ -98,8 +98,8 @@ contract Task4 with Deployable {
     // let b: Builder = beginCell()
       // .storeUint(0x18, 6);
 
+    let b: Builder = beginCell();
     if (nft.time <= now()) {
-      let b: Builder = beginCell();
       let body: Cell = b
         // .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
         .storeUint(0x5fcc3d14, 32)
@@ -123,7 +123,7 @@ contract Task4 with Deployable {
 
     }
 
-    let msgCell: Cell = beginCell()
+    let msgCell: Cell = b
       .storeUint(0x18, 6)
       .storeAddress(sender())
       .storeUint(1, 111)
