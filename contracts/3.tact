@@ -134,14 +134,14 @@ contract Task3 with Deployable {
           .storeUint(0x18, 6);
 
       if (self.aAmount > amountA) {
-        let body: Cell = beginCell()
+        let body: Cell = b1
           .storeCoins(amountA)
           .storeAddress(msg.from)
           .storeAddress(myAddress())
           .storeUint(0x3989680, 29)
           .endCell();
 
-        let msgCell: Cell = beginCell()
+        let msgCell: Cell = b2
           .storeAddress(self.jettonAddressA)
           .storeUint(1, 111)
           .storeRef(body)
