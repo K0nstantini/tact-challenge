@@ -142,7 +142,7 @@ contract Task5 with Deployable {
       .storeRef(body)
       .endCell();
 
-    nativeSendMessage(msgCell, SendRemainingValue);
+    nativeSendMessage(msgCell, SendRemainingBalance);
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
