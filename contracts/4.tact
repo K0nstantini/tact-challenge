@@ -122,12 +122,10 @@ contract Task4 with Deployable {
 
     }
 
-    let comment: Cell = "NFT is still locked".asComment();
     let msgCell: Cell = b
       .storeAddress(sender())
       .storeUint(1, 111)
-      // .storeRef("NFT is still locked".asComment())
-      .storeRef(comment)
+      .storeRef("NFT is still locked".asComment())
       .endCell();
 
     nativeSendMessage(msgCell, SendRemainingValue);
