@@ -101,31 +101,24 @@ contract Task5 with Deployable {
     }
 
     // let key: Int = now() % self.countNfts;
-    let key: Int = random(0, self.countNfts);
-    if (key < self.countNfts) {
-      send(SendParameters{
-        to: self.nfts.get(key)!!,
-        value: value - ton("2.05"),
-        mode: SendIgnoreErrors,
-        body: body
-      });
-      self.nfts.set(key, sender());
-      return;
-    }
-
-    send(SendParameters{
-      to: sender(),
-      value: value - ton("2.05"),
-      mode: SendIgnoreErrors,
-      body: body
-    });
-
     // let key: Int = random(0, self.countNfts);
-    // let nft: Address = sender();
-    // if (key != self.countNfts) {
-    //   nft = self.nfts.get(key)!!;
+    // if (key < self.countNfts) {
+    //   send(SendParameters{
+    //     to: self.nfts.get(key)!!,
+    //     value: value - ton("2.05"),
+    //     mode: SendIgnoreErrors,
+    //     body: body
+    //   });
     //   self.nfts.set(key, sender());
+    //   return;
     // }
+
+    // send(SendParameters{
+    //   to: sender(),
+    //   value: value - ton("2.05"),
+    //   mode: SendIgnoreErrors,
+    //   body: body
+    // });
 
     // let key: Int = random(0, self.countNfts);
     // let nft: Address? = self.nfts.get(key);
@@ -133,12 +126,19 @@ contract Task5 with Deployable {
     //   nft = sender;
     // }
 
-    // send(SendParameters{
-    //     to: nft,
-    //     value: value - ton("2.05"),
-    //     mode: SendIgnoreErrors,
-    //     body: body
-    // });
+    let key: Int = random(0, self.countNfts);
+    let nft: Address = sender();
+    if (key != self.countNfts) {
+      nft = self.nfts.get(key)!!;
+      self.nfts.set(key, sender());
+    }
+
+    send(SendParameters{
+        to: nft,
+        value: value - ton("2.05"),
+        mode: SendIgnoreErrors,
+        body: body
+    });
 
   }
 
