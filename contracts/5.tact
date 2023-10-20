@@ -82,15 +82,15 @@ contract Task5 with Deployable {
       return;
     }
 
-    let body: Cell = beginCell()
+    let b: Builder = beginCell();
+    let body: Cell = b
         .storeUint(0x5fcc3d140000000000000000 + msg.queryId, 96)
         .storeAddress(msg.prevOwner)
         .storeAddress(msg.prevOwner)
         .storeUint(0, 5)
         .endCell();
 
-    let b: Builder = beginCell()
-        .storeUint(0x18, 6);
+    b = b.storeUint(0x18, 6);
 
     let value: Int = context().value;
     if (value < ton("2.1")) {
